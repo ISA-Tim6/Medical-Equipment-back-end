@@ -1,4 +1,4 @@
-package iservice;
+package com.example.medicalequipment.iservice;
 
 import org.springframework.stereotype.Service;
 

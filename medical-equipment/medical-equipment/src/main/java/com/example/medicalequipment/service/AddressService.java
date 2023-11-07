@@ -1,12 +1,11 @@
-package service;
+package com.example.medicalequipment.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.medicalequipment.iservice.IAdressService;
 import com.example.medicalequipment.model.Address;
-
-import iservice.IAdressService;
-import repository.IAddressRepository;
+import com.example.medicalequipment.repository.IAddressRepository;
 
 @Service
 public class AddressService implements IAdressService{
