@@ -26,8 +26,10 @@ public class Company {
 	@Column(name = "averageGrade", nullable = true)
 	private double averageGrade;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "addressId", referencedColumnName = "addressId")
 	private Address address;
+
 	
 	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<CompanyAdmin> admins;
@@ -60,23 +62,23 @@ public class Company {
 		this.averageGrade = averageGrade;
 	}
 
-	public Address getAddress() {
+	/*public Address getAddress() {
 		return address;
 	}
 
 	public void setAddress(Address address) {
 		this.address = address;
-	}
+	}*/
 
-	public Set<CompanyAdmin> getAdmins() {
-		return admins;
-	}
+	//public Set<CompanyAdmin> getAdmins() {
+	//	return admins;
+	//}
 
 	public void setAdmins(Set<CompanyAdmin> admins) {
-		this.admins = admins;
+	//	this.admins = admins;
 	}
 
-	public Company(String name, double averageGrade, Address address, Set<CompanyAdmin> admins) {
+	public Company(String name, double averageGrade, Address address,Set<CompanyAdmin> admins ) {
 		super();
 		this.name = name;
 		this.averageGrade = averageGrade;

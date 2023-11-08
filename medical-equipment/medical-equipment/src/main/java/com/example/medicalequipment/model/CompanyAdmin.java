@@ -2,12 +2,15 @@ package com.example.medicalequipment.model;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class CompanyAdmin extends User{
 
 	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "company_id",nullable=false)
+
 	private Company company;
 	
 	public CompanyAdmin(String name, String surname, String username, String password, String email, String phoneNumber,
