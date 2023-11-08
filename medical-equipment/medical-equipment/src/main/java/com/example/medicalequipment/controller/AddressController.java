@@ -1,7 +1,11 @@
 package com.example.medicalequipment.controller;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +20,7 @@ import com.example.medicalequipment.service.AddressService;
 
 
 @RestController
+@RequestMapping(path="api/")
 public class AddressController {
 
 	private AddressService addressService;
@@ -30,5 +35,13 @@ public class AddressController {
 	@PostMapping("/addressPost")
 	public Address CreateAdress(@RequestBody Address address) {
 		return addressService.saveAddress(address);
+	}
+	
+	@CrossOrigin(origins="http://localhost:4200")
+	@GetMapping("")
+	public int Adrese()
+	{	
+		return 2;
+		
 	}
 }
