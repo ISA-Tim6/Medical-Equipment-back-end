@@ -19,6 +19,10 @@ public class UserService implements IUserService{
     	return this.UserRepository.save(u);
     }
 
+	@Override
+	public User getById(long id) {
+		return this.UserRepository.getById(id);
+	}
     /*public void registerUser(User u) {
         String encodedPassword = passwordEncoder.encode(u.getPassword());
         u.setPassword(encodedPassword);

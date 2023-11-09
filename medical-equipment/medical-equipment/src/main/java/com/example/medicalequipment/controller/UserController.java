@@ -5,14 +5,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityResult;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.medicalequipment.dto.UserResponseDto;
 import com.example.medicalequipment.model.User;
 import com.example.medicalequipment.repository.IUserRepository;
 import com.example.medicalequipment.service.UserService;
@@ -34,6 +40,14 @@ public class UserController {
     @PostMapping(path = "/saveUser")
     public User save(@RequestBody User u) {
         return this.userService.save(u);
+    }
+    
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping(path = "/getUser/{id}")
+    public UserResponseDto get(@PathVariable Long id) {
+    	User user = this.userService.getById(id);
+    	 return new UserResponseDto(user.getName(),user.getName(),user.getName(),user.getName(),user.getName(),true,user.getName(),user.getName(),user.getName(),user.getEmployment(),user.getName());
+
     }
 
    
