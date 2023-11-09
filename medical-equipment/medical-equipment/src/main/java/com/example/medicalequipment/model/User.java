@@ -5,13 +5,26 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.Inheritance;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import static javax.persistence.InheritanceType.JOINED;
 @Entity
+@Table(name = "`User`")
+@Inheritance(strategy=JOINED)
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	@SequenceGenerator(
+            name = "user_sequence",
+            sequenceName = "user_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "user_sequence"
+    )
+	private Long id;
 	@Column(name = "name", nullable = false)
 	private String name;
 	@Column(name = "surname", nullable = false)
@@ -32,14 +45,15 @@ public class User {
 	private String country;
 	@Column(name = "employment", nullable = false)
 	private Employment employment;
-	
+	@Column(name = "aboutInstitution", nullable = false)
+	private String infoAboutInstitution;
 	public User() {
 		this.loggedBefore=false;
 	}
 	
 	
 	public User(String name, String surname, String username, String password, String email, String phoneNumber,
-			String city,String country, Employment employment) {
+			String city,String country, Employment employment, String infoAboutInstitution) {
 		this.name=name;
 		this.surname=surname;
 		this.email=email;
@@ -49,15 +63,16 @@ public class User {
 		this.city=city;
 		this.country=country;
 		this.employment=employment;	
+		this.infoAboutInstitution=infoAboutInstitution;
 	}
 
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -161,5 +176,13 @@ public class User {
 		this.employment = employment;
 	}
 	
-	
+	public String getInformations() {
+		return infoAboutInstitution;
+	}
+
+
+	public void setInformations(String info) {
+		this.infoAboutInstitution = info;
+	}
+
 }
