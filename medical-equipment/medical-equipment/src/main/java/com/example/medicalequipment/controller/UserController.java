@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.persistence.EntityResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,10 +44,13 @@ public class UserController {
     }
     
     @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping(path = "/getUser/{id}")
-    public UserResponseDto get(@PathVariable Long id) {
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<UserResponseDto> get(@PathVariable Long id) {
     	User user = this.userService.getById(id);
-    	 return new UserResponseDto(user.getName(),user.getName(),user.getName(),user.getName(),user.getName(),true,user.getName(),user.getName(),user.getName(),user.getEmployment(),user.getName());
+    	
+    	if(user == null)
+    		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    	 return new ResponseEntity<UserResponseDto>(new UserResponseDto(user), HttpStatus.OK);
 
     }
 

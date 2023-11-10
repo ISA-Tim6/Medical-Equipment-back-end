@@ -3,8 +3,10 @@ package com.example.medicalequipment.dto;
 import javax.persistence.Column;
 
 import com.example.medicalequipment.model.Employment;
+import com.example.medicalequipment.model.User;
 
 public class UserResponseDto {
+	private long id;
 	private String name;
 	private String surname;
 	private String username;
@@ -15,10 +17,16 @@ public class UserResponseDto {
 	private String city;
 	private String country;
 	private Employment employment;
-	public UserResponseDto(String name, String surname, String username, String password, String email,
+	public UserResponseDto() {}
+	
+	public UserResponseDto(User user) {
+		this(user.getId(), user.getName(), user.getSurname(), user.getUsername(), user.getPassword(), user.getEmail(), user.getLoggedBefore(), user.getPhoneNumber(), user.getCity(), user.getCountry(), user.getEmployment(), user.getInformations());
+	}
+	public UserResponseDto(long id, String name, String surname, String username, String password, String email,
 			Boolean loggedBefore, String phoneNumber, String city, String country, Employment employment,
 			String infoAboutInstitution) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.username = username;
@@ -90,8 +98,6 @@ public class UserResponseDto {
 
 	private String infoAboutInstitution;
 
-    public UserResponseDto() {
-    }
 
     public String getName() {
         return name;
