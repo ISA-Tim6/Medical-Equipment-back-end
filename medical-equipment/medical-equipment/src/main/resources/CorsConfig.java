@@ -10,5 +10,7 @@ public class CorsConfig implements WebMvcConfigurer {
         .setHeader("Access-Control-Allow-Origin", "*")
             .allowedOrigins("http://localhost:4200") // Postavite URL Angular aplikacije
             .allowedMethods("GET", "POST", "PUT", "DELETE");
+        	.allowedHeaders("Origin", "Content-Type", "Accept", "Authorization")
+
     }
 }

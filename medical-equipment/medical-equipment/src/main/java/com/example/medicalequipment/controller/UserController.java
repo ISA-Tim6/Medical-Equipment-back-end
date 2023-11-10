@@ -12,11 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.medicalequipment.dto.UserResponseDto;
@@ -37,13 +38,20 @@ public class UserController {
     }
    
     
-    @CrossOrigin(origins = "http://localhost:4200")
-    @PostMapping(path = "/saveUser")
+    @CrossOrigin(origins="http://localhost:4200")
+    @PostMapping("saveUser")
     public User save(@RequestBody User u) {
-        return this.userService.save(u);
+    	System.out.println("infoAboutInstitution received on the server: " + u.getInfoAboutInstitution() + u.getCity());
+    	return userService.save(u);
     }
+    @CrossOrigin(origins="http://localhost:4200")
+    @GetMapping("userView")
+    public int get() {
+        return 2;
+    }
+
     
-    @CrossOrigin(origins = "http://localhost:4200")
+    /*@CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "/{id}")
     public ResponseEntity<UserResponseDto> get(@PathVariable Long id) {
     	User user = this.userService.getById(id);
@@ -52,7 +60,7 @@ public class UserController {
     		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     	 return new ResponseEntity<UserResponseDto>(new UserResponseDto(user), HttpStatus.OK);
 
-    }
+    }*/
 
    
     
