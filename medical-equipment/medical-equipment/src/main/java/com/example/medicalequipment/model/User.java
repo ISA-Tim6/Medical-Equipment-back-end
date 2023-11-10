@@ -45,12 +45,12 @@ public class User {
 	private String country;
 	@Column(name = "employment", nullable = false)
 	private Employment employment;
-	@Column(name = "aboutInstitution", nullable = false)
+	@Column(name = "infoAboutInstitution", nullable = false)
 	private String infoAboutInstitution;
 	public User() {
-		this.loggedBefore=false;
+		
 	}
-	
+
 	
 	public User(String name, String surname, String username, String password, String email, String phoneNumber,
 			String city,String country, Employment employment, String infoAboutInstitution) {
@@ -176,13 +176,13 @@ public class User {
 		this.employment = employment;
 	}
 	
-	public String getInformations() {
+	public String getInfoAboutInstitution() {
 		return infoAboutInstitution;
 	}
 
 
-	public void setInformations(String info) {
-		this.infoAboutInstitution = info;
+	public void setInfoAboutInstitution(String infoAboutInstitution) {
+		this.infoAboutInstitution = infoAboutInstitution;
 	}
 
 }
