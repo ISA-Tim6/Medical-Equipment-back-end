@@ -39,8 +39,8 @@ public class Company {
 	private Set<CompanyAdmin> admins= new HashSet<CompanyAdmin>();
 	
 	@ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
-	@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"),
-	inverseJoinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"))
+	@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"),
+	inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"))
 	private Set<Equipment> equipment=new HashSet<Equipment>();
 	
 	

@@ -26,10 +26,12 @@ public class Equipment {
 	@Column(name = "type", nullable = false)
 	private String type;
 	
-	@ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
-	@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"),
-	inverseJoinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"))
-	private Set<Company> equipment=new HashSet<Company>();
+	@ManyToMany(mappedBy = "equipment")
+
+//	@ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
+	//@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"),
+//	inverseJoinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"))
+	private Set<Company> companies=new HashSet<Company>();
 	
 	private Equipment() {}
 
@@ -65,18 +67,18 @@ public class Equipment {
 		this.type = type;
 	}
 
-	public Set<Company> getEquipment() {
-		return equipment;
+	public Set<Company> getCompanies() {
+		return this.companies;
 	}
 
-	public void setEquipment(Set<Company> equipment) {
-		this.equipment = equipment;
+	public void setCompanies(Set<Company> companies) {
+		this.companies = companies;
 	}
 
 	@Override
 	public String toString() {
 		return "Equipment [equipment_id=" + equipment_id + ", name=" + name + ", description=" + description + ", type="
-				+ type + ", equipment=" + equipment + "]";
+				+ type + ", equipment=" + companies + "]";
 	}
 	
 	@Override
