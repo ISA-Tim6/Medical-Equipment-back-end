@@ -53,7 +53,7 @@ public class UserController {
     
     @CrossOrigin(origins="http://localhost:4200")
     @GetMapping(value = "/{id}")
-	public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {
+	public ResponseEntity<User> getUser(@PathVariable Long id) {
 
 		User user = userService.findOne(id);
 
@@ -61,17 +61,19 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<>(new UserResponseDto(user), HttpStatus.OK);
+		ResponseEntity r = new ResponseEntity<>(user, HttpStatus.OK);
+		return r;
 	}
     
     @CrossOrigin(origins="http://localhost:4200")
-    @PutMapping("updateUser")
-	public ResponseEntity<UserResponseDto> updateUser(@RequestBody User user) {
+    @PutMapping("updateUser/{oldUsername}")
+	public ResponseEntity<User> updateUser(@PathVariable String oldUsername, @RequestBody User user) {
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-
-		return new ResponseEntity<>(new UserResponseDto(userService.save(user)), HttpStatus.OK);
+		System.out.println(user.getUsername());
+		System.out.println(oldUsername);
+		return new ResponseEntity<>(userService.update(user, oldUsername), HttpStatus.OK);
 	}
 
     
