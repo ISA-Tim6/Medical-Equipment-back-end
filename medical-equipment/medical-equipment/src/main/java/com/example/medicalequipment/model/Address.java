@@ -14,6 +14,12 @@ public class Address {
 	@Column(name = "addressId", unique = true, nullable = false)
 	private Long addressId;
 
+	@Override
+	public String toString() {
+		return "Address [addressId=" + addressId + ", street=" + street + ", streetNumber=" + streetNumber + ", city="
+				+ city + ", country=" + country + ", longitude=" + longitude + ", latitude=" + latitude + "]";
+	}
+
 	@Column(name = "street", nullable = false)
 	private String street;
 
@@ -34,7 +40,7 @@ public class Address {
 
 	public Address() {
 	}
-
+	
 	public Address(String street, String streetNumber, String city, String country, Double longitude, Double latitude) {
 		super();
 		this.street = street;

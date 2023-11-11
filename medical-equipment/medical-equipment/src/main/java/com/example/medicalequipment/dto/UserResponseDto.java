@@ -20,7 +20,7 @@ public class UserResponseDto {
 	public UserResponseDto() {}
 	
 	public UserResponseDto(User user) {
-		this(user.getId(), user.getName(), user.getSurname(), user.getUsername(), user.getPassword(), user.getEmail(), user.getLoggedBefore(), user.getPhoneNumber(), user.getCity(), user.getCountry(), user.getEmployment(), user.getInfoAboutInstitution());
+		this(user.getUser_id(), user.getName(), user.getSurname(), user.getUsername(), user.getPassword(), user.getEmail(), user.getLoggedBefore(), user.getPhoneNumber(), user.getCity(), user.getCountry(), user.getEmployment(), user.getInfoAboutInstitution());
 	}
 	public UserResponseDto(long id, String name, String surname, String username, String password, String email,
 			Boolean loggedBefore, String phoneNumber, String city, String country, Employment employment,
