@@ -12,7 +12,7 @@ public class UserService implements IUserService{
 	private final IUserRepository UserRepository;
 	@Autowired
     public UserService(IUserRepository userRepository){
-    	this.UserRepository=userRepository;
+    	this.UserRepository = userRepository;
     }
 	@Override
     public User save(User u) {
@@ -20,8 +20,8 @@ public class UserService implements IUserService{
     }
 
 	@Override
-	public User getById(long id) {
-		return this.UserRepository.getById(id);
+	public User findOne(Long id) {
+		return UserRepository.findById(id).orElseGet(null);
 	}
     /*public void registerUser(User u) {
         String encodedPassword = passwordEncoder.encode(u.getPassword());

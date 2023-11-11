@@ -8,5 +8,5 @@ import com.example.medicalequipment.model.User;
 public interface IUserService {
 
 	User save(User user);
-	User getById(long id);
+	User findOne(Long id);
 }

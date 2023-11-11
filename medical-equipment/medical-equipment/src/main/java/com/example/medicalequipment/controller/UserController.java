@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,6 +50,29 @@ public class UserController {
     public int get() {
         return 2;
     }
+    
+    @CrossOrigin(origins="http://localhost:4200")
+    @GetMapping(value = "/{id}")
+	public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {
+
+		User user = userService.findOne(id);
+
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(new UserResponseDto(user), HttpStatus.OK);
+	}
+    
+    @CrossOrigin(origins="http://localhost:4200")
+    @PutMapping("updateUser")
+	public ResponseEntity<UserResponseDto> updateUser(@RequestBody User user) {
+		if (user == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(new UserResponseDto(userService.save(user)), HttpStatus.OK);
+	}
 
     
     /*@CrossOrigin(origins = "http://localhost:4200")
