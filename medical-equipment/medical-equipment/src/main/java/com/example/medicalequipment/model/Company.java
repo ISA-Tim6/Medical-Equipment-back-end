@@ -38,7 +38,7 @@ public class Company {
 	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<CompanyAdmin> admins= new HashSet<CompanyAdmin>();
 	
-	@ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
+	@ManyToMany( cascade = CascadeType.ALL,fetch=FetchType.EAGER)
 	@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"),
 	inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"))
 	private Set<Equipment> equipment=new HashSet<Equipment>();

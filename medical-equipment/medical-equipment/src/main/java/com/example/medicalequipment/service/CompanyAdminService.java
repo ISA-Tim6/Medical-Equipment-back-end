@@ -23,25 +23,13 @@ public class CompanyAdminService implements ICompanyAdminService{
 	}
 	
 	@Override
-	public CompanyAdmin update(CompanyAdmin companyAdmin) {
-		CompanyAdmin currentAdmin=findOne(companyAdmin.getUser_id());
-		currentAdmin.setCity(companyAdmin.getCity());
-		currentAdmin.setCountry(companyAdmin.getCountry());
-		currentAdmin.setEmail(companyAdmin.getEmail());
-		currentAdmin.setName(companyAdmin.getName());
-		currentAdmin.setSurname(companyAdmin.getSurname());
-		currentAdmin.setPassword(companyAdmin.getPassword());
-		currentAdmin.setPhoneNumber(companyAdmin.getPhoneNumber());
-		currentAdmin.setUsername(companyAdmin.getUsername());
-		
-		return CompanyAdminRepository.save(currentAdmin);
+	public CompanyAdmin save(CompanyAdmin companyAdmin) {		
+		return CompanyAdminRepository.save(companyAdmin);
 		
 	}
 	
 	@Override
 	public CompanyAdmin findOne(Long id) {
-		CompanyAdmin res=this.CompanyAdminRepository.findById(id).orElseGet(null);
-		
-		return res;
+		 return this.CompanyAdminRepository.findById(id).orElseGet(null);		
 	}
 }

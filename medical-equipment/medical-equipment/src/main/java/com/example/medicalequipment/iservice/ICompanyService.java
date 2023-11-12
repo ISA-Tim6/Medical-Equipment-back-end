@@ -8,4 +8,5 @@ import com.example.medicalequipment.model.Company;
 public interface ICompanyService {
 
 	Company findOne(Long id);
+	Company save(Company company);
 }

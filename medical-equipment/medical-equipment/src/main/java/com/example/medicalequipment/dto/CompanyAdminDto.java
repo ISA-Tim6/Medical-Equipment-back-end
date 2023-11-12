@@ -16,6 +16,7 @@ public class CompanyAdminDto {
 	private String country;
 	private Employment employment;
 	private CompanyDto company;
+	private String infoAboutInstitution;
 	
 	@Override
 	public String toString() {
@@ -23,6 +24,18 @@ public class CompanyAdminDto {
 				+ ", password=" + password + ", email=" + email + ", loggedBefore=" + loggedBefore + ", phoneNumber="
 				+ phoneNumber + ", city=" + city + ", country=" + country + ", employment=" + employment + ", company="
 				+ company.toString() + "]";
+	}
+
+	public String getInfoAboutInstitution() {
+		return infoAboutInstitution;
+	}
+
+	public void setInfoAboutInstitution(String infoAboutInstitution) {
+		this.infoAboutInstitution = infoAboutInstitution;
+	}
+	
+	public CompanyAdminDto() {
+		
 	}
 
 	public CompanyAdminDto(CompanyAdmin ca){
@@ -37,6 +50,7 @@ public class CompanyAdminDto {
 		this.city=ca.getCity();
 		this.country=ca.getCountry();
 		this.employment=ca.getEmployment();
+		this.infoAboutInstitution=ca.getInfoAboutInstitution();
 		this.company=new CompanyDto(ca.getCompany());
 	}
 

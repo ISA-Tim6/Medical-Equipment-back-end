@@ -18,6 +18,10 @@ public class CompanyService implements ICompanyService{
 	public Company findOne(Long id) {
 		return CompanyRepository.findById(id).orElseGet(null);
 	}
+	@Override
+	public Company save(Company company) {
+		return CompanyRepository.save(company);
+	}
 	
 	
 }

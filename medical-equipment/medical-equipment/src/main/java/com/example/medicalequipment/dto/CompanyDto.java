@@ -20,7 +20,7 @@ public class CompanyDto {
 	private String name;	
 	private double averageGrade;
 	private AddressDto address;
-	private Set<EquipmentDto> equipment;
+	private Set<EquipmentDto> equipment=new HashSet<EquipmentDto>();
 	
 	public CompanyDto(Company company) {
 		this.company_id=company.getId();
@@ -31,6 +31,13 @@ public class CompanyDto {
 			equipment.add(new EquipmentDto(e));
 		}
 	}
+	public CompanyDto(Long company_id,String name,double averageGrade,AddressDto address) {
+		this.company_id=company_id;
+		this.name=name;
+		this.averageGrade=averageGrade;
+		this.address=address;
+	}
+	public CompanyDto() {}
 	
 	@Override
 	public String toString() {
