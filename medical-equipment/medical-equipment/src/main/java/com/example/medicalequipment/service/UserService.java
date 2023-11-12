@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.medicalequipment.iservice.IUserService;
+import com.example.medicalequipment.model.Category;
 import com.example.medicalequipment.model.Employment;
 import com.example.medicalequipment.model.User;
 import com.example.medicalequipment.repository.IUserRepository;
@@ -22,7 +23,12 @@ public class UserService implements IUserService{
     public User save(User u) 
 	{
 		if(IsValidToAdd(u))
+		{
+			u.setPenals(0);
+			u.setCategory(Category.REGULAR);
 			return this.UserRepository.save(u);
+		}
+			
 		return null;
     }
 
@@ -42,7 +48,12 @@ public class UserService implements IUserService{
 	public User update(User user, String oldUsername)
 	{
 		if(IsValidToUpdate(user, oldUsername))
+		{
+			user.setPenals(0);
+			user.setCategory(Category.REGULAR);	//popraviti kasnije
 			return this.UserRepository.save(user);
+		}
+			
 		return null;
 	}
 	
