@@ -1,5 +1,8 @@
 package com.example.medicalequipment.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,18 +21,15 @@ public class UserService implements IUserService{
     public User save(User u) {
     	return this.UserRepository.save(u);
     }
+	public User getByEmail(String email){
+		return UserRepository.findByEmail(email);
+	}
 
-    /*public void registerUser(User u) {
-        String encodedPassword = passwordEncoder.encode(u.getPassword());
-        u.setPassword(encodedPassword);
-        ActivationCode activationCode = activationCodeService.generateAndSaveCode(u.getEmail());
-        emailService.sendActivationEmail(u.getEmail(), activationCode.getCode());
 
-        u.setUserStatus(UserStatus.NOT_ACTIVATED);
-        u.setURN("123456789012");
-        this.AddressRepository.save(u.getAddress());
-    	this.UserRepository.save(u);
-    }*/
+    public List<User> getAllUsers(){
+        return UserRepository.findAll();
+    }
+
 
 
 }

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,15 +46,15 @@ public class UserController {
     }
    
     
-    /*@CrossOrigin(origins = "http://localhost:4200")
-    @RequestMapping(path = "/registerUser", method = RequestMethod.PUT)
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("registerUser")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody User u) {
     	User user = userRepository.findByEmail(u.getEmail());
         if(user == null){
-            this.userService.registerUser(u);
+            this.userService.save(u);
             Map<String, String> response = new HashMap<>();
             response.put("status", "success");
-            response.put("message", "Successfully registered. Please activate your account.");
+            response.put("message", "Successfully registered.");
             return ResponseEntity.ok(response);
         }
         Map<String, String> response = new HashMap<>();
@@ -60,7 +62,7 @@ public class UserController {
         response.put("message", "Email is already taken.");
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
 
-    }*/
+    }
 
 
 
