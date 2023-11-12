@@ -15,16 +15,8 @@ import static javax.persistence.InheritanceType.JOINED;
 public class User {
 
 	@Id
-	@SequenceGenerator(
-            name = "user_sequence",
-            sequenceName = "user_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "user_sequence"
-    )
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long user_id;
 	@Column(name = "name", nullable = false)
 	private String name;
 	@Column(name = "surname", nullable = false)
@@ -73,14 +65,28 @@ public class User {
 		this.category = Category.REGULAR;
 	}
 
-
-	public Long getId() {
-		return id;
+	public User(User user) {
+		this.name=user.name;
+		this.surname=user.surname;
+		this.email=user.email;
+		this.password=user.password;
+		this.phoneNumber=user.phoneNumber;
+		this.loggedBefore=false;
+		this.city=user.city;
+		this.country=user.country;
+		this.employment=user.employment;	
+		this.infoAboutInstitution=user.infoAboutInstitution;
 	}
 
 
-	public void setId(Long id) {
-		this.id = id;
+
+	public Long getUser_id() {
+		return user_id;
+	}
+
+
+	public void setUser_id(Long user_id) {
+		this.user_id = user_id;
 	}
 
 
