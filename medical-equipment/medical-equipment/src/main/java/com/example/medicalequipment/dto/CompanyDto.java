@@ -30,7 +30,9 @@ public class CompanyDto {
 		for(Equipment e:company.getEquipment()) {
 			equipment.add(new EquipmentDto(e));
 		}
+		
 	}
+	
 	public CompanyDto(Long company_id,String name,double averageGrade,AddressDto address) {
 		this.company_id=company_id;
 		this.name=name;

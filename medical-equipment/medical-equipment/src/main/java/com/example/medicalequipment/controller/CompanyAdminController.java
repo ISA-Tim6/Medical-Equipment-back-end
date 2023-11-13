@@ -27,7 +27,7 @@ import com.example.medicalequipment.model.User;
 import com.example.medicalequipment.service.CompanyAdminService;
 
 @RestController
-@RequestMapping(value = "/companyAdmin")
+@RequestMapping(value = "api/companyAdmin")
 public class CompanyAdminController {
 	
 	private CompanyAdminService companyAdminService;
@@ -37,16 +37,27 @@ public class CompanyAdminController {
 		super();
 		this.companyAdminService = _companyAdminService;
 	}
+	
 	@CrossOrigin(origins="http://localhost:4200")
-	@PutMapping
-	public ResponseEntity<CompanyAdminDto> updateCompanyAdmin(@RequestBody User companyAdmin) {
+	@PostMapping
+	public ResponseEntity<CompanyAdminDto> addCompanyAdmin(@RequestBody CompanyAdmin companyAdmin) {
 
-		CompanyAdmin ca = companyAdminService.findOne(companyAdmin.getUser_id());
-		System.out.println(ca.getCity()+"pppppppppppppppppppppppppppppppp");
+
+		CompanyAdminDto cadto=new CompanyAdminDto(companyAdminService.create(companyAdmin));
+
+		return new ResponseEntity<>(cadto, HttpStatus.OK);
+	}
+	
+	@CrossOrigin(origins="http://localhost:4200")
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<CompanyAdminDto> updateCompanyAdmin(@PathVariable Long id,@RequestBody User companyAdmin) {
+
+		CompanyAdmin ca = companyAdminService.findOne(id);
 		if (ca == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
+		ca.setUser_id(ca.getUser_id());
 		ca.setCity(companyAdmin.getCity());
 		ca.setCountry(companyAdmin.getCountry());
 		ca.setEmail(companyAdmin.getEmail());
@@ -56,12 +67,10 @@ public class CompanyAdminController {
 		ca.setPhoneNumber(companyAdmin.getPhoneNumber());
 		ca.setLoggedBefore(companyAdmin.getLoggedBefore());
 		ca.setInfoAboutInstitution(companyAdmin.getInfoAboutInstitution());
-		System.out.println(ca.getCity()+"vvvvvvvvvvvvvvvvvvvvvvvvvvv");
 
-		ca = companyAdminService.save(ca);
-		System.out.println(ca.getCity()+"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+		CompanyAdminDto cadto=new CompanyAdminDto(companyAdminService.save(ca));
 
-		return new ResponseEntity<>(new CompanyAdminDto(ca), HttpStatus.OK);
+		return new ResponseEntity<>(cadto, HttpStatus.OK);
 	}
     
     

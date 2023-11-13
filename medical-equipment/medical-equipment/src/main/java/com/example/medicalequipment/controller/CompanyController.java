@@ -16,11 +16,12 @@ import com.example.medicalequipment.dto.CompanyDto;
 import com.example.medicalequipment.model.Address;
 import com.example.medicalequipment.model.Company;
 import com.example.medicalequipment.model.CompanyAdmin;
+import com.example.medicalequipment.model.Equipment;
 import com.example.medicalequipment.service.CompanyAdminService;
 import com.example.medicalequipment.service.CompanyService;
 
 @RestController
-@RequestMapping(value = "/company")
+@RequestMapping(value = "api/company")
 public class CompanyController {
 private CompanyService companyService;
 	
@@ -29,6 +30,9 @@ private CompanyService companyService;
 		super();
 		this.companyService = _companyService;
 	}
+	
+	
+	
 	
 	 @CrossOrigin(origins="http://localhost:4200")
 	    @GetMapping(value = "/{id}")
@@ -62,6 +66,15 @@ private CompanyService companyService;
 			
 			
 			c = companyService.save(c);
+
+			return new ResponseEntity<>(new CompanyDto(c), HttpStatus.OK);
+		}
+	 
+	 @CrossOrigin(origins="http://localhost:4200")
+		@PutMapping(value = "/addEquipment/{id}")
+		public ResponseEntity<CompanyDto> addEquipment(@RequestBody Equipment equipment,@PathVariable Long id) throws Exception{
+			
+			Company c=companyService.addEquipment(equipment, id);
 
 			return new ResponseEntity<>(new CompanyDto(c), HttpStatus.OK);
 		}

@@ -4,7 +4,7 @@ import com.example.medicalequipment.model.CompanyAdmin;
 import com.example.medicalequipment.model.Employment;
 
 public class CompanyAdminDto {
-	private long id;
+	private Long user_id;
 	private String name;
 	private String surname;
 	private String username;
@@ -15,15 +15,16 @@ public class CompanyAdminDto {
 	private String city;
 	private String country;
 	private Employment employment;
-	private CompanyDto company;
+	private Long company_id;
+	//private CompanyDto company;
 	private String infoAboutInstitution;
 	
 	@Override
 	public String toString() {
-		return "CompanyAdminDto [id=" + id + ", name=" + name + ", surname=" + surname + ", username=" + username
+		return "CompanyAdminDto [id=" + user_id + ", name=" + name + ", surname=" + surname + ", username=" + username
 				+ ", password=" + password + ", email=" + email + ", loggedBefore=" + loggedBefore + ", phoneNumber="
 				+ phoneNumber + ", city=" + city + ", country=" + country + ", employment=" + employment + ", company="
-				+ company.toString() + "]";
+				+ company_id + "]";
 	}
 
 	public String getInfoAboutInstitution() {
@@ -39,7 +40,7 @@ public class CompanyAdminDto {
 	}
 
 	public CompanyAdminDto(CompanyAdmin ca){
-		this.id=ca.getUser_id();
+		this.user_id=ca.getUser_id();
 		this.name=ca.getName();
 		this.surname=ca.getSurname();
 		this.username=ca.getUsername();
@@ -51,15 +52,16 @@ public class CompanyAdminDto {
 		this.country=ca.getCountry();
 		this.employment=ca.getEmployment();
 		this.infoAboutInstitution=ca.getInfoAboutInstitution();
-		this.company=new CompanyDto(ca.getCompany());
+		this.company_id=ca.getCompany().getId();
+		//this.company=new CompanyDto(ca.getCompany());
 	}
 
 	public long getId() {
-		return id;
+		return user_id;
 	}
 
 	public void setId(long id) {
-		this.id = id;
+		this.user_id = id;
 	}
 
 	public String getName() {
@@ -142,12 +144,20 @@ public class CompanyAdminDto {
 		this.employment = employment;
 	}
 
-	public CompanyDto getCompany() {
+	public Long getCompany_id() {
+		return company_id;
+	}
+
+	public void setCompany_id(Long company_id) {
+		this.company_id = company_id;
+	}
+
+	/*public CompanyDto getCompany() {
 		return company;
 	}
 
 	public void setCompany(CompanyDto company) {
 		this.company = company;
-	}
+	}*/
 	
 }

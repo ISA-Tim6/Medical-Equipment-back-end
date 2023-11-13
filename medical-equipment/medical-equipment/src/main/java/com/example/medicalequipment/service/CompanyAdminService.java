@@ -19,11 +19,13 @@ public class CompanyAdminService implements ICompanyAdminService{
 	
 	@Override
 	public CompanyAdmin create(CompanyAdmin companyAdmin) {
+		companyAdmin.getCompany().add(companyAdmin);
+
 		return this.CompanyAdminRepository.save(companyAdmin);
 	}
 	
 	@Override
-	public CompanyAdmin save(CompanyAdmin companyAdmin) {		
+	public CompanyAdmin save(CompanyAdmin companyAdmin) {	
 		return CompanyAdminRepository.save(companyAdmin);
 		
 	}
