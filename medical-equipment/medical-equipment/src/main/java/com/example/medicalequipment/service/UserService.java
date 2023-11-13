@@ -26,8 +26,10 @@ public class UserService implements IUserService{
 	@Override
     public User save(User u) 
 	{
+		System.out.println(IsValidToAdd(u));
 		if(IsValidToAdd(u))
 		{
+			System.out.println("usao");
 			u.setPenals(0);
 			u.setCategory(Category.REGULAR);
 			return this.UserRepository.save(u);
@@ -96,7 +98,7 @@ public class UserService implements IUserService{
             return false;
         }
 
-        String regex = "^[A-Z][a-z ]*";
+        String regex = "^[A-Z][A-Za-z ]*";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(name);
 
@@ -119,6 +121,7 @@ public class UserService implements IUserService{
 	
 	private boolean AreOtherInfoValid(String info)
 	{
+		System.out.println(info);
 		return (info!=null && !info.isEmpty());
 	}
 	

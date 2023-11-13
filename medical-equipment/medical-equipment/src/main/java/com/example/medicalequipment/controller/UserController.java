@@ -94,6 +94,7 @@ public class UserController {
     @PostMapping("registerUser")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody User u) {
     	User user = userRepository.findByEmail(u.getEmail());
+    	System.out.println(user);
         if(user == null){
             this.userService.save(u);
             Map<String, String> response = new HashMap<>();
