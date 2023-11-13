@@ -90,15 +90,15 @@ public class UserController {
 
    
     
-    /*@CrossOrigin(origins = "http://localhost:4200")
-    @RequestMapping(path = "/registerUser", method = RequestMethod.PUT)
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("registerUser")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody User u) {
     	User user = userRepository.findByEmail(u.getEmail());
         if(user == null){
-            this.userService.registerUser(u);
+            this.userService.save(u);
             Map<String, String> response = new HashMap<>();
             response.put("status", "success");
-            response.put("message", "Successfully registered. Please activate your account.");
+            response.put("message", "Successfully registered.");
             return ResponseEntity.ok(response);
         }
         Map<String, String> response = new HashMap<>();
@@ -106,7 +106,7 @@ public class UserController {
         response.put("message", "Email is already taken.");
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
 
-    }*/
+    }
 
 
 

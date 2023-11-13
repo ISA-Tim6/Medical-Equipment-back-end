@@ -1,11 +1,10 @@
 package com.example.medicalequipment.service;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.medicalequipment.iservice.IUserService;
 import com.example.medicalequipment.model.Category;
 import com.example.medicalequipment.model.Employment;
@@ -31,6 +30,10 @@ public class UserService implements IUserService{
 			
 		return null;
     }
+	public User getByEmail(String email){
+		return UserRepository.findByEmail(email);
+	}
+
 
 	@Override
 	public User findOne(Long id) 
@@ -132,11 +135,11 @@ public class UserService implements IUserService{
         ActivationCode activationCode = activationCodeService.generateAndSaveCode(u.getEmail());
         emailService.sendActivationEmail(u.getEmail(), activationCode.getCode());
 
-        u.setUserStatus(UserStatus.NOT_ACTIVATED);
-        u.setURN("123456789012");
-        this.AddressRepository.save(u.getAddress());
-    	this.UserRepository.save(u);
-    }*/
+
+    public List<User> getAllUsers(){
+        return UserRepository.findAll();
+    }
+*/
 
 
 }
