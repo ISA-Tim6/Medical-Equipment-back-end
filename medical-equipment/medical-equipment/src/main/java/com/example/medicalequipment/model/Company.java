@@ -38,22 +38,29 @@ public class Company {
 	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<CompanyAdmin> admins= new HashSet<CompanyAdmin>();
 	
-	//@ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
-	@ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+	
+	@ManyToMany( cascade = CascadeType.ALL,fetch=FetchType.EAGER)
 	@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"),
 	inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"))
 	private Set<Equipment> equipment=new HashSet<Equipment>();
 	
 	
+	  public void add(CompanyAdmin ca) {
+		    if (ca.getCompany() != null)
+		     ca.getCompany().getAdmins().remove(ca);
+		    ca.setCompany(this);
+		    this.getAdmins().add(ca);
+		  }
 	
-	public void addAdmin(CompanyAdmin ca) {
-		admins.add(ca);
-		ca.setCompany(this);
+	public void addEquipment(Equipment e) {
+		if(e!=null)
+		e.getCompanies().add(this);
+		this.equipment.add(e);
 	}
-
-	public void removeAdmin(CompanyAdmin ca) {
-		admins.remove(ca);
-		ca.setCompany(null);
+	
+	public void removeEquipment(Equipment e) {
+		e.getCompanies().remove(e);
+		this.equipment.remove(e);
 	}
 	
 	public Company() {

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.medicalequipment.dto.CompanyAdminDto;
 import com.example.medicalequipment.model.CompanyAdmin;
+import com.example.medicalequipment.model.User;
 import com.example.medicalequipment.service.CompanyAdminService;
 
 @RestController
@@ -36,10 +37,40 @@ public class CompanyAdminController {
 		super();
 		this.companyAdminService = _companyAdminService;
 	}
+	
 	@CrossOrigin(origins="http://localhost:4200")
-    @PutMapping(value="/updateUser")
-	public ResponseEntity<CompanyAdmin> update(@RequestBody CompanyAdmin companyAdmin) throws Exception {
-		return new ResponseEntity<CompanyAdmin>(companyAdminService.update(companyAdmin), HttpStatus.OK);
+	@PostMapping
+	public ResponseEntity<CompanyAdminDto> addCompanyAdmin(@RequestBody CompanyAdmin companyAdmin) {
+
+
+		CompanyAdminDto cadto=new CompanyAdminDto(companyAdminService.create(companyAdmin));
+
+		return new ResponseEntity<>(cadto, HttpStatus.OK);
+	}
+	
+	@CrossOrigin(origins="http://localhost:4200")
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<CompanyAdminDto> updateCompanyAdmin(@PathVariable Long id,@RequestBody User companyAdmin) {
+
+		CompanyAdmin ca = companyAdminService.findOne(id);
+		if (ca == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		ca.setUser_id(ca.getUser_id());
+		ca.setCity(companyAdmin.getCity());
+		ca.setCountry(companyAdmin.getCountry());
+		ca.setEmail(companyAdmin.getEmail());
+		ca.setName(companyAdmin.getName());
+		ca.setPassword(companyAdmin.getPassword());
+		ca.setSurname(companyAdmin.getSurname());
+		ca.setPhoneNumber(companyAdmin.getPhoneNumber());
+		ca.setLoggedBefore(companyAdmin.getLoggedBefore());
+		ca.setInfoAboutInstitution(companyAdmin.getInfoAboutInstitution());
+
+		CompanyAdminDto cadto=new CompanyAdminDto(companyAdminService.save(ca));
+
+		return new ResponseEntity<>(cadto, HttpStatus.OK);
 	}
     
 	@CrossOrigin(origins="http://localhost:4200")
@@ -55,7 +86,7 @@ public class CompanyAdminController {
 	}
 	
     @CrossOrigin(origins="http://localhost:4200")
-    @GetMapping(value = "/getAdmin/{id}")
+    @GetMapping(value = "/{id}")
 	public ResponseEntity<CompanyAdminDto> getAdmin(@PathVariable Long id) throws Exception {
 
 		CompanyAdmin companyAdmin=companyAdminService.findOne(id);
