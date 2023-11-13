@@ -4,17 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.medicalequipment.iservice.ICompanyAdminService;
+import com.example.medicalequipment.model.Company;
 import com.example.medicalequipment.model.CompanyAdmin;
 import com.example.medicalequipment.model.User;
 import com.example.medicalequipment.repository.ICompanyAdminRepository;
+import com.example.medicalequipment.repository.ICompanyRepository;
 import com.example.medicalequipment.repository.IUserRepository;
 
 @Service
 public class CompanyAdminService implements ICompanyAdminService{
 	private final ICompanyAdminRepository CompanyAdminRepository;
+	private final ICompanyRepository CompanyRepository;
 	@Autowired
-    public CompanyAdminService(ICompanyAdminRepository companyAdminRepository){
+    public CompanyAdminService(ICompanyAdminRepository companyAdminRepository, ICompanyRepository companyRepository){
     	this.CompanyAdminRepository = companyAdminRepository;
+    	this.CompanyRepository = companyRepository;
     }
 	
 	@Override
@@ -43,5 +47,11 @@ public class CompanyAdminService implements ICompanyAdminService{
 		CompanyAdmin res=this.CompanyAdminRepository.findById(id).orElseGet(null);
 		
 		return res;
+	}
+	
+	public CompanyAdmin createWithCompany(CompanyAdmin admin, Long id) {
+		Company company = this.CompanyRepository.getById(id);
+		admin.setCompany(company);
+		return this.CompanyAdminRepository.save(admin);
 	}
 }

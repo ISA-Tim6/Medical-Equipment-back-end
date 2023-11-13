@@ -35,10 +35,11 @@ public class Company {
 	private Address address;
 
 	
-	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<CompanyAdmin> admins= new HashSet<CompanyAdmin>();
 	
-	@ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
+	//@ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
+	@ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"),
 	inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"))
 	private Set<Equipment> equipment=new HashSet<Equipment>();
@@ -109,6 +110,12 @@ public class Company {
 	
 	public Set<Equipment> getEquipment() {
 		return equipment;
+	}
+
+	@Override
+	public String toString() {
+		return "Company [company_id=" + company_id + ", name=" + name + ", averageGrade=" + averageGrade + ", address="
+				+ address + ", admins=" + admins + ", equipment=" + equipment + "]";
 	}
 
 	public void setEquipment(Set<Equipment> equipment) {

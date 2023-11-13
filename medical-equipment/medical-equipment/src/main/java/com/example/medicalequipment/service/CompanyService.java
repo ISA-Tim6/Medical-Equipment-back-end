@@ -1,5 +1,7 @@
 package com.example.medicalequipment.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +21,13 @@ public class CompanyService implements ICompanyService{
 		return CompanyRepository.findById(id).orElseGet(null);
 	}
 	
+	public Company save(Company company)
+	{
+		return this.CompanyRepository.save(company);
+	}
 	
+	public List<Company> getAll()
+	{
+		return this.CompanyRepository.findAll();
+	}
 }

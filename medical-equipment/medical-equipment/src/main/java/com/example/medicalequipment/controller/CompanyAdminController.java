@@ -26,7 +26,7 @@ import com.example.medicalequipment.model.CompanyAdmin;
 import com.example.medicalequipment.service.CompanyAdminService;
 
 @RestController
-@RequestMapping(value = "/companyAdmin")
+@RequestMapping(value = "api/companyAdmin")
 public class CompanyAdminController {
 	
 	private CompanyAdminService companyAdminService;
@@ -47,7 +47,13 @@ public class CompanyAdminController {
 	public ResponseEntity<CompanyAdmin> create(@RequestBody CompanyAdmin companyAdmin) throws Exception {
 		return new ResponseEntity<CompanyAdmin>(companyAdminService.create(companyAdmin), HttpStatus.OK);
 	}
-    
+
+	@CrossOrigin(origins="http://localhost:4200")
+    @PostMapping(value="/create/{id}")
+	public ResponseEntity<CompanyAdmin> createWithCompany(@RequestBody CompanyAdmin companyAdmin, @PathVariable Long id) throws Exception {
+		return new ResponseEntity<CompanyAdmin>(companyAdminService.createWithCompany(companyAdmin, id), HttpStatus.OK);
+	}
+	
     @CrossOrigin(origins="http://localhost:4200")
     @GetMapping(value = "/getAdmin/{id}")
 	public ResponseEntity<CompanyAdminDto> getAdmin(@PathVariable Long id) throws Exception {

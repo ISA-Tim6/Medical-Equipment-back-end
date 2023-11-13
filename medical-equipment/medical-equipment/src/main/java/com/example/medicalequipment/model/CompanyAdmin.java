@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table(name = "CompanyAdmin")
 public class CompanyAdmin extends User{
 
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER, cascade= CascadeType.ALL)
 	@JoinColumn(name = "company_id")
 	private Company company;
 	
