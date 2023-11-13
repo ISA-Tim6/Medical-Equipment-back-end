@@ -39,13 +39,7 @@ public class User {
 	private Employment employment;
 	@Column(name = "infoAboutInstitution", nullable = false)
 	private String infoAboutInstitution;
-	@Column(name = "penals", nullable = false)
-	private int penals;
-	@Column(name = "category", nullable = false)
-	private Category category;
 	public User() {
-		this.penals = 0;
-		this.category = Category.REGULAR;
 	}
 
 	
@@ -61,8 +55,6 @@ public class User {
 		this.country=country;
 		this.employment=employment;	
 		this.infoAboutInstitution=infoAboutInstitution;
-		this.penals = 0;
-		this.category = Category.REGULAR;
 	}
 
 	public User(User user) {
@@ -90,24 +82,7 @@ public class User {
 	}
 
 
-	public int getPenals() {
-		return penals;
-	}
-
-
-	public void setPenals(int penals) {
-		this.penals = penals;
-	}
-
-
-	public Category getCategory() {
-		return category;
-	}
-
-
-	public void setCategory(Category category) {
-		this.category = category;
-	}
+	
 
 
 	public String getName() {
