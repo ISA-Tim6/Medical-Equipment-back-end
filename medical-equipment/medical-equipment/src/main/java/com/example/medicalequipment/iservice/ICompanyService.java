@@ -14,5 +14,5 @@ public interface ICompanyService {
 	Company save(Company company);
 	List<Company> getAll();
 	Company addEquipment(Equipment e,Long company_id);
-
+	Company removeEquipment(Long company_id,Long equipment_id);
 }

@@ -2,7 +2,6 @@ package com.example.medicalequipment.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,28 +13,36 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import java.util.ArrayList;
 import com.example.medicalequipment.dto.CompanyDto;
-import com.example.medicalequipment.model.Address;
+import com.example.medicalequipment.dto.CompanyUpdateDto;
+import com.example.medicalequipment.iservice.ICompanyService;
+
 import com.example.medicalequipment.model.Company;
-import com.example.medicalequipment.model.CompanyAdmin;
 import com.example.medicalequipment.model.Equipment;
-import com.example.medicalequipment.service.CompanyAdminService;
-import com.example.medicalequipment.service.CompanyService;
+
 
 @RestController
 @RequestMapping(value = "api/company")
 public class CompanyController {
+	@Autowired
 
-@Autowired
-private CompanyService companyService;
+	private ICompanyService companyService;
 	
-	public CompanyController(CompanyService _companyService) {
+	public CompanyController(ICompanyService _companyService) {
 		super();
 		this.companyService = _companyService;
 	}
 	
-	
+	@CrossOrigin(origins="http://localhost:4200")
+    @GetMapping
+	public ResponseEntity<List<CompanyDto>> getAllCompanies() throws Exception {
+		List<CompanyDto> companiesDto=new ArrayList<CompanyDto>();
+		for(Company c:companyService.getAll())
+			companiesDto.add(new CompanyDto(c));
+
+		return new ResponseEntity<>(companiesDto, HttpStatus.OK);
+ }
 	
 	
 	 @CrossOrigin(origins="http://localhost:4200")
@@ -52,20 +59,18 @@ private CompanyService companyService;
 	 }
 	 
 	 @CrossOrigin(origins="http://localhost:4200")
-		@PutMapping
-		public ResponseEntity<CompanyDto> updateCompany(@RequestBody Company company) {
+		@PutMapping(value="{id}")
+		public ResponseEntity<CompanyDto> updateCompany(@RequestBody CompanyUpdateDto company,@PathVariable Long id) throws Exception{
 
-			Company c = companyService.findOne(company.getId());
+			Company c = companyService.findOne(id);
 
 			if (c == null) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 			c.setName(company.getName());
-			c.setId(company.getId());
+			c.setId(id);
 			c.setAverageGrade(company.getAverageGrade());
 			c.setAddress(company.getAddress());
-			c.setEquipment(company.getEquipment());
-			c.setAdmins(company.getAdmins());
 			
 			
 			
@@ -104,6 +109,12 @@ private CompanyService companyService;
 			
 			Company c=companyService.addEquipment(equipment, id);
 
+			return new ResponseEntity<>(new CompanyDto(c), HttpStatus.OK);
+		}
+	 @CrossOrigin(origins="http://localhost:4200")
+		@PutMapping(value = "/removeEquipment/{company_id}")
+		public ResponseEntity<CompanyDto> removeEquipment(@PathVariable Long company_id,@RequestBody Equipment equipment) throws Exception{
+			Company c=companyService.removeEquipment(company_id, equipment.getEquipment_id());
 			return new ResponseEntity<>(new CompanyDto(c), HttpStatus.OK);
 		}
 	 

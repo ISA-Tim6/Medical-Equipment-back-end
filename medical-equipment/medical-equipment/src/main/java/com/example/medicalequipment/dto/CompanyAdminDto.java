@@ -16,7 +16,6 @@ public class CompanyAdminDto {
 	private String country;
 	private Employment employment;
 	private Long company_id;
-	//private CompanyDto company;
 	private String infoAboutInstitution;
 	
 	@Override
@@ -38,6 +37,7 @@ public class CompanyAdminDto {
 	public CompanyAdminDto() {
 		
 	}
+
 
 	public CompanyAdminDto(CompanyAdmin ca){
 		this.user_id=ca.getUser_id();
@@ -151,13 +151,5 @@ public class CompanyAdminDto {
 	public void setCompany_id(Long company_id) {
 		this.company_id = company_id;
 	}
-
-	/*public CompanyDto getCompany() {
-		return company;
-	}
-
-	public void setCompany(CompanyDto company) {
-		this.company = company;
-	}*/
 	
 }

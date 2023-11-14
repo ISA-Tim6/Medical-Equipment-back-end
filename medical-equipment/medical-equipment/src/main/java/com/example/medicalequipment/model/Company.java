@@ -1,6 +1,5 @@
 package com.example.medicalequipment.model;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -17,6 +16,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -25,8 +27,10 @@ public class Company {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long company_id;
+	@NotNull @NotEmpty
 	@Column(name = "name", nullable = false)
 	private String name;	
+	@Min(value=0)
 	@Column(name = "averageGrade", nullable = true)
 	private double averageGrade;
 	
@@ -39,8 +43,7 @@ public class Company {
 	//@JoinColumn(name = "company_id", nullable=false)
 	private Set<CompanyAdmin> admins= new HashSet<CompanyAdmin>();
 	
-	
-	@ManyToMany( cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+	@ManyToMany( cascade = CascadeType.PERSIST,fetch=FetchType.EAGER)
 	@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"),
 	inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"))
 	private Set<Equipment> equipment=new HashSet<Equipment>();
@@ -56,11 +59,11 @@ public class Company {
 	public void addEquipment(Equipment e) {
 		if(e!=null)
 		e.getCompanies().add(this);
+		e.setCompanies(e.getCompanies());
 		this.equipment.add(e);
 	}
 	
 	public void removeEquipment(Equipment e) {
-		e.getCompanies().remove(e);
 		this.equipment.remove(e);
 	}
 	
