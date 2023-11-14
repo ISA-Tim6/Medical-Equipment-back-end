@@ -1,5 +1,7 @@
 package com.example.medicalequipment.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.medicalequipment.dto.CompanyAdminDto;
 import com.example.medicalequipment.dto.CompanyDto;
+import com.example.medicalequipment.dto.CompanySearchDto;
 import com.example.medicalequipment.model.Address;
 import com.example.medicalequipment.model.Company;
 import com.example.medicalequipment.model.CompanyAdmin;
@@ -78,6 +81,28 @@ private CompanyService companyService;
 
 			return new ResponseEntity<>(new CompanyDto(c), HttpStatus.OK);
 		}
+	 
+	 @CrossOrigin(origins="http://localhost:4200")
+	 @GetMapping(path = "/searchByName", value = "/{name}")
+	 public ResponseEntity<ArrayList<CompanySearchDto>> findByName(@PathVariable String name) throws Exception {
+		ArrayList<Company> companies = companyService.findByName(name);
+		if (companies == null || companies.isEmpty()) 
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		ArrayList<CompanySearchDto> dtos = new ArrayList(companies);
+		
+		return new ResponseEntity<>(dtos, HttpStatus.OK);
+	 }
+	 
+	 @CrossOrigin(origins="http://localhost:4200")
+	 @GetMapping(path = "/searchByCity", value = "/{name}")
+	 public ResponseEntity<ArrayList<CompanySearchDto>> findByAddressCity(@PathVariable String city) throws Exception {
+		ArrayList<Company> companies = companyService.findByAddressCity(city);
+		if (companies == null || companies.isEmpty()) 
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		ArrayList<CompanySearchDto> dtos = new ArrayList(companies);
+		
+		return new ResponseEntity<>(dtos, HttpStatus.OK);
+	 }
 	 
 	
 	 

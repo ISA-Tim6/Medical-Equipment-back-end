@@ -1,5 +1,7 @@
 package com.example.medicalequipment.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,16 @@ public class CompanyService implements ICompanyService{
 			company.addEquipment(equipment);
 		EquipmentRepository.save(equipment);
 		return CompanyRepository.save(company);
+	}
+	
+	@Override
+	public ArrayList<Company> findByName(String name){
+		return CompanyRepository.findByName(name);	
+	}
+	
+	@Override
+	public ArrayList<Company> findByAddressCity(String city) {
+		return CompanyRepository.findByAddressCity(city);
 	}
 	
 	
