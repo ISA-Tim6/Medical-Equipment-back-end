@@ -2,6 +2,8 @@ package com.example.medicalequipment.iservice;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.example.medicalequipment.model.Company;
@@ -15,4 +17,5 @@ public interface ICompanyService {
 	Company addEquipment(Equipment e,Long company_id);
 	ArrayList<Company> findByName(String name);
 	ArrayList<Company> findByAddressCity(String city);
+	Company removeEquipment(Long company_id,Long equipment_id);
 }

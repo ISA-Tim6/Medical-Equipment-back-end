@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import static javax.persistence.InheritanceType.JOINED;
 @Entity
@@ -56,7 +55,7 @@ public class User {
 		this.employment=employment;	
 		this.infoAboutInstitution=infoAboutInstitution;
 	}
-
+	
 	public User(User user) {
 		this.name=user.name;
 		this.surname=user.surname;
