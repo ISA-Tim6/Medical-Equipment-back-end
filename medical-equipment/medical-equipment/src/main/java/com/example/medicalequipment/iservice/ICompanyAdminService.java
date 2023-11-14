@@ -7,7 +7,7 @@ import com.example.medicalequipment.model.User;
 
 @Service
 public interface ICompanyAdminService {
-	CompanyAdmin update(CompanyAdmin companyAdmin);
+	CompanyAdmin save(CompanyAdmin companyAdmin);
 	CompanyAdmin findOne(Long id);
 	CompanyAdmin create(CompanyAdmin companyAdmin);
 

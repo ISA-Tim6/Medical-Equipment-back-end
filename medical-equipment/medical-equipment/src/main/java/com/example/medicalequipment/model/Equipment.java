@@ -34,6 +34,8 @@ public class Equipment {
 	private Set<Company> companies=new HashSet<Company>();
 	
 	private Equipment() {}
+	
+
 
 	public Long getEquipment_id() {
 		return equipment_id;
