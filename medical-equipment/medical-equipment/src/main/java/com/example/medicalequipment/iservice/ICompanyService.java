@@ -1,5 +1,7 @@
 package com.example.medicalequipment.iservice;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.example.medicalequipment.model.Company;
@@ -11,4 +13,6 @@ public interface ICompanyService {
 	Company findOne(Long id);
 	Company save(Company company);
 	Company addEquipment(Equipment e,Long company_id);
+	Company removeEquipment(Long company_id,Long equipment_id);
+	List<Company> getAll();
 }

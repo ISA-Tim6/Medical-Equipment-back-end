@@ -1,18 +1,19 @@
 package com.example.medicalequipment.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.medicalequipment.iservice.ICompanyAdminService;
 import com.example.medicalequipment.model.CompanyAdmin;
-import com.example.medicalequipment.model.User;
 import com.example.medicalequipment.repository.ICompanyAdminRepository;
-import com.example.medicalequipment.repository.IUserRepository;
 
 @Service
 public class CompanyAdminService implements ICompanyAdminService{
-	private final ICompanyAdminRepository CompanyAdminRepository;
 	@Autowired
+	private final ICompanyAdminRepository CompanyAdminRepository;
+	
     public CompanyAdminService(ICompanyAdminRepository companyAdminRepository){
     	this.CompanyAdminRepository = companyAdminRepository;
     }
@@ -33,5 +34,11 @@ public class CompanyAdminService implements ICompanyAdminService{
 	@Override
 	public CompanyAdmin findOne(Long id) {
 		 return this.CompanyAdminRepository.findById(id).orElseGet(null);		
+	}
+	
+	@Override
+	public List<Long> getOtherCompanyAdminsForCompany(Long company_id, Long user_id){
+		return this.CompanyAdminRepository.getOtherCompanyAdminsForCompany(company_id, user_id);
+		
 	}
 }

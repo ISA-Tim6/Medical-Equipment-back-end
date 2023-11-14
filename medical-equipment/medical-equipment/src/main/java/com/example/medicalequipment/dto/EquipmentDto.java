@@ -1,6 +1,5 @@
 package com.example.medicalequipment.dto;
 
-import javax.persistence.Column;
 
 import com.example.medicalequipment.model.Equipment;
 

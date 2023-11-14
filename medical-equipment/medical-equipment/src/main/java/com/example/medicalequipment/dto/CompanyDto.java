@@ -3,16 +3,11 @@ package com.example.medicalequipment.dto;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+
 
 import com.example.medicalequipment.model.Equipment;
 
-import com.example.medicalequipment.model.Address;
 import com.example.medicalequipment.model.Company;
-import com.example.medicalequipment.model.CompanyAdmin;
 
 public class CompanyDto {
 
@@ -31,6 +26,7 @@ public class CompanyDto {
 			equipment.add(new EquipmentDto(e));
 		}
 		
+		
 	}
 	
 	public CompanyDto(Long company_id,String name,double averageGrade,AddressDto address) {
@@ -41,6 +37,8 @@ public class CompanyDto {
 	}
 	public CompanyDto() {}
 	
+
+
 	@Override
 	public String toString() {
 		return "CompanyDto [company_id=" + company_id + ", name=" + name + ", averageGrade=" + averageGrade

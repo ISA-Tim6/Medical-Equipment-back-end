@@ -9,9 +9,9 @@ import com.example.medicalequipment.repository.IAddressRepository;
 
 @Service
 public class AddressService implements IAdressService{
+	@Autowired
 	private IAddressRepository addressRepository;
 
-	@Autowired
 	public AddressService(IAddressRepository addressRepository) {
 		this.addressRepository = addressRepository;
 	}

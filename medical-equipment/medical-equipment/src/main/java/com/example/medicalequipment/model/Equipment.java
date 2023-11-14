@@ -3,12 +3,15 @@ package com.example.medicalequipment.model;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -20,21 +23,26 @@ public class Equipment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long equipment_id;
 	@Column(name = "name", nullable = false)
+	@NotNull @NotEmpty
 	private String name;
 	@Column(name = "description", nullable = false)
+	@NotNull @NotEmpty
 	private String description;
+	@NotNull @NotEmpty
 	@Column(name = "type", nullable = false)
 	private String type;
 	
-	@ManyToMany(mappedBy = "equipment")
-
-//	@ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
-	//@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"),
-//	inverseJoinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"))
+	@ManyToMany(mappedBy = "equipment",fetch=FetchType.LAZY,cascade = CascadeType.PERSIST)
 	private Set<Company> companies=new HashSet<Company>();
 	
 	private Equipment() {}
 	
+	public Equipment(String description,String name,String type)
+	{
+		this.description=description;
+		this.type=type;
+		this.name=name;
+	}
 
 
 	public Long getEquipment_id() {

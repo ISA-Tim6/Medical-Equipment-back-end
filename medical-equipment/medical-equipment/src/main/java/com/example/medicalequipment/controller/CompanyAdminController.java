@@ -1,11 +1,10 @@
 package com.example.medicalequipment.controller;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import javax.persistence.EntityResult;
+import java.util.List;
+import java.util.ArrayList;
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,22 +17,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.medicalequipment.dto.CompanyAdminDto;
+import com.example.medicalequipment.iservice.ICompanyAdminService;
 import com.example.medicalequipment.model.CompanyAdmin;
 import com.example.medicalequipment.model.User;
-import com.example.medicalequipment.service.CompanyAdminService;
 
 @RestController
 @RequestMapping(value = "api/companyAdmin")
 public class CompanyAdminController {
-	
-	private CompanyAdminService companyAdminService;
-	
 	@Autowired
-	public CompanyAdminController(CompanyAdminService _companyAdminService) {
+	private ICompanyAdminService companyAdminService;
+	
+
+	public CompanyAdminController(ICompanyAdminService _companyAdminService) {
 		super();
 		this.companyAdminService = _companyAdminService;
 	}
@@ -86,4 +84,16 @@ public class CompanyAdminController {
 
 		return new ResponseEntity<>(new CompanyAdminDto(companyAdmin), HttpStatus.OK);
 	}
+    
+    @CrossOrigin(origins="http://localhost:4200")
+    @GetMapping(value = "/{company_id}/{user_id}")
+	public ResponseEntity<List<CompanyAdminDto>> getOtherCompanyAdminsForCompany(@PathVariable Long company_id,@PathVariable Long user_id) throws Exception {
+		List<CompanyAdminDto> companyAdminDtos=new ArrayList<CompanyAdminDto>();
+		for(Long ca:companyAdminService.getOtherCompanyAdminsForCompany(company_id,user_id)) {
+			companyAdminDtos.add(new CompanyAdminDto(companyAdminService.findOne(ca)));
+		}
+		return new ResponseEntity<>(companyAdminDtos, HttpStatus.OK);
+	}
+    
+    
 }
