@@ -1,6 +1,7 @@
 package com.example.medicalequipment.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,12 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.medicalequipment.dto.CompanyAdminDto;
 import com.example.medicalequipment.dto.CompanyDto;
 import com.example.medicalequipment.dto.CompanySearchDto;
 import com.example.medicalequipment.model.Address;
@@ -26,9 +27,10 @@ import com.example.medicalequipment.service.CompanyService;
 @RestController
 @RequestMapping(value = "api/company")
 public class CompanyController {
+
+@Autowired
 private CompanyService companyService;
 	
-	@Autowired
 	public CompanyController(CompanyService _companyService) {
 		super();
 		this.companyService = _companyService;
@@ -74,6 +76,30 @@ private CompanyService companyService;
 		}
 	 
 	 @CrossOrigin(origins="http://localhost:4200")
+	    @PostMapping(value="/create")
+		public ResponseEntity<Company> create(@RequestBody Company company) throws Exception {
+			return new ResponseEntity<Company>(companyService.save(company), HttpStatus.OK);
+		}
+	 
+	 @CrossOrigin(origins="http://localhost:4200")
+	    @GetMapping(value = "/getAllCompanies")
+		public ResponseEntity<List<CompanyDto>> getAll() throws Exception {
+
+			List<Company> result = companyService.getAll();
+			List<CompanyDto> resultDto = new ArrayList<CompanyDto>();
+			
+			for(int i=0; i< result.size(); i++)
+			{
+				resultDto.add(new CompanyDto(result.get(i)));
+			}
+
+			if (resultDto.size() == 0) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+
+			return new ResponseEntity<>(resultDto, HttpStatus.OK);
+		}
+	    
 		@PutMapping(value = "/addEquipment/{id}")
 		public ResponseEntity<CompanyDto> addEquipment(@RequestBody Equipment equipment,@PathVariable Long id) throws Exception{
 			
@@ -82,8 +108,9 @@ private CompanyService companyService;
 			return new ResponseEntity<>(new CompanyDto(c), HttpStatus.OK);
 		}
 	 
+
 	 @CrossOrigin(origins="http://localhost:4200")
-	 @GetMapping(path = "/searchByName", value = "/{name}")
+	 @GetMapping(value = "/searchByName/{name}")
 	 public ResponseEntity<ArrayList<CompanySearchDto>> findByName(@PathVariable String name) throws Exception {
 		ArrayList<Company> companies = companyService.findByName(name);
 		if (companies == null || companies.isEmpty()) 
@@ -94,7 +121,7 @@ private CompanyService companyService;
 	 }
 	 
 	 @CrossOrigin(origins="http://localhost:4200")
-	 @GetMapping(path = "/searchByCity", value = "/{name}")
+	 @GetMapping(value = "/searchByCity/{city}")
 	 public ResponseEntity<ArrayList<CompanySearchDto>> findByAddressCity(@PathVariable String city) throws Exception {
 		ArrayList<Company> companies = companyService.findByAddressCity(city);
 		if (companies == null || companies.isEmpty()) 
@@ -105,6 +132,5 @@ private CompanyService companyService;
 	 }
 	 
 	
-	 
 	 
 }

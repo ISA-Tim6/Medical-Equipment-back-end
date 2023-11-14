@@ -1,10 +1,8 @@
 package com.example.medicalequipment.service;
-
 import java.util.ArrayList;
-
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.medicalequipment.iservice.ICompanyService;
 import com.example.medicalequipment.model.Company;
 import com.example.medicalequipment.model.Equipment;
@@ -49,4 +47,8 @@ public class CompanyService implements ICompanyService{
 	}
 	
 	
+	public List<Company> getAll()
+	{
+		return this.CompanyRepository.findAll();
+	}
 }

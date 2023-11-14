@@ -72,8 +72,20 @@ public class CompanyAdminController {
 
 		return new ResponseEntity<>(cadto, HttpStatus.OK);
 	}
+	
     
-    
+	@CrossOrigin(origins="http://localhost:4200")
+    @PostMapping(value="/create")
+	public ResponseEntity<CompanyAdmin> create(@RequestBody CompanyAdmin companyAdmin) throws Exception {
+		return new ResponseEntity<CompanyAdmin>(companyAdminService.create(companyAdmin), HttpStatus.OK);
+	}
+
+	@CrossOrigin(origins="http://localhost:4200")
+    @PostMapping(value="/create/{id}")
+	public ResponseEntity<CompanyAdmin> createWithCompany(@RequestBody CompanyAdmin companyAdmin, @PathVariable Long id) throws Exception {
+		return new ResponseEntity<CompanyAdmin>(companyAdminService.createWithCompany(companyAdmin, id), HttpStatus.OK);
+	}
+	
     @CrossOrigin(origins="http://localhost:4200")
     @GetMapping(value = "/{id}")
 	public ResponseEntity<CompanyAdminDto> getAdmin(@PathVariable Long id) throws Exception {

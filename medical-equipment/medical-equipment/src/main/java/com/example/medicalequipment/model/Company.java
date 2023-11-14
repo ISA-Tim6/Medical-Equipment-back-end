@@ -36,6 +36,7 @@ public class Company {
 
 	
 	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	//@JoinColumn(name = "company_id", nullable=false)
 	private Set<CompanyAdmin> admins= new HashSet<CompanyAdmin>();
 	
 	
@@ -117,6 +118,12 @@ public class Company {
 	
 	public Set<Equipment> getEquipment() {
 		return equipment;
+	}
+
+	@Override
+	public String toString() {
+		return "Company [company_id=" + company_id + ", name=" + name + ", averageGrade=" + averageGrade + ", address="
+				+ address + ", admins=" + admins + ", equipment=" + equipment + "]";
 	}
 
 	public void setEquipment(Set<Equipment> equipment) {

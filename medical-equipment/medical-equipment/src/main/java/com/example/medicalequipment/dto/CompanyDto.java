@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.example.medicalequipment.model.Equipment;
 
 import com.example.medicalequipment.model.Address;
@@ -21,14 +23,18 @@ public class CompanyDto {
 	private double averageGrade;
 	private AddressDto address;
 	private Set<EquipmentDto> equipment=new HashSet<EquipmentDto>();
+
 	
 	public CompanyDto(Company company) {
 		this.company_id=company.getId();
 		this.name=company.getName();
 		this.averageGrade=company.getAverageGrade();
 		this.address=new AddressDto(company.getAddress());
-		for(Equipment e:company.getEquipment()) {
-			equipment.add(new EquipmentDto(e));
+		if(!company.getEquipment().isEmpty())
+		{
+			for(Equipment e:company.getEquipment()) {
+				equipment.add(new EquipmentDto(e));
+			}		
 		}
 		
 	}

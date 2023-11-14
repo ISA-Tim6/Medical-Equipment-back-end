@@ -77,27 +77,5 @@ public class Equipment {
 		this.companies = companies;
 	}
 
-	@Override
-	public String toString() {
-		return "Equipment [equipment_id=" + equipment_id + ", name=" + name + ", description=" + description + ", type="
-				+ type + ", equipment=" + companies + "]";
-	}
-	
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		Equipment e = (Equipment) o;
-		return equipment_id != null && equipment_id.equals(e.getEquipment_id());
-	}
 
-	@Override
-	public int hashCode() {
-	
-		return 1337;
-	}
 }

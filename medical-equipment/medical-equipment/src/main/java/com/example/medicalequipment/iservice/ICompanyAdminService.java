@@ -10,5 +10,5 @@ public interface ICompanyAdminService {
 	CompanyAdmin save(CompanyAdmin companyAdmin);
 	CompanyAdmin findOne(Long id);
 	CompanyAdmin create(CompanyAdmin companyAdmin);
-
+	CompanyAdmin createWithCompany(CompanyAdmin admin, Long id);
 }

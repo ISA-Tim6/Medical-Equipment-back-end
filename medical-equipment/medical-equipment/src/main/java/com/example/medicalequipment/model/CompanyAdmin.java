@@ -12,8 +12,9 @@ import javax.persistence.Table;
 @Table(name = "CompanyAdmin")
 public class CompanyAdmin extends User{
 
-	@ManyToOne
-	@JoinColumn(name = "company_id",referencedColumnName="company_id",nullable=false)
+
+	@ManyToOne()
+	@JoinColumn(name = "company_id", referencedColumnName="company_id",nullable=false)
 	private Company company;
 	
 	
