@@ -72,6 +72,7 @@ public class CompanyAdminController {
 
 		return new ResponseEntity<>(cadto, HttpStatus.OK);
 	}
+	
     
 	@CrossOrigin(origins="http://localhost:4200")
     @PostMapping(value="/create")

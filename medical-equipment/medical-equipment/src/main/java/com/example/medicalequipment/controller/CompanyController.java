@@ -9,11 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-<<<<<<< HEAD
 import org.springframework.web.bind.annotation.PostMapping;
-=======
 import org.springframework.web.bind.annotation.PutMapping;
->>>>>>> 0d1674d96448f37e09568e9865483e8e35b05611
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,12 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.medicalequipment.dto.CompanyDto;
 import com.example.medicalequipment.model.Address;
 import com.example.medicalequipment.model.Company;
-<<<<<<< HEAD
-import com.example.medicalequipment.service.CompanyService;
-
-@RestController
-@RequestMapping(path = "api/company")
-=======
 import com.example.medicalequipment.model.CompanyAdmin;
 import com.example.medicalequipment.model.Equipment;
 import com.example.medicalequipment.service.CompanyAdminService;

@@ -13,8 +13,8 @@ import javax.persistence.Table;
 public class CompanyAdmin extends User{
 
 
-	@ManyToOne
-	@JoinColumn(name = "company_id",referencedColumnName="company_id",nullable=false)
+	@ManyToOne()
+	@JoinColumn(name = "company_id", referencedColumnName="company_id",nullable=false)
 	private Company company;
 	
 	

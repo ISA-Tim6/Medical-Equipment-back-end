@@ -38,10 +38,6 @@ public class CompanyService implements ICompanyService{
 		return CompanyRepository.save(company);
 	}
 	
-	public Company save(Company company)
-	{
-		return this.CompanyRepository.save(company);
-	}
 	
 	public List<Company> getAll()
 	{

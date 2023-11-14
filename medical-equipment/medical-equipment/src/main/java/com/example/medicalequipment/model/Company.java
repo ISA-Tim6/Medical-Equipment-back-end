@@ -35,7 +35,8 @@ public class Company {
 	private Address address;
 
 	
-	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	//@JoinColumn(name = "company_id", nullable=false)
 	private Set<CompanyAdmin> admins= new HashSet<CompanyAdmin>();
 	
 	

@@ -40,8 +40,9 @@ public class CompanyAdminService implements ICompanyAdminService{
 	}
 	
 	public CompanyAdmin createWithCompany(CompanyAdmin admin, Long id) {
-		Company company = this.CompanyRepository.getById(id);
-		admin.setCompany(company);
+		//Company company = CompanyRepository.getById(id);
+		admin.getCompany().setId(id);
+		admin.getCompany().add(admin);
 		return this.CompanyAdminRepository.save(admin);
 	}
 }
