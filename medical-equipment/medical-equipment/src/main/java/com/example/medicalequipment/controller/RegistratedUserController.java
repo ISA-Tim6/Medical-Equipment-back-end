@@ -1,11 +1,13 @@
 package com.example.medicalequipment.controller;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,7 @@ import com.example.medicalequipment.model.RegistratedUser;
 import com.example.medicalequipment.model.User;
 import com.example.medicalequipment.repository.IRegistratedUserRepository;
 import com.example.medicalequipment.repository.IUserRepository;
+import com.example.medicalequipment.service.EmailService;
 import com.example.medicalequipment.service.RegistratedUserService;
 import com.example.medicalequipment.service.UserService;
 
@@ -28,7 +31,10 @@ import com.example.medicalequipment.service.UserService;
 @RequestMapping(path="api/")
 public class RegistratedUserController {
 	private final RegistratedUserService userService;
-
+	private Logger logger = LoggerFactory.getLogger(UserController.class);
+	@Autowired
+	private EmailService emailService;
+	
     @Autowired
     public RegistratedUserController(RegistratedUserService userService){
         this.userService = userService;
@@ -36,7 +42,7 @@ public class RegistratedUserController {
     
     @CrossOrigin(origins="http://localhost:4200")
     @PostMapping("saveUser")
-    public RegistratedUser save(@RequestBody RegistratedUser user) {
+    public RegistratedUser save(@RequestBody RegistratedUser user) throws MailException, InterruptedException {
     	System.out.println("infoAboutInstitution received on the server: " + user.getInfoAboutInstitution() + user.getCity());
     	return userService.save(user);
     }
@@ -69,7 +75,7 @@ public class RegistratedUserController {
     
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("registerUser")
-    public ResponseEntity<Map<String, String>> registerUser(@RequestBody RegistratedUser u) {
+    public ResponseEntity<Map<String, String>> registerUser(@RequestBody RegistratedUser u) throws MailException, InterruptedException {
     	RegistratedUser user = userService.findByEmail(u.getEmail());
         if(user == null){
             this.userService.save(u);

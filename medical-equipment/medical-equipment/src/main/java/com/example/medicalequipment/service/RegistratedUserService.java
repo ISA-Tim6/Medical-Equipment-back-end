@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 import com.example.medicalequipment.iservice.IRegistratedUserService;
@@ -18,18 +19,20 @@ import com.example.medicalequipment.repository.IUserRepository;
 public class RegistratedUserService implements IRegistratedUserService {
 
 	private final IRegistratedUserRepository UserRepository;
-	
+	private final EmailService EmailService;
 	@Autowired
-    public RegistratedUserService(IRegistratedUserRepository userRepository){
+    public RegistratedUserService(IRegistratedUserRepository userRepository,EmailService emailService){
     	this.UserRepository = userRepository;
+    	this.EmailService=emailService;
     }
 	
 	@Override
-	public RegistratedUser save(RegistratedUser user) {
+	public RegistratedUser save(RegistratedUser user) throws MailException, InterruptedException {
 		if(IsValidToAdd(user))
 		{
 			user.setPenals(0);
 			user.setCategory(Category.REGULAR);
+			EmailService.sendNotificaitionSync(user);
 			return this.UserRepository.save(user);
 		}
 			
