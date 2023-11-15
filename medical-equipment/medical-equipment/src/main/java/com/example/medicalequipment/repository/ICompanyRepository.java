@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 import com.example.medicalequipment.model.Company;
 @Repository
 public interface ICompanyRepository extends JpaRepository<Company, Long> {
-	ArrayList<Company> findByName(String name);
-	ArrayList<Company> findByAddressCity(String city);
+	ArrayList<Company> findByNameContainingIgnoreCase(String name);
+	ArrayList<Company> findByAddressCityContainingIgnoreCase(String city);
 	@Modifying
 	@Transactional
 	@Query(value = "DELETE FROM company_equipment WHERE equipment_id=?1 and company_id=?2", nativeQuery = true)

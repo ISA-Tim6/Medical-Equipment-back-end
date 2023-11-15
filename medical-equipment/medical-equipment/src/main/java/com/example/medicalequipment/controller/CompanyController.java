@@ -124,22 +124,22 @@ public class CompanyController {
 
 	 @CrossOrigin(origins="http://localhost:4200")
 	 @GetMapping(value = "/searchByName/{name}")
-	 public ResponseEntity<ArrayList<CompanySearchDto>> findByName(@PathVariable String name) throws Exception {
+	 public ResponseEntity<ArrayList<CompanyDto>> findByName(@PathVariable String name) throws Exception {
 		ArrayList<Company> companies = companyService.findByName(name);
 		if (companies == null || companies.isEmpty()) 
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		ArrayList<CompanySearchDto> dtos = new ArrayList(companies);
+		ArrayList<CompanyDto> dtos = new ArrayList(companies);
 		
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	 }
 	 
 	 @CrossOrigin(origins="http://localhost:4200")
 	 @GetMapping(value = "/searchByCity/{city}")
-	 public ResponseEntity<ArrayList<CompanySearchDto>> findByAddressCity(@PathVariable String city) throws Exception {
+	 public ResponseEntity<ArrayList<CompanyDto>> findByAddressCity(@PathVariable String city) throws Exception {
 		ArrayList<Company> companies = companyService.findByAddressCity(city);
 		if (companies == null || companies.isEmpty()) 
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		ArrayList<CompanySearchDto> dtos = new ArrayList(companies);
+		ArrayList<CompanyDto> dtos = new ArrayList(companies);
 		
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	 }

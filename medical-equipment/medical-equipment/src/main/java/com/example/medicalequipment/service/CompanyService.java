@@ -55,12 +55,12 @@ public class CompanyService implements ICompanyService{
 	
 	@Override
 	public ArrayList<Company> findByName(String name){
-		return CompanyRepository.findByName(name);	
+		return CompanyRepository.findByNameContainingIgnoreCase(name);	
 	}
 	
 	@Override
 	public ArrayList<Company> findByAddressCity(String city) {
-		return CompanyRepository.findByAddressCity(city);
+		return CompanyRepository.findByAddressCityContainingIgnoreCase(city);
 	}
 	
 }
