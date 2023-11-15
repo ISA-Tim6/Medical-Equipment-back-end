@@ -32,7 +32,9 @@ public class Equipment {
 	@Column(name = "type", nullable = false)
 	private String type;
 	
-	@ManyToMany(mappedBy = "equipment",fetch=FetchType.LAZY,cascade = CascadeType.PERSIST)
+	@ManyToMany(mappedBy = "equipment",fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	//@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"),
+	//inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"))
 	private Set<Company> companies=new HashSet<Company>();
 	
 	private Equipment() {}

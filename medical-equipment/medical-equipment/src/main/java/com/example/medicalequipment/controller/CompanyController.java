@@ -103,7 +103,7 @@ public class CompanyController {
 
 			return new ResponseEntity<>(resultDto, HttpStatus.OK);
 		}
-	    
+	 @CrossOrigin(origins="http://localhost:4200")
 		@PutMapping(value = "/addEquipment/{id}")
 		public ResponseEntity<CompanyDto> addEquipment(@RequestBody Equipment equipment,@PathVariable Long id) throws Exception{
 			

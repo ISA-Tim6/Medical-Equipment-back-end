@@ -39,11 +39,11 @@ public class Company {
 	private Address address;
 
 	
-	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	//@JoinColumn(name = "company_id", nullable=false)
 	private Set<CompanyAdmin> admins= new HashSet<CompanyAdmin>();
 	
-	@ManyToMany( cascade = CascadeType.PERSIST,fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"),
 	inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"))
 	private Set<Equipment> equipment=new HashSet<Equipment>();

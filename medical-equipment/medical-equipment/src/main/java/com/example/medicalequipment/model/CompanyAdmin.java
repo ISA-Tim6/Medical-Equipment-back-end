@@ -1,6 +1,7 @@
 package com.example.medicalequipment.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -10,7 +11,7 @@ import javax.persistence.Table;
 public class CompanyAdmin extends User{
 
 
-	@ManyToOne()
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "company_id", referencedColumnName="company_id",nullable=false)
 	private Company company;
 	

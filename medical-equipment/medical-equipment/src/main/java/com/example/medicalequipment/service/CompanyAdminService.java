@@ -14,6 +14,7 @@ import com.example.medicalequipment.repository.IUserRepository;
 
 @Service
 public class CompanyAdminService implements ICompanyAdminService{
+	@Autowired
 	private final ICompanyRepository CompanyRepository;
 
 	@Autowired
@@ -39,7 +40,7 @@ public class CompanyAdminService implements ICompanyAdminService{
 	
 	@Override
 	public CompanyAdmin findOne(Long id) {
-		 return this.CompanyAdminRepository.findById(id).orElseGet(null);		
+		 return this.CompanyAdminRepository.getWithCompany(id);		
 	}
 	
 
