@@ -15,7 +15,7 @@ public interface ICompanyService {
 	Company save(Company company);
 	List<Company> getAll();
 	Company addEquipment(Equipment e,Long company_id);
-	ArrayList<Company> findByName(String name);
-	ArrayList<Company> findByAddressCity(String city);
+	List<Company> findByName(String name);
+	List<Company> findByAddressCity(String city);
 	Company removeEquipment(Long company_id,Long equipment_id);
 }

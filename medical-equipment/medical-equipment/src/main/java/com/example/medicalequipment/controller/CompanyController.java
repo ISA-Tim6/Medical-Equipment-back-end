@@ -124,22 +124,30 @@ public class CompanyController {
 
 	 @CrossOrigin(origins="http://localhost:4200")
 	 @GetMapping(value = "/searchByName/{name}")
-	 public ResponseEntity<ArrayList<CompanyDto>> findByName(@PathVariable String name) throws Exception {
-		ArrayList<Company> companies = companyService.findByName(name);
-		if (companies == null || companies.isEmpty()) 
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		ArrayList<CompanyDto> dtos = new ArrayList(companies);
+	 public ResponseEntity<List<CompanyDto>> findByName(@PathVariable String name) {
+		 List<Company> companies = companyService.findByName(name);
+		 List<CompanyDto> dtos;
+		if (companies == null || companies.isEmpty()) {
+			dtos = new ArrayList();
+			return new ResponseEntity<>(dtos,HttpStatus.OK);
+		}
+			
+			dtos = new ArrayList(companies);
 		
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	 }
 	 
 	 @CrossOrigin(origins="http://localhost:4200")
 	 @GetMapping(value = "/searchByCity/{city}")
-	 public ResponseEntity<ArrayList<CompanyDto>> findByAddressCity(@PathVariable String city) throws Exception {
-		ArrayList<Company> companies = companyService.findByAddressCity(city);
-		if (companies == null || companies.isEmpty()) 
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		ArrayList<CompanyDto> dtos = new ArrayList(companies);
+	 public ResponseEntity<List<CompanyDto>> findByAddressCity(@PathVariable String city) throws Exception {
+		 List<Company> companies = companyService.findByAddressCity(city);
+		 List<CompanyDto> dtos;
+		if (companies == null || companies.isEmpty()) {
+			dtos = new ArrayList();
+			return new ResponseEntity<>(dtos, HttpStatus.OK);
+		}
+			
+		dtos = new ArrayList(companies);
 		
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	 }
