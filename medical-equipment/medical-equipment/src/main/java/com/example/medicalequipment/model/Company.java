@@ -1,5 +1,6 @@
 package com.example.medicalequipment.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -47,6 +48,14 @@ public class Company {
 	@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"),
 	inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"))
 	private Set<Equipment> equipment=new HashSet<Equipment>();
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name  = "company_id", nullable=false)
+	private Set<EquipmentStock> equipmentStocks=new HashSet<EquipmentStock>();
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "workingTimeCalendar_id", referencedColumnName = "workingTimeCalendar_id")
+	private WorkingTimeCalendar workingTimeCalendar;
 	
 	
 	  public void add(CompanyAdmin ca) {
@@ -151,6 +160,24 @@ public class Company {
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(name);
+	}
+
+	
+
+	public Set<EquipmentStock> getEquipmentStocks() {
+		return equipmentStocks;
+	}
+
+	public void setEquipmentStocks(Set<EquipmentStock> equipmentStocks) {
+		this.equipmentStocks = equipmentStocks;
+	}
+
+	public WorkingTimeCalendar getWorkingTimeCalendar() {
+		return workingTimeCalendar;
+	}
+
+	public void setWorkingTimeCalendar(WorkingTimeCalendar workingTimeCalendar) {
+		this.workingTimeCalendar = workingTimeCalendar;
 	}
 	
 }
