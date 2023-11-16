@@ -28,15 +28,15 @@ public class RegistratedUserService implements IRegistratedUserService {
 	
 	@Override
 	public RegistratedUser save(RegistratedUser user) throws MailException, InterruptedException {
-		if(IsValidToAdd(user))
-		{
+		//if(IsValidToAdd(user))
+		//{
 			user.setPenals(0);
 			user.setCategory(Category.REGULAR);
 			EmailService.sendNotificaitionSync(user);
 			return this.UserRepository.save(user);
-		}
+		//}
 			
-		return null;
+		//return null;
 	}
 	
 	public RegistratedUser getByEmail(String email){
@@ -55,14 +55,14 @@ public class RegistratedUserService implements IRegistratedUserService {
 
 	@Override
 	public RegistratedUser update(RegistratedUser user, String oldUsername) {
-		if(IsValidToUpdate(user, oldUsername))
-		{
+		//if(IsValidToUpdate(user, oldUsername))
+		//{
 			user.setPenals(0);
 			user.setCategory(Category.REGULAR);	//popraviti kasnije
 			return this.UserRepository.save(user);
-		}
+		//}
 			
-		return null;
+		//return null;
 	}
 	
 	@Override
@@ -80,7 +80,7 @@ public class RegistratedUserService implements IRegistratedUserService {
 	
 	
 	//Validation
-	private boolean IsValidToUpdate(RegistratedUser user, String oldUsername)
+	/*private boolean IsValidToUpdate(RegistratedUser user, String oldUsername)
 	{
 		return IsUsernameValidToUpdate(user.getUsername(), oldUsername) && IsNameValid(user.getName()) && IsNameValid(user.getSurname()) && IsPhoneNumberValid(user.getPhoneNumber())
 				&& AreOtherInfoValid(user.getPassword()) && IsNameValid(user.getCity()) && IsNameValid(user.getCountry()) && IsEmploymentValid(user.getEmployment()) && AreOtherInfoValid(user.getInfoAboutInstitution());
@@ -144,7 +144,7 @@ public class RegistratedUserService implements IRegistratedUserService {
         } catch (IllegalArgumentException e) {
             return false;
         }
-	}
+	}*/
 
 	
 
