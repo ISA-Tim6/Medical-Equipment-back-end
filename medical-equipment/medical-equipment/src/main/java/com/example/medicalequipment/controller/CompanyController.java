@@ -124,13 +124,16 @@ public class CompanyController {
 	 @GetMapping(value = "/searchByName/{name}")
 	 public ResponseEntity<List<CompanyDto>> findByName(@PathVariable String name) {
 		 List<Company> companies = companyService.findByName(name);
-		 List<CompanyDto> dtos;
+		 List<CompanyDto> dtos = new ArrayList<CompanyDto>();
 		if (companies == null || companies.isEmpty()) {
 			dtos = new ArrayList();
 			return new ResponseEntity<>(dtos,HttpStatus.OK);
 		}
-			
-			dtos = new ArrayList(companies);
+		
+		for(int i=0; i< companies.size(); i++)
+		{
+			dtos.add(new CompanyDto(companies.get(i)));
+		}
 		
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	 }
@@ -139,13 +142,16 @@ public class CompanyController {
 	 @GetMapping(value = "/searchByCity/{city}")
 	 public ResponseEntity<List<CompanyDto>> findByAddressCity(@PathVariable String city) throws Exception {
 		 List<Company> companies = companyService.findByAddressCity(city);
-		 List<CompanyDto> dtos;
+		 List<CompanyDto> dtos = new ArrayList();
 		if (companies == null || companies.isEmpty()) {
 			dtos = new ArrayList();
 			return new ResponseEntity<>(dtos, HttpStatus.OK);
 		}
 			
-		dtos = new ArrayList(companies);
+		for(int i=0; i< companies.size(); i++)
+		{
+			dtos.add(new CompanyDto(companies.get(i)));
+		};
 		
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	 }

@@ -22,7 +22,11 @@ public class RegistratedUser extends User {
 		this.category = Category.REGULAR;
 	}
 	
-	
+	public  RegistratedUser(RegistratedUser user) {
+		super(user.getName(), user.getSurname(), user.getUsername(), user.getPassword(), user.getEmail(), user.getPhoneNumber(), user.getCity(), user.getCountry(), user.getEmployment(), user.getInfoAboutInstitution());
+		this.penals = 0;
+		this.category = Category.REGULAR;
+	}
 
 	public RegistratedUser(String name, String surname, String username, String password, String email,
 			String phoneNumber, String city, String country, Employment employment, String infoAboutInstitution) {

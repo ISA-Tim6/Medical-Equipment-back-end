@@ -17,10 +17,11 @@ import com.example.medicalequipment.repository.IUserRepository;
 
 @Service
 public class RegistratedUserService implements IRegistratedUserService {
-
-	private final IRegistratedUserRepository UserRepository;
-	private final EmailService EmailService;
 	@Autowired
+	private final IRegistratedUserRepository UserRepository;
+	@Autowired
+	private final EmailService EmailService;
+
     public RegistratedUserService(IRegistratedUserRepository userRepository,EmailService emailService){
     	this.UserRepository = userRepository;
     	this.EmailService=emailService;
@@ -33,7 +34,8 @@ public class RegistratedUserService implements IRegistratedUserService {
 			user.setPenals(0);
 			user.setCategory(Category.REGULAR);
 			EmailService.sendNotificaitionSync(user);
-			return this.UserRepository.save(user);
+			RegistratedUser newUser =  this.UserRepository.save(user);
+			return newUser;
 		}
 			
 		return null;

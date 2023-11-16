@@ -78,7 +78,10 @@ public class RegistratedUserController {
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody RegistratedUser u) throws MailException, InterruptedException {
     	RegistratedUser user = userService.findByEmail(u.getEmail());
         if(user == null){
-            this.userService.save(u);
+        	RegistratedUser newUser = new RegistratedUser(u);
+        	 newUser.setUsername(u.getUsername());
+            this.userService.save(newUser);
+           
             Map<String, String> response = new HashMap<>();
             response.put("status", "success");
             response.put("message", "Successfully registered.");
