@@ -65,8 +65,8 @@ public class CompanyAdminController {
 		ca.setPhoneNumber(companyAdmin.getPhoneNumber());
 		ca.setLoggedBefore(companyAdmin.getLoggedBefore());
 		ca.setInfoAboutInstitution(companyAdmin.getInfoAboutInstitution());
-
-		CompanyAdminDto cadto=new CompanyAdminDto(companyAdminService.save(ca));
+		companyAdminService.save(ca);
+		CompanyAdminDto cadto=new CompanyAdminDto(companyAdminService.findOne(id));
 
 		return new ResponseEntity<>(cadto, HttpStatus.OK);
 	}
