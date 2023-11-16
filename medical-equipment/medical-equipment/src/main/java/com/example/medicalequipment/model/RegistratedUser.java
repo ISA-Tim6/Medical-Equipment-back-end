@@ -25,8 +25,8 @@ public class RegistratedUser extends User {
 	
 
 	public RegistratedUser(String name, String surname, String username, String password, String email,
-			String phoneNumber, String city, String country, Employment employment, String infoAboutInstitution) {
-		super(name, surname, username, password, email, phoneNumber, city, country, employment, infoAboutInstitution);
+			String phoneNumber, String city, String country, Employment employment, String infoAboutInstitution,boolean isActive) {
+		super(name, surname, username, password, email, phoneNumber, city, country, employment, infoAboutInstitution,isActive);
 		this.penals = 0;
 		this.category = Category.REGULAR;
 	}

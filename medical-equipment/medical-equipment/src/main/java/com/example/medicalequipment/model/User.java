@@ -39,12 +39,14 @@ public class User {
 	private Employment employment;
 	@Column(name = "infoAboutInstitution", nullable = false)
 	private String infoAboutInstitution;
+	@Column(name = "isActive", nullable = false)
+	private boolean isActive;
 	public User() {
 	}
 
 	
 	public User(String name, String surname, String username, String password, String email, String phoneNumber,
-			String city,String country, Employment employment, String infoAboutInstitution) {
+			String city,String country, Employment employment, String infoAboutInstitution,boolean isActive) {
 		this.name=name;
 		this.surname=surname;
 		this.email=email;
@@ -55,6 +57,7 @@ public class User {
 		this.country=country;
 		this.employment=employment;	
 		this.infoAboutInstitution=infoAboutInstitution;
+		this.isActive=isActive;
 	}
 
 	public User(User user) {
@@ -68,6 +71,7 @@ public class User {
 		this.country=user.country;
 		this.employment=user.employment;	
 		this.infoAboutInstitution=user.infoAboutInstitution;
+		this.isActive=user.isActive;
 	}
 
 
@@ -193,4 +197,14 @@ public class User {
 		this.infoAboutInstitution = infoAboutInstitution;
 	}
 
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+	
 }
