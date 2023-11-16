@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.medicalequipment.iservice.ICompanyAdminService;
 import com.example.medicalequipment.model.Company;
 import com.example.medicalequipment.model.CompanyAdmin;
@@ -12,15 +11,19 @@ import com.example.medicalequipment.repository.ICompanyAdminRepository;
 import com.example.medicalequipment.repository.ICompanyRepository;
 import com.example.medicalequipment.repository.IUserRepository;
 
+
 @Service
-public class CompanyAdminService implements ICompanyAdminService{
+ public class CompanyAdminService implements ICompanyAdminService{
+
+	
 	@Autowired
 	private final ICompanyRepository CompanyRepository;
-
+	
 	@Autowired
 	private final ICompanyAdminRepository CompanyAdminRepository;
-	
-    public CompanyAdminService(ICompanyAdminRepository companyAdminRepository, ICompanyRepository companyRepository){
+
+	public CompanyAdminService(ICompanyAdminRepository companyAdminRepository, ICompanyRepository companyRepository){
+
     	this.CompanyAdminRepository = companyAdminRepository;
     	this.CompanyRepository = companyRepository;
     }

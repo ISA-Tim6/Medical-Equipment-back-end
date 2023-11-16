@@ -1,5 +1,4 @@
 package com.example.medicalequipment.controller;
-
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,20 +12,22 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.medicalequipment.dto.CompanyDto;
+import com.example.medicalequipment.dto.CompanySearchDto;
+import com.example.medicalequipment.model.Address;
 import java.util.ArrayList;
 import com.example.medicalequipment.dto.CompanyDto;
 import com.example.medicalequipment.dto.CompanyUpdateDto;
 import com.example.medicalequipment.iservice.ICompanyService;
-
 import com.example.medicalequipment.model.Company;
 import com.example.medicalequipment.model.Equipment;
+import com.example.medicalequipment.service.CompanyService;
 
 
 @RestController
 @RequestMapping(value = "api/company")
 public class CompanyController {
 	@Autowired
-
 	private ICompanyService companyService;
 	
 	public CompanyController(ICompanyService _companyService) {
@@ -117,5 +118,38 @@ public class CompanyController {
 			Company c=companyService.removeEquipment(company_id, equipment.getEquipment_id());
 			return new ResponseEntity<>(new CompanyDto(c), HttpStatus.OK);
 		}
+	 
+
+	 @CrossOrigin(origins="http://localhost:4200")
+	 @GetMapping(value = "/searchByName/{name}")
+	 public ResponseEntity<List<CompanyDto>> findByName(@PathVariable String name) {
+		 List<Company> companies = companyService.findByName(name);
+		 List<CompanyDto> dtos;
+		if (companies == null || companies.isEmpty()) {
+			dtos = new ArrayList();
+			return new ResponseEntity<>(dtos,HttpStatus.OK);
+		}
+			
+			dtos = new ArrayList(companies);
+		
+		return new ResponseEntity<>(dtos, HttpStatus.OK);
+	 }
+	 
+	 @CrossOrigin(origins="http://localhost:4200")
+	 @GetMapping(value = "/searchByCity/{city}")
+	 public ResponseEntity<List<CompanyDto>> findByAddressCity(@PathVariable String city) throws Exception {
+		 List<Company> companies = companyService.findByAddressCity(city);
+		 List<CompanyDto> dtos;
+		if (companies == null || companies.isEmpty()) {
+			dtos = new ArrayList();
+			return new ResponseEntity<>(dtos, HttpStatus.OK);
+		}
+			
+		dtos = new ArrayList(companies);
+		
+		return new ResponseEntity<>(dtos, HttpStatus.OK);
+	 }
+	 
+	
 	 
 }

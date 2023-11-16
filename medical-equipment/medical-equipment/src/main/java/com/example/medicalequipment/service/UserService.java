@@ -41,6 +41,10 @@ public class UserService implements IUserService{
 	{
 		return UserRepository.findById(id).orElseGet(null);
 	}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> feat/COMPANY_SEARCH
 	
 	/*@Override
 	public User findByUsername(String username) 
@@ -120,7 +124,6 @@ public class UserService implements IUserService{
     public List<User> getAllUsers(){
         return UserRepository.findAll();
     }*/
-
 
 
 

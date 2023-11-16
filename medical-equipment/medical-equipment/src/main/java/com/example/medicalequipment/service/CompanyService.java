@@ -1,12 +1,12 @@
 package com.example.medicalequipment.service;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.HashSet;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.medicalequipment.iservice.ICompanyService;
 import com.example.medicalequipment.model.Company;
 import com.example.medicalequipment.model.Equipment;
@@ -54,4 +54,15 @@ public class CompanyService implements ICompanyService{
 		return CompanyRepository.findAll();
 	}
 
+	
+	@Override
+	public List<Company> findByName(String name){
+		return CompanyRepository.findByNameContainingIgnoreCase(name);	
+	}
+	
+	@Override
+	public List<Company> findByAddressCity(String city) {
+		return CompanyRepository.findByAddressCityContainingIgnoreCase(city);
+	}
+	
 }
