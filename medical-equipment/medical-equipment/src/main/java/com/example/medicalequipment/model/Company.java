@@ -1,5 +1,6 @@
 package com.example.medicalequipment.model;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
@@ -54,11 +55,42 @@ public class Company {
 	private Set<EquipmentStock> equipmentStocks=new HashSet<EquipmentStock>();
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "workingTimeCalendar_id", referencedColumnName = "workingTimeCalendar_id")
+	@JoinColumn(name = "workingTimeCalendar_id")
 	private WorkingTimeCalendar workingTimeCalendar;
 	
+
+	@Column(name = "openingHours")
+	private LocalTime openingHours;
+
+	@Column(name = "closingHours")
+	private LocalTime closingHours;
 	
-	  public void add(CompanyAdmin ca) {
+	
+	  public Long getCompany_id() {
+		return company_id;
+	}
+
+	public void setCompany_id(Long company_id) {
+		this.company_id = company_id;
+	}
+
+	public LocalTime getOpeningHours() {
+		return openingHours;
+	}
+
+	public void setOpeningHours(LocalTime openingHours) {
+		this.openingHours = openingHours;
+	}
+
+	public LocalTime getClosingHours() {
+		return closingHours;
+	}
+
+	public void setClosingHours(LocalTime closingHours) {
+		this.closingHours = closingHours;
+	}
+
+	public void add(CompanyAdmin ca) {
 		    if (ca.getCompany() != null)
 		     ca.getCompany().getAdmins().remove(ca);
 		    ca.setCompany(this);

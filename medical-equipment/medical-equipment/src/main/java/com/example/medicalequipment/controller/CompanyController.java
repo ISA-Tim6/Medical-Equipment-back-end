@@ -82,8 +82,8 @@ public class CompanyController {
 	 
 	 @CrossOrigin(origins="http://localhost:4200")
 	    @PostMapping(value="/create")
-		public ResponseEntity<Company> create(@RequestBody Company company) throws Exception {
-			return new ResponseEntity<Company>(companyService.save(company), HttpStatus.OK);
+		public ResponseEntity<CompanyDto> create(@RequestBody Company company) throws Exception {
+			return new ResponseEntity<CompanyDto>(new CompanyDto(companyService.save(company)), HttpStatus.OK);
 		}
 	 
 	 @CrossOrigin(origins="http://localhost:4200")

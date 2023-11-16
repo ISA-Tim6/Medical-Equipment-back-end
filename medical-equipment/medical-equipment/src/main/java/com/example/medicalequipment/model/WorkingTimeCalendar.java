@@ -23,8 +23,8 @@ public class WorkingTimeCalendar {
 	private Long workingTimeCalendar_id;
 	@OneToMany()
 	//@JoinColumn(name = "appointment_id", nullable=false)
-	@JoinTable(name = "appointment_id")
-
+	@JoinTable(name = "appointment_calendar", joinColumns = @JoinColumn(name = "workingTimeCalendar_id", referencedColumnName = "workingTimeCalendar_id"),
+	inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "appointment_id"))
 	private Set<Appointment> appointments=new HashSet<Appointment>();
 
 
