@@ -6,8 +6,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
 import static javax.persistence.InheritanceType.JOINED;
 @Entity
 @Table(name = "`User`")
@@ -18,18 +26,24 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long user_id;
 	@Column(name = "name", nullable = false)
+	@NotNull
 	private String name;
 	@Column(name = "surname", nullable = false)
+	@NotNull
 	private String surname;
 	@Column(name = "username", nullable = false)
+	@NotNull
 	private String username;
 	@Column(name = "password", nullable = false)
 	private String password;
 	@Column(name = "email", nullable = false)
+	@Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
 	private String email;
 	@Column(name = "loggedBefore", nullable = false)
 	private Boolean loggedBefore;
 	@Column(name = "phoneNumber", nullable = false)
+	@Size(min = 9, max = 10, message = "Broj mora imati 9 ili 10 cifara.")
+    @Pattern(regexp = "\\d+", message = "Broj mora sadržavati samo cifre.")
 	private String phoneNumber;
 	@Column(name = "city", nullable = false)
 	private String city;
@@ -59,7 +73,7 @@ public class User {
 		this.infoAboutInstitution=infoAboutInstitution;
 		this.isActive=isActive;
 	}
-
+	
 	public User(User user) {
 		this.name=user.name;
 		this.surname=user.surname;

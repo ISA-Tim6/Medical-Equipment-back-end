@@ -1,20 +1,20 @@
 package com.example.medicalequipment.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "CompanyAdmin")
 public class CompanyAdmin extends User{
 
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name = "company_id")
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "company_id", referencedColumnName="company_id",nullable=false)
 	private Company company;
+	
 	
 	public CompanyAdmin(String name, String surname, String username, String password, String email, String phoneNumber,
 			String city,String country, Employment employment,Company company,String info,boolean isActive) {

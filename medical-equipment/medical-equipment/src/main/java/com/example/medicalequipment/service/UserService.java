@@ -18,9 +18,9 @@ import com.example.medicalequipment.repository.IUserRepository;
 
 @Service
 public class UserService implements IUserService{
-	private final IUserRepository UserRepository;
 	@Autowired
-    public UserService(IUserRepository userRepository){
+	private final IUserRepository UserRepository;
+	public UserService(IUserRepository userRepository){
     	this.UserRepository = userRepository;
     }
 	/*@Override
@@ -41,6 +41,10 @@ public class UserService implements IUserService{
 	{
 		return UserRepository.findById(id).orElseGet(null);
 	}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> feat/COMPANY_SEARCH
 	
 	/*@Override
 	public User findByUsername(String username) 

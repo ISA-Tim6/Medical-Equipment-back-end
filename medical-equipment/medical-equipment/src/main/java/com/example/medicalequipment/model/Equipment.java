@@ -3,12 +3,15 @@ package com.example.medicalequipment.model;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -20,20 +23,29 @@ public class Equipment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long equipment_id;
 	@Column(name = "name", nullable = false)
+	@NotNull @NotEmpty
 	private String name;
 	@Column(name = "description", nullable = false)
+	@NotNull @NotEmpty
 	private String description;
+	@NotNull @NotEmpty
 	@Column(name = "type", nullable = false)
 	private String type;
 	
-	@ManyToMany(mappedBy = "equipment")
-
-//	@ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
-	//@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"),
-//	inverseJoinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"))
+	@ManyToMany(mappedBy = "equipment",fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	//@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"),
+	//inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"))
 	private Set<Company> companies=new HashSet<Company>();
 	
 	private Equipment() {}
+	
+	public Equipment(String description,String name,String type)
+	{
+		this.description=description;
+		this.type=type;
+		this.name=name;
+	}
+
 
 	public Long getEquipment_id() {
 		return equipment_id;
@@ -75,27 +87,5 @@ public class Equipment {
 		this.companies = companies;
 	}
 
-	@Override
-	public String toString() {
-		return "Equipment [equipment_id=" + equipment_id + ", name=" + name + ", description=" + description + ", type="
-				+ type + ", equipment=" + companies + "]";
-	}
-	
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		Equipment e = (Equipment) o;
-		return equipment_id != null && equipment_id.equals(e.getEquipment_id());
-	}
 
-	@Override
-	public int hashCode() {
-	
-		return 1337;
-	}
 }

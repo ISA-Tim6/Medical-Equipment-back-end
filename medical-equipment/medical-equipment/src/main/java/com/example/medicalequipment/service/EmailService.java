@@ -14,42 +14,18 @@ public class EmailService implements IEmailService{
 	@Autowired
 	private JavaMailSender javaMailSender;
 
-	/*
-	 * Koriscenje klase za ocitavanje vrednosti iz application.properties fajla
-	 */
 	@Autowired
 	private Environment env;
 
-	/*
-	 * Anotacija za oznacavanje asinhronog zadatka
-	 * Vise informacija na: https://docs.spring.io/spring/docs/current/spring-framework-reference/integration.html#scheduling
-	 */
-	/*@Async
-	public void sendNotificaitionAsync(User user) throws MailException, InterruptedException {
-		System.out.println("Async metoda se izvrsava u drugom Threadu u odnosu na prihvaceni zahtev. Thread id: " + Thread.currentThread().getId());
-		//Simulacija duze aktivnosti da bi se uocila razlika
-		Thread.sleep(10000);
-		System.out.println("Slanje emaila...");
-
-		SimpleMailMessage mail = new SimpleMailMessage();
-		mail.setTo(user.getEmailAddress());
-		mail.setFrom(env.getProperty("spring.mail.username"));
-		mail.setSubject("Primer slanja emaila pomoću asinhronog Spring taska");
-		mail.setText("Pozdrav " + user.getFirstname() + ",\n\nhvala što pratiš ISA.");
-		javaMailSender.send(mail);
-
-		System.out.println("Email poslat!");
-	}*/
 
 	public void sendNotificaitionSync(RegistratedUser user) throws MailException, InterruptedException {
-		//Simulacija duze aktivnosti da bi se uocila razlika
-		Thread.sleep(1000);
+		Thread.sleep(100);
 		System.out.println("Slanje emaila...");
 
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(user.getEmail());
 		mail.setFrom("medicinskaopremaisa@gmail.com");
-		mail.setSubject("Primer slanja emaila pomocu asinhronog Spring taska");
+		mail.setSubject("Mail za aktivaciju naloga");
 		mail.setText("Pozdrav " + user.getName() + ",\n\nuspješno ste registrovani.");
 		javaMailSender.send(mail);
 

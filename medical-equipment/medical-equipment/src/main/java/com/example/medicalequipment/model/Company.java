@@ -1,5 +1,6 @@
 package com.example.medicalequipment.model;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
@@ -17,6 +18,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -25,8 +29,10 @@ public class Company {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long company_id;
+	@NotNull @NotEmpty
 	@Column(name = "name", nullable = false)
 	private String name;	
+	@Min(value=0)
 	@Column(name = "averageGrade", nullable = true)
 	private double averageGrade;
 	
@@ -35,24 +41,71 @@ public class Company {
 	private Address address;
 
 	
-	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	//@JoinColumn(name = "company_id", nullable=false)
 	private Set<CompanyAdmin> admins= new HashSet<CompanyAdmin>();
 	
-	@ManyToMany( cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
+	@ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"),
 	inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"))
 	private Set<Equipment> equipment=new HashSet<Equipment>();
 	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name  = "company_id", nullable=false)
+	private Set<EquipmentStock> equipmentStocks=new HashSet<EquipmentStock>();
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "workingTimeCalendar_id")
+	private WorkingTimeCalendar workingTimeCalendar;
+	
+
+	@Column(name = "openingHours")
+	private LocalTime openingHours;
+
+	@Column(name = "closingHours")
+	private LocalTime closingHours;
 	
 	
-	public void addAdmin(CompanyAdmin ca) {
-		admins.add(ca);
-		ca.setCompany(this);
+	  public Long getCompany_id() {
+		return company_id;
 	}
 
-	public void removeAdmin(CompanyAdmin ca) {
-		admins.remove(ca);
-		ca.setCompany(null);
+	public void setCompany_id(Long company_id) {
+		this.company_id = company_id;
+	}
+
+	public LocalTime getOpeningHours() {
+		return openingHours;
+	}
+
+	public void setOpeningHours(LocalTime openingHours) {
+		this.openingHours = openingHours;
+	}
+
+	public LocalTime getClosingHours() {
+		return closingHours;
+	}
+
+	public void setClosingHours(LocalTime closingHours) {
+		this.closingHours = closingHours;
+	}
+
+	public void add(CompanyAdmin ca) {
+		    if (ca.getCompany() != null)
+		     ca.getCompany().getAdmins().remove(ca);
+		    ca.setCompany(this);
+		    this.getAdmins().add(ca);
+		  }
+	
+	public void addEquipment(Equipment e) {
+		if(e!=null)
+		e.getCompanies().add(this);
+		e.setCompanies(e.getCompanies());
+		this.equipment.add(e);
+	}
+	
+	public void removeEquipment(Equipment e) {
+		this.equipment.remove(e);
 	}
 	
 	public Company() {
@@ -111,6 +164,12 @@ public class Company {
 		return equipment;
 	}
 
+	@Override
+	public String toString() {
+		return "Company [company_id=" + company_id + ", name=" + name + ", averageGrade=" + averageGrade + ", address="
+				+ address + ", admins=" + admins + ", equipment=" + equipment + "]";
+	}
+
 	public void setEquipment(Set<Equipment> equipment) {
 		this.equipment = equipment;
 	}
@@ -133,6 +192,24 @@ public class Company {
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(name);
+	}
+
+	
+
+	public Set<EquipmentStock> getEquipmentStocks() {
+		return equipmentStocks;
+	}
+
+	public void setEquipmentStocks(Set<EquipmentStock> equipmentStocks) {
+		this.equipmentStocks = equipmentStocks;
+	}
+
+	public WorkingTimeCalendar getWorkingTimeCalendar() {
+		return workingTimeCalendar;
+	}
+
+	public void setWorkingTimeCalendar(WorkingTimeCalendar workingTimeCalendar) {
+		this.workingTimeCalendar = workingTimeCalendar;
 	}
 	
 }

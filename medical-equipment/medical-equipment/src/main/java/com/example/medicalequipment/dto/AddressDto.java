@@ -26,6 +26,25 @@ public class AddressDto {
 	}
 
 
+	public AddressDto() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public AddressDto(Long addressId, String street, String streetNumber, String city, String country, Double longitude,
+			Double latitude) {
+		super();
+		this.addressId = addressId;
+		this.street = street;
+		this.streetNumber = streetNumber;
+		this.city = city;
+		this.country = country;
+		this.longitude = longitude;
+		this.latitude = latitude;
+	}
+
+
 	@Override
 	public String toString() {
 		return "AddressDto [addressId=" + addressId + ", street=" + street + ", streetNumber=" + streetNumber
