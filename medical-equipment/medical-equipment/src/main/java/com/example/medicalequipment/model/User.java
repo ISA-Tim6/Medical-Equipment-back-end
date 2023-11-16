@@ -39,7 +39,6 @@ public class User {
 	@Column(name = "infoAboutInstitution", nullable = false)
 	private String infoAboutInstitution;
 	public User() {
-		
 	}
 
 	
@@ -80,6 +79,9 @@ public class User {
 	public void setUser_id(Long user_id) {
 		this.user_id = user_id;
 	}
+
+
+	
 
 
 	public String getName() {

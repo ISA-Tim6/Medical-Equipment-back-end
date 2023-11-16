@@ -27,7 +27,7 @@ import com.example.medicalequipment.repository.IUserRepository;
 import com.example.medicalequipment.service.UserService;
 
 @RestController
-@RequestMapping(path="api/")
+@RequestMapping(path="api/user")
 public class UserController {
     private final UserService userService;
     private final IUserRepository userRepository;
@@ -39,21 +39,11 @@ public class UserController {
     }
    
     
-    @CrossOrigin(origins="http://localhost:4200")
-    @PostMapping("saveUser")
-    public User save(@RequestBody User u) {
-    	System.out.println("infoAboutInstitution received on the server: " + u.getInfoAboutInstitution() + u.getCity());
-    	return userService.save(u);
-    }
-    @CrossOrigin(origins="http://localhost:4200")
-    @GetMapping("userView")
-    public int get() {
-        return 2;
-    }
     
-    @CrossOrigin(origins="http://localhost:4200")
+
+   /* @CrossOrigin(origins="http://localhost:4200")
     @GetMapping(value = "/{id}")
-	public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {
+	public ResponseEntity<User> getUser(@PathVariable Long id) {
 
 		User user = userService.findOne(id);
 
@@ -61,19 +51,10 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<>(new UserResponseDto(user), HttpStatus.OK);
-	}
+		ResponseEntity r = new ResponseEntity<>(user, HttpStatus.OK);
+		return r;
+	}*/
     
-    @CrossOrigin(origins="http://localhost:4200")
-    @PutMapping("updateUser")
-	public ResponseEntity<UserResponseDto> updateUser(@RequestBody User user) {
-		if (user == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-
-		return new ResponseEntity<>(new UserResponseDto(userService.save(user)), HttpStatus.OK);
-	}
-
     
     /*@CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value = "/{id}")
@@ -89,14 +70,15 @@ public class UserController {
    
     
     /*@CrossOrigin(origins = "http://localhost:4200")
-    @RequestMapping(path = "/registerUser", method = RequestMethod.PUT)
+    @PostMapping("registerUser")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody User u) {
     	User user = userRepository.findByEmail(u.getEmail());
+    	System.out.println(user);
         if(user == null){
-            this.userService.registerUser(u);
+            this.userService.save(u);
             Map<String, String> response = new HashMap<>();
             response.put("status", "success");
-            response.put("message", "Successfully registered. Please activate your account.");
+            response.put("message", "Successfully registered.");
             return ResponseEntity.ok(response);
         }
         Map<String, String> response = new HashMap<>();
@@ -105,6 +87,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
 
     }*/
+
 
 
 

@@ -17,6 +17,7 @@ public class UserResponseDto {
 	private String city;
 	private String country;
 	private Employment employment;
+	private String infoAboutInstitution;
 	public UserResponseDto() {}
 	
 	public UserResponseDto(User user) {
@@ -95,9 +96,6 @@ public class UserResponseDto {
 	public void setInfoAboutInstitution(String infoAboutInstitution) {
 		this.infoAboutInstitution = infoAboutInstitution;
 	}
-
-	private String infoAboutInstitution;
-
 
     public String getName() {
         return name;
