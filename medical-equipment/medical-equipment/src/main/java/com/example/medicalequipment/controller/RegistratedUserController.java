@@ -79,11 +79,13 @@ public class RegistratedUserController {
     	RegistratedUser userByEmail = userService.findByEmail(u.getEmail());
     	RegistratedUser userByUsername = userService.findByUsername(u.getUsername());
     	if(userByEmail == null && userByUsername==null){
-            this.userService.save(u);
-            Map<String, String> response = new HashMap<>();
-            response.put("status", "success");
-            response.put("message", "Successfully registered.");
-            return ResponseEntity.ok(response);
+    		RegistratedUser newUser = new RegistratedUser(u);
+       	 	newUser.setUsername(u.getUsername());
+       	 	this.userService.save(newUser);
+	       	Map<String, String> response = new HashMap<>();
+	        response.put("status", "success");
+	        response.put("message", "Successfully registered.");
+	        return ResponseEntity.ok(response);
         }else if(userByEmail != null && userByUsername==null) {
         	Map<String, String> response = new HashMap<>();
             response.put("status", "emailError");
