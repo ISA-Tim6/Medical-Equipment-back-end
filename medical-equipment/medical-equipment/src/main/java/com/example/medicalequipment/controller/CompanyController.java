@@ -156,6 +156,24 @@ public class CompanyController {
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	 }
 	 
+	 @CrossOrigin(origins="http://localhost:4200")
+	 @GetMapping(value = "/searchByNameAndCity/{name}/{city}")
+	 public ResponseEntity<List<CompanyDto>> findByNameAndCity(@PathVariable String name, @PathVariable String city) throws Exception {
+		 List<Company> companies = companyService.findByNameAndAddressCity(name,city);
+		 List<CompanyDto> dtos = new ArrayList();
+		if (companies == null || companies.isEmpty()) {
+			dtos = new ArrayList();
+			return new ResponseEntity<>(dtos, HttpStatus.OK);
+		}
+			
+		for(int i=0; i< companies.size(); i++)
+		{
+			dtos.add(new CompanyDto(companies.get(i)));
+		};
+		
+		return new ResponseEntity<>(dtos, HttpStatus.OK);
+	 }
+	 
 	
 	 
 }

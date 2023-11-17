@@ -35,6 +35,7 @@ public class User {
 	@NotNull
 	private String username;
 	@Column(name = "password", nullable = false)
+	@NotNull
 	private String password;
 	@Column(name = "email", nullable = false)
 	@Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
@@ -42,8 +43,8 @@ public class User {
 	@Column(name = "loggedBefore", nullable = false)
 	private Boolean loggedBefore;
 	@Column(name = "phoneNumber", nullable = false)
-	@Size(min = 9, max = 10, message = "Broj mora imati 9 ili 10 cifara.")
-    @Pattern(regexp = "\\d+", message = "Broj mora sadržavati samo cifre.")
+	@Size(min = 9, max = 10, message = "Must contain 9 or 10 digits.")
+    @Pattern(regexp = "\\d+", message = "Only digits are allowed.")
 	private String phoneNumber;
 	@Column(name = "city", nullable = false)
 	private String city;

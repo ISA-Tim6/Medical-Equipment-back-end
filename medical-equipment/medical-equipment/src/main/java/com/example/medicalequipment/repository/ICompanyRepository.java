@@ -20,6 +20,7 @@ public interface ICompanyRepository extends JpaRepository<Company, Long> {
 	//@Query("select e from Company e join fetch e.admins where lower(e.address.city) like %:city%")
 	List<Company> findByAddressCityContainingIgnoreCase(String city);
 	
+	List<Company> findByNameContainingIgnoreCaseAndAddressCityContainingIgnoreCase(String name, String city);
 	
 	@Modifying
 	@Transactional
