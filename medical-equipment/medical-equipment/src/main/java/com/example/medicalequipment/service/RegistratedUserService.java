@@ -1,17 +1,22 @@
 package com.example.medicalequipment.service;
 
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 import com.example.medicalequipment.iservice.IRegistratedUserService;
+import com.example.medicalequipment.model.ActivationToken;
 import com.example.medicalequipment.model.Category;
 import com.example.medicalequipment.model.Employment;
 import com.example.medicalequipment.model.RegistratedUser;
 import com.example.medicalequipment.model.User;
+import com.example.medicalequipment.repository.IActivationTokenRepository;
 import com.example.medicalequipment.repository.IRegistratedUserRepository;
 import com.example.medicalequipment.repository.IUserRepository;
 
@@ -20,21 +25,26 @@ public class RegistratedUserService implements IRegistratedUserService {
 	@Autowired
 	private final IRegistratedUserRepository UserRepository;
 	@Autowired
+	private final IActivationTokenRepository TokenRepository;
+	@Autowired
 	private final EmailService EmailService;
 
-    public RegistratedUserService(IRegistratedUserRepository userRepository,EmailService emailService){
+    public RegistratedUserService(IRegistratedUserRepository userRepository,EmailService emailService,IActivationTokenRepository tokenRepository){
     	this.UserRepository = userRepository;
+		this.TokenRepository = tokenRepository;
     	this.EmailService=emailService;
     }
 	
 	@Override
-	public RegistratedUser save(RegistratedUser user) throws MailException, InterruptedException {
+	public RegistratedUser save(RegistratedUser user) throws MailException, InterruptedException, MessagingException {
 		//if(IsValidToAdd(user))
 		//{
 			user.setPenals(0);
 			user.setCategory(Category.REGULAR);
-			EmailService.sendNotificaitionSync(user);
 			RegistratedUser newUser =  this.UserRepository.save(user);
+			ActivationToken token=new ActivationToken(newUser);
+			TokenRepository.save(token);
+			EmailService.sendNotificaitionSync(user,token);
 			return newUser;
 		
 		//}
@@ -77,7 +87,6 @@ public class RegistratedUserService implements IRegistratedUserService {
 		// TODO Auto-generated method stub
 		return this.UserRepository.findByEmail(email);
 	}
-	
 	
 	
 	
