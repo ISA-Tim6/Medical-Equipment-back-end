@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,18 +40,23 @@ public class UserController {
     }
     
     
-    @CrossOrigin(origins="http://localhost:4200")
+	@CrossOrigin(origins="http://localhost:4200")
     @GetMapping(value = "/{email}")
-	public User getByEmail(@PathVariable String email) {
+	public Long getByEmail(@PathVariable String email) {
+		email = email.replaceAll("%40", "@");
 		User user = userService.findByEmail(email);
-		return user;
+		if(user == null)
+			return (long) -1;
+		return user.getUser_id();
 	}
     
     @CrossOrigin(origins="http://localhost:4200")
-    @GetMapping(value = "/{username}")
-	public User getByUsername(@PathVariable String username) {
+    @GetMapping(value = "/username/{username}")
+	public Long getByUsername(@PathVariable String username) {
 		User user = userService.findByUsername(username);
-		return user;
+		if(user == null)
+			return (long) -1;
+		return user.getUser_id();
 	}
     
    /* @CrossOrigin(origins="http://localhost:4200")
