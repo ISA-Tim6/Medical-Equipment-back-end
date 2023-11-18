@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.example.medicalequipment.iservice.IUserService;
 import com.example.medicalequipment.model.Category;
 import com.example.medicalequipment.model.Employment;
+import com.example.medicalequipment.model.RegistratedUser;
 import com.example.medicalequipment.model.User;
 import com.example.medicalequipment.repository.IUserRepository;
 
@@ -23,19 +24,20 @@ public class UserService implements IUserService{
 	public UserService(IUserRepository userRepository){
     	this.UserRepository = userRepository;
     }
-	/*@Override
-    public User save(User u) 
-	{
+	@Override
+	public User findByUsername(String username) {
+		// TODO Auto-generated method stub
+		return this.UserRepository.findByUsername(username);
+	}
+	@Override
+	public User findByEmail(String email) {
+		// TODO Auto-generated method stub
+		return this.UserRepository.findByEmail(email);
+	}
 
-		System.out.println(IsValidToAdd(u));
-		if(IsValidToAdd(u))
-		{
-			return this.UserRepository.save(u);
-		}
-			
-		return null;
-    }
 
+
+/*
 	@Override
 	public User findOne(Long id) 
 	{

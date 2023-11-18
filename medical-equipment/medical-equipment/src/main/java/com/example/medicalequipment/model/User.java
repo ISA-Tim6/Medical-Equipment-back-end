@@ -31,13 +31,13 @@ public class User {
 	@Column(name = "surname", nullable = false)
 	@NotNull
 	private String surname;
-	@Column(name = "username", nullable = false)
+	@Column(name = "username", nullable = false, unique=true)
 	@NotNull
 	private String username;
 	@Column(name = "password", nullable = false)
 	@NotNull
 	private String password;
-	@Column(name = "email", nullable = false)
+	@Column(name = "email", nullable = false, unique=true)
 	@Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
 	private String email;
 	@Column(name = "loggedBefore", nullable = false)

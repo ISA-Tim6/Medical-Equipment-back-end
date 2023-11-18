@@ -24,8 +24,6 @@ public class EmailService implements IEmailService{
 
 
 	public void sendNotificaitionSync(RegistratedUser user, ActivationToken token) throws MailException, InterruptedException, MessagingException {
-		Thread.sleep(100);
-		System.out.println("Email sending...");
 		String subject = "Activate account mail";
 		String message = "<html><body>" +
                 "<h2>Activate Your Account</h2>" +

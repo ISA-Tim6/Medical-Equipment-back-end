@@ -23,14 +23,17 @@ import com.example.medicalequipment.repository.IUserRepository;
 @Service
 public class RegistratedUserService implements IRegistratedUserService {
 	@Autowired
-	private final IRegistratedUserRepository UserRepository;
+	private final IRegistratedUserRepository RegistratedUserRepository;
+	@Autowired
+	private final IUserRepository UserRepository;
 	@Autowired
 	private final IActivationTokenRepository TokenRepository;
 	@Autowired
 	private final EmailService EmailService;
 
-    public RegistratedUserService(IRegistratedUserRepository userRepository,EmailService emailService,IActivationTokenRepository tokenRepository){
-    	this.UserRepository = userRepository;
+    public RegistratedUserService(IRegistratedUserRepository registratedUserRepository,EmailService emailService,IActivationTokenRepository tokenRepository, IUserRepository userRepository){
+    	this.RegistratedUserRepository = registratedUserRepository;
+		this.UserRepository = userRepository;
 		this.TokenRepository = tokenRepository;
     	this.EmailService=emailService;
     }
@@ -41,7 +44,7 @@ public class RegistratedUserService implements IRegistratedUserService {
 		//{
 			user.setPenals(0);
 			user.setCategory(Category.REGULAR);
-			RegistratedUser newUser =  this.UserRepository.save(user);
+			RegistratedUser newUser =  this.RegistratedUserRepository.save(user);
 			ActivationToken token=new ActivationToken(newUser);
 			TokenRepository.save(token);
 			EmailService.sendNotificaitionSync(user,token);
@@ -57,17 +60,17 @@ public class RegistratedUserService implements IRegistratedUserService {
 	}
 	
 	public RegistratedUser getByEmail(String email){
-		return UserRepository.findByEmail(email);
+		return RegistratedUserRepository.findByEmail(email);
 	}
 
 	@Override
 	public RegistratedUser findOne(Long id) {
-		return UserRepository.findById(id).orElseGet(null);
+		return RegistratedUserRepository.findById(id).orElseGet(null);
 	}
 
 	@Override
 	public RegistratedUser findByUsername(String username) {
-		return UserRepository.getByUsername(username);
+		return RegistratedUserRepository.getByUsername(username);
 	}
 
 	@Override
@@ -76,7 +79,7 @@ public class RegistratedUserService implements IRegistratedUserService {
 		//{
 			user.setPenals(0);
 			user.setCategory(Category.REGULAR);	//popraviti kasnije
-			return this.UserRepository.save(user);
+			return this.RegistratedUserRepository.save(user);
 		//}
 			
 		//return null;
@@ -85,7 +88,7 @@ public class RegistratedUserService implements IRegistratedUserService {
 	@Override
 	public RegistratedUser findByEmail(String email) {
 		// TODO Auto-generated method stub
-		return this.UserRepository.findByEmail(email);
+		return this.RegistratedUserRepository.findByEmail(email);
 	}
 	
 	
