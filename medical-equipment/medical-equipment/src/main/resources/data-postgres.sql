@@ -35,14 +35,14 @@ INSERT INTO public.company(
 	
 	
 INSERT INTO public."user"(
-	user_id, city, country, email, employment, info_about_institution, logged_before, name, password, phone_number, surname, username)
-	VALUES (default, 'Trebinje', 'BiH', 'kivana0191@gmail.com', 0, 'No info', false, 'Anja', 'anja', '012345678', 'Ducic', 'anja');
+	user_id, city, country, email, employment, info_about_institution, logged_before, name, password, phone_number, surname, username, is_active)
+	VALUES (default, 'Trebinje', 'BiH', 'kovacevic.ra15.2020@uns.ac.rs', 0, 'No info', false, 'Anja', 'anja', '012345678', 'Ducic', 'anja',false);
 INSERT INTO public."user"(
-	user_id, city, country, email, employment, info_about_institution, logged_before, name, password, phone_number, surname, username)
-	VALUES (default, 'Ruma', 'Srbija', 'milicavujic2001@gmail.com', 0, 'No info', false, 'Milica', 'milica', '012345678', 'Vujic', 'milica');
+	user_id, city, country, email, employment, info_about_institution, logged_before, name, password, phone_number, surname, username, is_active)
+	VALUES (default, 'Ruma', 'Srbija', 'milicavujic2001@gmail.com', 0, 'No info', false, 'Milica', 'milica', '012345678', 'Vujic', 'milica', false);
 INSERT INTO public."user"(
-	user_id, city, country, email, employment, info_about_institution, logged_before, name, password, phone_number, surname, username)
-	VALUES (default, 'Nevesinje', 'BiH', 'ducic.ra5.2020@uns.ac.rs', 0, 'No info', false, 'Ivana', 'ivana', '012345678', 'Kovacevic', 'ivana');
+	user_id, city, country, email, employment, info_about_institution, logged_before, name, password, phone_number, surname, username, is_active)
+	VALUES (default, 'Nevesinje', 'BiH', 'ducic.ra5.2020@uns.ac.rs', 0, 'No info', false, 'Ivana', 'ivana', '012345678', 'Kovacevic', 'ivana', false);
 
 
 

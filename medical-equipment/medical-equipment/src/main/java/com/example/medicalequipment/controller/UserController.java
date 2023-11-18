@@ -37,10 +37,6 @@ public class UserController {
         this.userService = userService;
         this.userRepository = userRepository;
     }
-   
-    
-    
-
    /* @CrossOrigin(origins="http://localhost:4200")
     @GetMapping(value = "/{id}")
 	public ResponseEntity<User> getUser(@PathVariable Long id) {
@@ -66,30 +62,4 @@ public class UserController {
     	 return new ResponseEntity<UserResponseDto>(new UserResponseDto(user), HttpStatus.OK);
 
     }*/
-
-   
-    
-    /*@CrossOrigin(origins = "http://localhost:4200")
-    @PostMapping("registerUser")
-    public ResponseEntity<Map<String, String>> registerUser(@RequestBody User u) {
-    	User user = userRepository.findByEmail(u.getEmail());
-    	System.out.println(user);
-        if(user == null){
-            this.userService.save(u);
-            Map<String, String> response = new HashMap<>();
-            response.put("status", "success");
-            response.put("message", "Successfully registered.");
-            return ResponseEntity.ok(response);
-        }
-        Map<String, String> response = new HashMap<>();
-        response.put("status", "error");
-        response.put("message", "Email is already taken.");
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-
-    }*/
-
-
-
-
-
 }

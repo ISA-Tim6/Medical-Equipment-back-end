@@ -23,14 +23,14 @@ public class RegistratedUser extends User {
 	}
 	
 	public  RegistratedUser(RegistratedUser user) {
-		super(user.getName(), user.getSurname(), user.getUsername(), user.getPassword(), user.getEmail(), user.getPhoneNumber(), user.getCity(), user.getCountry(), user.getEmployment(), user.getInfoAboutInstitution());
+		super(user.getName(), user.getSurname(), user.getUsername(), user.getPassword(), user.getEmail(), user.getPhoneNumber(), user.getCity(), user.getCountry(), user.getEmployment(), user.getInfoAboutInstitution(),user.isActive());
 		this.penals = 0;
 		this.category = Category.REGULAR;
 	}
 
 	public RegistratedUser(String name, String surname, String username, String password, String email,
-			String phoneNumber, String city, String country, Employment employment, String infoAboutInstitution) {
-		super(name, surname, username, password, email, phoneNumber, city, country, employment, infoAboutInstitution);
+			String phoneNumber, String city, String country, Employment employment, String infoAboutInstitution,boolean isActive) {
+		super(name, surname, username, password, email, phoneNumber, city, country, employment, infoAboutInstitution,isActive);
 		this.penals = 0;
 		this.category = Category.REGULAR;
 	}
