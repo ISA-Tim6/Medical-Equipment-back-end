@@ -47,7 +47,7 @@ public class UserController {
 	}
     
     @CrossOrigin(origins="http://localhost:4200")
-    @GetMapping(value = "/{username}")
+    @GetMapping(value = "username/{username}")
 	public User getByUsername(@PathVariable String username) {
 		User user = userService.findByUsername(username);
 		return user;
