@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,27 +40,24 @@ public class UserController {
     }
     
     
-    @CrossOrigin(origins="http://localhost:4200")
+	@CrossOrigin(origins="http://localhost:4200")
     @GetMapping(value = "/{email}")
-	public User getByEmail(@PathVariable String email) {
+	public Long getByEmail(@PathVariable String email) {
+		email = email.replaceAll("%40", "@");
 		User user = userService.findByEmail(email);
-		return user;
+		if(user == null)
+			return (long) -1;
+		return user.getUser_id();
 	}
     
     @CrossOrigin(origins="http://localhost:4200")
-<<<<<<< HEAD
+
     @GetMapping(value = "/username/{username}")
 	public Long getByUsername(@PathVariable String username) {
-    	 User user = userService.findByUsername(username);
-         if(user == null)
-             return (long) -1;
-         return user.getUser_id();
-=======
-    @GetMapping(value = "username/{username}")
-	public User getByUsername(@PathVariable String username) {
 		User user = userService.findByUsername(username);
-		return user;
->>>>>>> 2b919176a9522c743b44836138114b9f452c560e
+		if(user == null)
+			return (long) -1;
+		return user.getUser_id();
 	}
     
    /* @CrossOrigin(origins="http://localhost:4200")
