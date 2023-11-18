@@ -47,10 +47,12 @@ public class UserController {
 	}
     
     @CrossOrigin(origins="http://localhost:4200")
-    @GetMapping(value = "/{username}")
-	public User getByUsername(@PathVariable String username) {
-		User user = userService.findByUsername(username);
-		return user;
+    @GetMapping(value = "/username/{username}")
+	public Long getByUsername(@PathVariable String username) {
+    	 User user = userService.findByUsername(username);
+         if(user == null)
+             return (long) -1;
+         return user.getUser_id();
 	}
     
    /* @CrossOrigin(origins="http://localhost:4200")
