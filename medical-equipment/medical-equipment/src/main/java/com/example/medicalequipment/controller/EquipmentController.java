@@ -52,4 +52,14 @@ public class EquipmentController {
 		
 		return new ResponseEntity<>(e, HttpStatus.OK);
 	}
+	
+	@CrossOrigin(origins="http://localhost:4200")
+	@GetMapping("/searchEquipment/")
+	public ResponseEntity<List<EquipmentCompaniesDto>> search() throws Exception{
+		List<EquipmentCompaniesDto> e = new ArrayList<EquipmentCompaniesDto>();
+		for(Equipment eq: this.equipmentService.search())
+			e.add(new EquipmentCompaniesDto(eq));
+		
+		return new ResponseEntity<>(e, HttpStatus.OK);
+	}
 }

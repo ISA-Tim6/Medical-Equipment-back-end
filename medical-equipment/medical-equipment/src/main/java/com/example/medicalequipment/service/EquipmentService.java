@@ -37,4 +37,8 @@ public class EquipmentService implements IEquipmentService{
 		return EquipmentRepository.searchByNameAndCompany(name, company_id);
 	}
 
+	@Override
+	public List<Equipment> search() {
+		return EquipmentRepository.search();
+	}
 }

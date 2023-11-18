@@ -12,4 +12,5 @@ public interface IEquipmentService {
 	Equipment save(Equipment e);
 	List<Equipment> searchByName(String name);
 	List<Equipment> searchByNameAndCompany(String name, Long company_id);
+	public List<Equipment> search();
 }

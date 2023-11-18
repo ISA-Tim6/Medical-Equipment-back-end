@@ -15,4 +15,7 @@ public interface IEquipmentRepository extends JpaRepository<Equipment, Long>{
 	
 	@Query("select e from Equipment e join fetch e.companies c where LOWER(e.name) LIKE LOWER(concat('%', :name, '%')) and c.company_id = :company_id")
 	public List<Equipment> searchByNameAndCompany(String name, Long company_id);
+	
+	@Query("select e from Equipment e join fetch e.companies")
+	public List<Equipment> search();
 }
