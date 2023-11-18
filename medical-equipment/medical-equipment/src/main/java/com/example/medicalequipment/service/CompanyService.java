@@ -65,4 +65,9 @@ public class CompanyService implements ICompanyService{
 		return CompanyRepository.findByAddressCityContainingIgnoreCase(city);
 	}
 	
+	@Override
+	public List<Company> findByNameAndAddressCity(String name, String city) {
+		return CompanyRepository.findByNameContainingIgnoreCaseAndAddressCityContainingIgnoreCase(name, city);
+	}
+	
 }

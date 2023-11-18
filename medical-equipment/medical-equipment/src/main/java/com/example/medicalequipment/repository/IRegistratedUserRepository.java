@@ -10,9 +10,9 @@ import com.example.medicalequipment.model.User;
 
 @Repository
 public interface IRegistratedUserRepository extends JpaRepository<RegistratedUser, Long> {
-	@Query("select u from RegistratedUser u where u.username=?1")
+	@Query("select u from User u where u.username=?1")
 	RegistratedUser getByUsername(String username);
 
-	@Query("select u from RegistratedUser u where u.email=?1")
+	@Query("select u from User u where u.email=?1")
 	RegistratedUser findByEmail(String email);
 }

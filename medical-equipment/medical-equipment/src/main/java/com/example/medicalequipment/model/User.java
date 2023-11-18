@@ -31,19 +31,20 @@ public class User {
 	@Column(name = "surname", nullable = false)
 	@NotNull
 	private String surname;
-	@Column(name = "username", nullable = false)
+	@Column(name = "username", nullable = false, unique=true)
 	@NotNull
 	private String username;
 	@Column(name = "password", nullable = false)
+	@NotNull
 	private String password;
-	@Column(name = "email", nullable = false)
+	@Column(name = "email", nullable = false, unique=true)
 	@Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
 	private String email;
 	@Column(name = "loggedBefore", nullable = false)
 	private Boolean loggedBefore;
 	@Column(name = "phoneNumber", nullable = false)
-	@Size(min = 9, max = 10, message = "Broj mora imati 9 ili 10 cifara.")
-    @Pattern(regexp = "\\d+", message = "Broj mora sadržavati samo cifre.")
+	@Size(min = 9, max = 10, message = "Must contain 9 or 10 digits.")
+    @Pattern(regexp = "\\d+", message = "Only digits are allowed.")
 	private String phoneNumber;
 	@Column(name = "city", nullable = false)
 	private String city;
