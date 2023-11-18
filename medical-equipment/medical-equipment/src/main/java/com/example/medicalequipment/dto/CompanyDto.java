@@ -1,5 +1,6 @@
 package com.example.medicalequipment.dto;
 
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +19,8 @@ public class CompanyDto {
 	private double averageGrade;
 	private AddressDto address;
 	private Set<EquipmentDto> equipment=new HashSet<EquipmentDto>();
+	private LocalTime openingHours;
+	private LocalTime closingHours;
 
 	
 	public CompanyDto(Company company) {
@@ -32,9 +35,26 @@ public class CompanyDto {
 			}		
 		}
 		
-		
+		this.openingHours = company.getOpeningHours();
+		this.closingHours = company.getClosingHours();
 	}
 	
+	public LocalTime getOpeningHours() {
+		return openingHours;
+	}
+
+	public void setOpeningHours(LocalTime openingHours) {
+		this.openingHours = openingHours;
+	}
+
+	public LocalTime getClosingHours() {
+		return closingHours;
+	}
+
+	public void setClosingHours(LocalTime closingHours) {
+		this.closingHours = closingHours;
+	}
+
 	public CompanyDto(Long company_id,String name,double averageGrade,AddressDto address) {
 		this.company_id=company_id;
 		this.name=name;

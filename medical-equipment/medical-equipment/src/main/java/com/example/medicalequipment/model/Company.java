@@ -22,6 +22,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 public class Company {
@@ -38,11 +40,13 @@ public class Company {
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "addressId", referencedColumnName = "addressId")
+	@NotNull
 	private Address address;
 
 	
 	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	//@JoinColumn(name = "company_id", nullable=false)
+	@JsonIgnore
 	private Set<CompanyAdmin> admins= new HashSet<CompanyAdmin>();
 	
 	@ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
@@ -60,9 +64,11 @@ public class Company {
 	
 
 	@Column(name = "openingHours")
+	@NotNull
 	private LocalTime openingHours;
 
 	@Column(name = "closingHours")
+	@NotNull
 	private LocalTime closingHours;
 	
 	

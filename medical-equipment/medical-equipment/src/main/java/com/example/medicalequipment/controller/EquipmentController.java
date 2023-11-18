@@ -42,4 +42,14 @@ public class EquipmentController {
 		
 		return new ResponseEntity<>(e, HttpStatus.OK);
 	}
+	
+	@CrossOrigin(origins="http://localhost:4200")
+	@GetMapping("/searchEquipmentByCompany/{name}/{company_id}")
+	public ResponseEntity<List<EquipmentCompaniesDto>> searchByName(@PathVariable String name, @PathVariable Long company_id) throws Exception{
+		List<EquipmentCompaniesDto> e = new ArrayList<EquipmentCompaniesDto>();
+		for(Equipment eq: this.equipmentService.searchByNameAndCompany(name, company_id))
+			e.add(new EquipmentCompaniesDto(eq));
+		
+		return new ResponseEntity<>(e, HttpStatus.OK);
+	}
 }

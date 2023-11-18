@@ -72,7 +72,8 @@ public class CompanyController {
 			c.setId(id);
 			c.setAverageGrade(company.getAverageGrade());
 			c.setAddress(company.getAddress());
-			
+			c.setOpeningHours(company.getOpeningHours());
+			c.setClosingHours(company.getClosingHours());
 			
 			
 			c = companyService.save(c);

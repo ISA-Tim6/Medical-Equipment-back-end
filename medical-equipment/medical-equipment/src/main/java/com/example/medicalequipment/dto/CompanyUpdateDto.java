@@ -1,5 +1,7 @@
 package com.example.medicalequipment.dto;
 
+import java.time.LocalTime;
+
 import com.example.medicalequipment.model.Address;
 
 public class CompanyUpdateDto {
@@ -7,6 +9,26 @@ public class CompanyUpdateDto {
 	private Address address;
 	private double averageGrade;
 	private Long company_id;
+	private LocalTime openingHours;
+	private LocalTime closingHours;
+	public Long getCompany_id() {
+		return company_id;
+	}
+	public void setCompany_id(Long company_id) {
+		this.company_id = company_id;
+	}
+	public LocalTime getOpeningHours() {
+		return openingHours;
+	}
+	public void setOpeningHours(LocalTime openingHours) {
+		this.openingHours = openingHours;
+	}
+	public LocalTime getClosingHours() {
+		return closingHours;
+	}
+	public void setClosingHours(LocalTime closingHours) {
+		this.closingHours = closingHours;
+	}
 	public String getName() {
 		return name;
 	}

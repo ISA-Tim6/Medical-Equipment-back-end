@@ -22,14 +22,14 @@ INSERT INTO public.working_time_calendar(
 	
 	
 INSERT INTO public.company(
-	company_id, average_grade, closing_hours, name, opening_hours, address_id, working_time_calendar_id)
-	VALUES (default, 0, null, 'Prva kompanija', null, 1, 1);
+	company_id, average_grade, name, address_id, working_time_calendar_id, opening_hours, closing_hours)
+	VALUES (default, 0, 'Prva kompanija', 1, 1, '8:00', '20:00');
 INSERT INTO public.company(
-	company_id, average_grade, closing_hours, name, opening_hours, address_id, working_time_calendar_id)
-	VALUES (default, 5, null, 'Druga kompanija', null, 3, 2);
+	company_id, average_grade, name, address_id, working_time_calendar_id, opening_hours, closing_hours)
+	VALUES (default, 5, 'Druga kompanija', 3, 2, '8:00', '20:00');
 INSERT INTO public.company(
-	company_id, average_grade, closing_hours, name, opening_hours, address_id, working_time_calendar_id)
-	VALUES (default, 4, null, 'Treca kompanija', null, 2, 3);
+	company_id, average_grade, name, address_id, working_time_calendar_id, opening_hours, closing_hours)
+	VALUES (default, 4, 'Treca kompanija', 2, 3,  '8:00', '20:00');
 	
 	
 	
