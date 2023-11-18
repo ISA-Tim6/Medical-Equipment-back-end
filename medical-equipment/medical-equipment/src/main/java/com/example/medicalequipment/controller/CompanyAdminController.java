@@ -57,6 +57,7 @@ public class CompanyAdminController {
 
 		ca.setUser_id(ca.getUser_id());
 		ca.setCity(companyAdmin.getCity());
+		ca.setUsername(companyAdmin.getUsername());
 		ca.setCountry(companyAdmin.getCountry());
 		ca.setEmail(companyAdmin.getEmail());
 		ca.setName(companyAdmin.getName());

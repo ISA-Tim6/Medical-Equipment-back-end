@@ -37,6 +37,22 @@ public class UserController {
         this.userService = userService;
         this.userRepository = userRepository;
     }
+    
+    
+    @CrossOrigin(origins="http://localhost:4200")
+    @GetMapping(value = "/{email}")
+	public User getByEmail(@PathVariable String email) {
+		User user = userService.findByEmail(email);
+		return user;
+	}
+    
+    @CrossOrigin(origins="http://localhost:4200")
+    @GetMapping(value = "/{username}")
+	public User getByUsername(@PathVariable String username) {
+		User user = userService.findByUsername(username);
+		return user;
+	}
+    
    /* @CrossOrigin(origins="http://localhost:4200")
     @GetMapping(value = "/{id}")
 	public ResponseEntity<User> getUser(@PathVariable Long id) {
