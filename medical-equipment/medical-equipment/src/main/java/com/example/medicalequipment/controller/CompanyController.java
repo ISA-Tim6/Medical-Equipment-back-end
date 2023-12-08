@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.medicalequipment.dto.CompanyDto;
 import com.example.medicalequipment.dto.CompanySearchDto;
 import com.example.medicalequipment.model.Address;
+import com.example.medicalequipment.model.Appointment;
+
 import java.util.ArrayList;
 import com.example.medicalequipment.dto.CompanyDto;
 import com.example.medicalequipment.dto.CompanyUpdateDto;
@@ -175,6 +177,11 @@ public class CompanyController {
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	 }
 	 
-	
+	 @CrossOrigin(origins="http://localhost:4200")
+		@PutMapping(value = "/addAppointment/{company_id}/{company_admin_id}")
+		public ResponseEntity<CompanyDto> addAppointment(@PathVariable Long company_id, @PathVariable Long company_admin_id,@RequestBody Appointment appointment) throws Exception{
+			Company c=companyService.addAppointment(company_id,company_admin_id,appointment);
+			return new ResponseEntity<>(new CompanyDto(c), HttpStatus.OK);
+		}
 	 
 }

@@ -36,6 +36,18 @@ public class WorkingTimeCalendar {
 
 
 
+	public Long getWorkingTimeCalendar_id() {
+		return workingTimeCalendar_id;
+	}
+
+
+
+	public void setWorkingTimeCalendar_id(Long workingTimeCalendar_id) {
+		this.workingTimeCalendar_id = workingTimeCalendar_id;
+	}
+
+
+
 	public Set<Appointment> getAppointments() {
 		return appointments;
 	}

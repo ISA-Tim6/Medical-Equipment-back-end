@@ -116,6 +116,7 @@ public class Company {
 	
 	public Company() {
 		super();
+		this.workingTimeCalendar=new WorkingTimeCalendar();
 	}
 
 	public Long getId() {
@@ -163,6 +164,7 @@ public class Company {
 		this.name = name;
 		this.averageGrade = averageGrade;
 		this.address = address;
+		this.workingTimeCalendar=new WorkingTimeCalendar();
 	}
 	
 	

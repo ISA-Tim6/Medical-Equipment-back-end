@@ -48,7 +48,6 @@ import com.example.medicalequipment.repository.IUserRepository;
 	
 
 	public CompanyAdmin createWithCompany(CompanyAdmin admin, Long id) {
-		//Company company = CompanyRepository.getById(id);
 		admin.getCompany().setId(id);
 		admin.getCompany().add(admin);
 		return this.CompanyAdminRepository.save(admin);

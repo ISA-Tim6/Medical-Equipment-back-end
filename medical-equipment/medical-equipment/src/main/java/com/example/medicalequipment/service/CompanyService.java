@@ -8,8 +8,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.medicalequipment.iservice.ICompanyService;
+import com.example.medicalequipment.model.Appointment;
 import com.example.medicalequipment.model.Company;
+import com.example.medicalequipment.model.CompanyAdmin;
 import com.example.medicalequipment.model.Equipment;
+import com.example.medicalequipment.repository.IAppointmentRepository;
+import com.example.medicalequipment.repository.ICompanyAdminRepository;
 import com.example.medicalequipment.repository.ICompanyRepository;
 import com.example.medicalequipment.repository.IEquipmentRepository;
 
@@ -19,9 +23,16 @@ public class CompanyService implements ICompanyService{
 	private final ICompanyRepository CompanyRepository;
 	@Autowired
 	private final IEquipmentRepository EquipmentRepository;
-    public CompanyService(ICompanyRepository companyRepository,IEquipmentRepository equipmentRepository){
+	@Autowired
+	private final ICompanyAdminRepository CompanyAdminRepository;
+	@Autowired
+	private final IAppointmentRepository AppointmentRepository;
+    public CompanyService(ICompanyRepository companyRepository,IEquipmentRepository equipmentRepository,
+    		ICompanyAdminRepository companyAdminRepository,IAppointmentRepository appointmentRepository){
     	this.CompanyRepository = companyRepository;
     	this.EquipmentRepository=equipmentRepository;
+    	this.CompanyAdminRepository=companyAdminRepository;
+    	this.AppointmentRepository=appointmentRepository;
     }
 	@Override
 	public Company findOne(Long id) {
@@ -68,6 +79,16 @@ public class CompanyService implements ICompanyService{
 	@Override
 	public List<Company> findByNameAndAddressCity(String name, String city) {
 		return CompanyRepository.findByNameContainingIgnoreCaseAndAddressCityContainingIgnoreCase(name, city);
+	}
+	@Override
+	public Company addAppointment(Long company_id, Long company_admin_id, Appointment appointment) {
+		Company c=findOne(company_id);
+		CompanyAdmin ca=CompanyAdminRepository.getWithCompany(company_admin_id);
+		appointment.setAdmin(ca);
+		appointment = AppointmentRepository.save(appointment);
+		c.getWorkingTimeCalendar().getAppointments().add(appointment);	
+		return CompanyRepository.save(c);
+
 	}
 	
 }

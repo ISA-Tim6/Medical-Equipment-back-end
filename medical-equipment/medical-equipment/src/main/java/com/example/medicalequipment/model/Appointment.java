@@ -18,6 +18,18 @@ public class Appointment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "appointment_id")
 	private Long appointment_id;
+	public Long getAppointment_id() {
+		return appointment_id;
+	}
+	public void setAppointment_id(Long appointment_id) {
+		this.appointment_id = appointment_id;
+	}
+	public AppointmentStatus getAppointmentStatus() {
+		return appointmentStatus;
+	}
+	public void setAppointmentStatus(AppointmentStatus appointmentStatus) {
+		this.appointmentStatus = appointmentStatus;
+	}
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
 	private CompanyAdmin admin;
