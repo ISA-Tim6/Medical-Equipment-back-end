@@ -15,4 +15,6 @@ public interface IRegistratedUserService {
 	RegistratedUser findByUsername(String username);
 	RegistratedUser update(RegistratedUser user, String oldUsername);
 	RegistratedUser findByEmail(String email);
+	RegistratedUser saveSystemAdmin(RegistratedUser user)
+			throws MailException, InterruptedException, MessagingException;
 }

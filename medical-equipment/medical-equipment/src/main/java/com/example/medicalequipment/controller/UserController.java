@@ -1,6 +1,7 @@
 package com.example.medicalequipment.controller;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import javax.persistence.EntityResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -29,6 +31,7 @@ import com.example.medicalequipment.service.UserService;
 
 @RestController
 @RequestMapping(path="api/user")
+@CrossOrigin
 public class UserController {
     private final UserService userService;
     private final IUserRepository userRepository;
@@ -59,7 +62,31 @@ public class UserController {
 			return (long) -1;
 		return user.getUser_id();
 	}
-    
+    @GetMapping("/user/{userId}")
+	@PreAuthorize("hasRole('ADMIN')")	
+	public User loadById(@PathVariable Long userId) {
+		return this.userService.findById(userId);
+	}
+
+	@GetMapping("/user/all")
+	@PreAuthorize("hasRole('ADMIN')")
+	public List<User> loadAll() {
+		return this.userService.findAll();
+	}
+
+	@GetMapping("/whoami")
+	@PreAuthorize("hasRole('REGISTRATED_USER')")
+	public User user(Principal user) {
+		System.out.println(user.getName());
+		return this.userService.findByUsername(user.getName());
+	}
+	
+	@GetMapping("/foo")
+    public Map<String, String> getFoo() {
+        Map<String, String> fooObj = new HashMap<>();
+        fooObj.put("foo", "bar");
+        return fooObj;
+	}
    /* @CrossOrigin(origins="http://localhost:4200")
     @GetMapping(value = "/{id}")
 	public ResponseEntity<User> getUser(@PathVariable Long id) {
@@ -85,4 +112,5 @@ public class UserController {
     	 return new ResponseEntity<UserResponseDto>(new UserResponseDto(user), HttpStatus.OK);
 
     }*/
+	
 }

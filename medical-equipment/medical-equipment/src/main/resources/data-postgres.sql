@@ -73,3 +73,10 @@ INSERT INTO public.system_admin(
 	user_id)
 	VALUES (3);
 
+INSERT INTO public.role (name) VALUES ('ROLE_REGISTRATED_USER');
+INSERT INTO public.role (name) VALUES ('ROLE_SYSTEM_ADMIN');
+INSERT INTO public.role (name) VALUES ('ROLE_COMPANY_ADMIN');
+
+INSERT INTO public.user_role (user_id, role_id) VALUES (1, 1); -- user-u dodeljujemo rolu USER
+INSERT INTO public.user_role (user_id, role_id) VALUES (2, 2); -- admin-u dodeljujemo rolu USER
+INSERT INTO public.user_role (user_id, role_id) VALUES (3, 3); -- user-u dodeljujemo rolu ADMIN

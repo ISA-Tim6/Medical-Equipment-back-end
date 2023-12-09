@@ -15,4 +15,7 @@ public interface IRegistratedUserRepository extends JpaRepository<RegistratedUse
 
 	@Query("select u from User u where u.email=?1")
 	RegistratedUser findByEmail(String email);
+	
+	@Query("SELECT u FROM User u WHERE u.verificationCode = ?1")
+    public RegistratedUser findByVerificationCode(String code);
 }

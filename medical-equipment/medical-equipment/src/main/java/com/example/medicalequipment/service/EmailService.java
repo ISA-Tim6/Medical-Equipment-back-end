@@ -22,22 +22,32 @@ public class EmailService implements IEmailService{
 	@Autowired
 	private Environment env;
 
-
-	public void sendNotificaitionSync(RegistratedUser user, ActivationToken token) throws MailException, InterruptedException, MessagingException {
-		String subject = "Activate account mail";
-		String message = "<html><body>" +
-                "<h2>Activate Your Account</h2>" +
-                "<p>Click the following link to activate your account:</p>" +
-                "<a href=\"http://localhost:81/api/activate/\">Activate Account</a>" +
-                "</body></html>";
-
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
-        mimeMessageHelper.setTo(user.getEmail());
-        mimeMessageHelper.setSubject(subject);
-        mimeMessageHelper.setText(message, true); 
-        javaMailSender.send(mimeMessage);
-		System.out.println("Email successfully sent!");
+	public void sendVerificationEmail(RegistratedUser user)
+			throws MailException, InterruptedException, MessagingException {
+		System.out.println(user.getVerificationCode());
+	    String toAddress = user.getEmail();
+	    String fromAddress = "Your email address";
+	    String senderName = "Your company name";
+	    String subject = "Please verify your registration";
+	    String content = "Dear [[name]],<br>"
+	            + "Please click the link below to verify your registration:<br>"
+	            + "<a href=\"http://localhost:81/api/auth/verify/" + user.getVerificationCode() + "\">Activate Account</a>" 
+	            + "Thank you,<br>"
+	            + "Your company name.";
+	     
+	    MimeMessage message = javaMailSender.createMimeMessage();
+	    MimeMessageHelper helper = new MimeMessageHelper(message);
+	     
+	    helper.setTo(user.getEmail());
+        helper.setSubject(subject); 
+	    content = content.replace("[[name]]", user.getName());
+	    
+	    
+	    helper.setText(content, true);
+	     
+	    javaMailSender.send(message);
+	     
 	}
+
 	
 }
