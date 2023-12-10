@@ -9,15 +9,6 @@ import com.example.medicalequipment.repository.IAppointmentRepository;
 
 @Service
 public class AppointmentService implements IAppointmentService{
-	@Autowired
-	private final IAppointmentRepository AppointmentRepository;
-
 	public AppointmentService(IAppointmentRepository appointmentRepository) {
-		this.AppointmentRepository = appointmentRepository;
-	}
-	@Override
-	public Appointment save(Appointment company) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

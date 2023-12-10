@@ -23,4 +23,21 @@ public class WorkingTimeCalendarDto {
 		}
 		
 	}
+	public WorkingTimeCalendarDto() {}
+
+	public Long getWorkingTimeCalendar_id() {
+		return workingTimeCalendar_id;
+	}
+
+	public void setWorkingTimeCalendar_id(Long workingTimeCalendar_id) {
+		this.workingTimeCalendar_id = workingTimeCalendar_id;
+	}
+
+	public Set<AppointmentDto> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(Set<AppointmentDto> appointments) {
+		this.appointments = appointments;
+	}
 }

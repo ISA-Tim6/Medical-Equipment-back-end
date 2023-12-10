@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.medicalequipment.iservice.ICompanyService;
 import com.example.medicalequipment.model.Appointment;
+import com.example.medicalequipment.model.AppointmentStatus;
 import com.example.medicalequipment.model.Company;
 import com.example.medicalequipment.model.CompanyAdmin;
 import com.example.medicalequipment.model.Equipment;
@@ -81,13 +82,31 @@ public class CompanyService implements ICompanyService{
 		return CompanyRepository.findByNameContainingIgnoreCaseAndAddressCityContainingIgnoreCase(name, city);
 	}
 	@Override
-	public Company addAppointment(Long company_id, Long company_admin_id, Appointment appointment) {
+	public Integer addAppointment(Long company_id, Long company_admin_id, Appointment appointment) {
 		Company c=findOne(company_id);
 		CompanyAdmin ca=CompanyAdminRepository.getWithCompany(company_admin_id);
 		appointment.setAdmin(ca);
-		appointment = AppointmentRepository.save(appointment);
-		c.getWorkingTimeCalendar().getAppointments().add(appointment);	
-		return CompanyRepository.save(c);
+		appointment.setAppointmentStatus(AppointmentStatus.AVAILABLE);
+		appointment.setEnd(appointment.getTime().plusHours(1));
+		if(appointment.getEnd().isBefore(c.getClosingHours()) && appointment.getTime().isAfter(c.getOpeningHours()))
+		{
+			List<Long> overLapingStarts=AppointmentRepository.getAllOverlappingStart(company_id, appointment.getTime(), appointment.getEnd(), appointment.getDate());
+			List<Long> overLapingEnds=AppointmentRepository.getAllOverlappingEnd(company_id, appointment.getTime(), appointment.getEnd(), appointment.getDate());
+
+			if(overLapingStarts.size()==0 && overLapingEnds.size()==0)
+				{
+					appointment = AppointmentRepository.save(appointment);
+					c.getWorkingTimeCalendar().getAppointments().add(appointment);
+					CompanyRepository.save(c);
+					return 2;
+				}
+			else 
+				return 0;
+
+		}
+		else 
+			return 1;
+
 
 	}
 	

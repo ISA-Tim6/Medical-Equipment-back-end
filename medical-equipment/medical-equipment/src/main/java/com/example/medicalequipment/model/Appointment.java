@@ -31,11 +31,19 @@ public class Appointment {
 	public void setAppointmentStatus(AppointmentStatus appointmentStatus) {
 		this.appointmentStatus = appointmentStatus;
 	}
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
 	private CompanyAdmin admin;
 	@Column(name = "localDate",nullable = false)
 	private LocalDate date;
+	@Column(name = "end",nullable = false)
+	private LocalTime end;
+	public LocalTime getEnd() {
+		return end;
+	}
+	public void setEnd(LocalTime end) {
+		this.end = end;
+	}
 	@Column(name = "localTime",nullable = false)
 	private LocalTime time;
 	@Column(name = "duration",nullable = false)

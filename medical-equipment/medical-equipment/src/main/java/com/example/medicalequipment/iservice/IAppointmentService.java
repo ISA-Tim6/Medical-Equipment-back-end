@@ -6,6 +6,5 @@ import com.example.medicalequipment.model.Appointment;
 
 @Service
 public interface IAppointmentService {
-	Appointment save(Appointment company);
 
 }

@@ -57,8 +57,8 @@ public class CompanyController {
 			if (company == null) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
-
-			return new ResponseEntity<>(new CompanyDto(company), HttpStatus.OK);
+			CompanyDto cdto=new CompanyDto(company);
+			return new ResponseEntity<>(cdto, HttpStatus.OK);
 	 }
 	 
 	 @CrossOrigin(origins="http://localhost:4200")
@@ -179,9 +179,13 @@ public class CompanyController {
 	 
 	 @CrossOrigin(origins="http://localhost:4200")
 		@PutMapping(value = "/addAppointment/{company_id}/{company_admin_id}")
-		public ResponseEntity<CompanyDto> addAppointment(@PathVariable Long company_id, @PathVariable Long company_admin_id,@RequestBody Appointment appointment) throws Exception{
-			Company c=companyService.addAppointment(company_id,company_admin_id,appointment);
-			return new ResponseEntity<>(new CompanyDto(c), HttpStatus.OK);
+		public ResponseEntity<Integer> addAppointment(@PathVariable Long company_id, @PathVariable Long company_admin_id,@RequestBody Appointment appointment) throws Exception{
+			Integer c=companyService.addAppointment(company_id,company_admin_id,appointment);
+			if(c==0)
+				return new ResponseEntity<>(0, HttpStatus.OK);
+			if(c==1)
+				return new ResponseEntity<>(1, HttpStatus.OK);
+			return new ResponseEntity<>(2, HttpStatus.OK);
 		}
 	 
 }
