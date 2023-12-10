@@ -68,7 +68,7 @@ public class TokenUtils {
 		List<String> roles = user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
-		System.out.println("usao");
+		System.out.println("usao u generate Token");
 		return Jwts.builder()
 				.setIssuer(APP_NAME)
 				.setSubject(user.getUsername())
