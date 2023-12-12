@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -48,6 +50,7 @@ public class CompanyAdminController {
 	
 	@CrossOrigin(origins="http://localhost:4200")
 	@PutMapping(value = "/{id}")
+	
 	public ResponseEntity<CompanyAdminDto> updateCompanyAdmin(@PathVariable Long id,@RequestBody User companyAdmin) {
 
 		CompanyAdmin ca = companyAdminService.findOne(id);
@@ -87,10 +90,13 @@ public class CompanyAdminController {
 	
     @CrossOrigin(origins="http://localhost:4200")
     @GetMapping(value = "/{id}")
+    //@PreAuthorize("hasAnyAuthority('COMPANY_ADMIN')")
 	public ResponseEntity<CompanyAdminDto> getAdmin(@PathVariable Long id) throws Exception {
 
 		CompanyAdmin companyAdmin=companyAdminService.findOne(id);
-
+		for(GrantedAuthority i:companyAdmin.getAuthorities()) {
+			System.out.println(i.getAuthority());
+		}
 		if (companyAdmin == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -100,6 +106,7 @@ public class CompanyAdminController {
     
     @CrossOrigin(origins="http://localhost:4200")
     @GetMapping(value = "/{company_id}/{user_id}")
+    
 	public ResponseEntity<List<CompanyAdminDto>> getOtherCompanyAdminsForCompany(@PathVariable Long company_id,@PathVariable Long user_id) throws Exception {
 		List<CompanyAdminDto> companyAdminDtos=new ArrayList<CompanyAdminDto>();
 		for(Long ca:companyAdminService.getOtherCompanyAdminsForCompany(company_id,user_id)) {

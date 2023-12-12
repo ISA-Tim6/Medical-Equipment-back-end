@@ -36,13 +36,13 @@ INSERT INTO public.company(
 	
 INSERT INTO public."user"(
 	user_id, city, country, email, employment, info_about_institution, logged_before, name, password, phone_number, surname, username, is_active)
-	VALUES (default, 'Trebinje', 'BiH', 'kovacevic.ra15.2020@uns.ac.rs', 2, 'No info', false, 'Anja', 'anja', '012345678', 'Ducic', 'anja',false);
+	VALUES (default, 'Trebinje', 'BiH', 'kovacevic.ra15.2020@uns.ac.rs', 2, 'No info', false, 'Anja', '$2a$10$e7XlFOO4M3on0lR25rgGa.RMg7gsVatulqO3CVurJyJNHNatlg4iG', '012345678', 'Ducic', 'anja',true); --lozinka anja
 INSERT INTO public."user"(
 	user_id, city, country, email, employment, info_about_institution, logged_before, name, password, phone_number, surname, username, is_active)
-	VALUES (default, 'Ruma', 'Srbija', 'milicavujic2001@gmail.com', 0, 'No info', false, 'Milica', 'milica', '012345678', 'Vujic', 'milica', false);
+	VALUES (default, 'Ruma', 'Srbija', 'milicavujic2001@gmail.com', 0, 'No info', false, 'Milica', '$2a$10$ipZcyjzB32XgfhX.ib1EZezNK14F6DHC/TdzmBUDnnuWahuBZgUBe', '012345678', 'Vujic', 'milica', true); --lozinka milica
 INSERT INTO public."user"(
 	user_id, city, country, email, employment, info_about_institution, logged_before, name, password, phone_number, surname, username, is_active)
-	VALUES (default, 'Nevesinje', 'BiH', 'ducic.ra5.2020@uns.ac.rs', 0, 'No info', false, 'Ivana', 'ivana', '012345678', 'Kovacevic', 'ivana', false);
+	VALUES (default, 'Nevesinje', 'BiH', 'ducic.ra5.2020@uns.ac.rs', 0, 'No info', false, 'Ivana', '$2a$10$N1N7lG1i9VXTw4i2mbzN1OwbfS5G04EcuQHAUkVgupo.FEhtGu1TS', '012345678', 'Kovacevic', 'ivana', true); --lozinka ivana
 
 
 
@@ -73,3 +73,10 @@ INSERT INTO public.system_admin(
 	user_id)
 	VALUES (3);
 
+INSERT INTO public.role (name) VALUES ('ROLE_REGISTRATED_USER');
+INSERT INTO public.role (name) VALUES ('ROLE_SYSTEM_ADMIN');
+INSERT INTO public.role (name) VALUES ('ROLE_COMPANY_ADMIN');
+
+INSERT INTO public.user_role (user_id, role_id) VALUES (1, 1); -- user-u dodeljujemo rolu USER
+INSERT INTO public.user_role (user_id, role_id) VALUES (2, 2); -- admin-u dodeljujemo rolu USER
+INSERT INTO public.user_role (user_id, role_id) VALUES (3, 3); -- user-u dodeljujemo rolu ADMIN

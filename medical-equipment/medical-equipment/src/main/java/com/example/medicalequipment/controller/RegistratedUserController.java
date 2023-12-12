@@ -7,9 +7,12 @@ import java.util.Map;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +39,7 @@ import com.example.medicalequipment.service.UserService;
 
 
 @RestController
-@RequestMapping(path="api/")
+@RequestMapping(path="api/registratedUser")
 public class RegistratedUserController {
 	private final RegistratedUserService userService;
 	private Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -55,7 +58,7 @@ public class RegistratedUserController {
     @PostMapping("saveUser")
     public RegistratedUser save(@RequestBody RegistratedUser user) throws MailException, InterruptedException, MessagingException {
     	System.out.println("infoAboutInstitution received on the server: " + user.getInfoAboutInstitution() + user.getCity());
-    	return userService.save(user);
+    	return userService.saveSystemAdmin(user);
     }
     
     @CrossOrigin(origins="http://localhost:4200")
@@ -63,7 +66,11 @@ public class RegistratedUserController {
 	public ResponseEntity<RegistratedUser> getUser(@PathVariable Long id) {
 
 		RegistratedUser user = userService.findOne(id);
-
+		for(GrantedAuthority i:user.getAuthorities()) {
+			System.out.println(i.getAuthority());
+			System.out.println(i.getAuthority().compareTo("ROLE_REGISTRATED_USER"));
+			System.out.println("uslooooo");
+		}
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -83,9 +90,5 @@ public class RegistratedUserController {
 		System.out.println(oldUsername);
 		return new ResponseEntity<>(userService.update(user, oldUsername), HttpStatus.OK);
 	}
-    @GetMapping("activate")
-    public String activateAccount() throws MailException, InterruptedException, MessagingException {
-    	return "<h1>Account activated.</h1>";
-
-    }
+   
 }

@@ -2,18 +2,15 @@ package com.example.medicalequipment.service;
 
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.medicalequipment.dto.UserRequest;
 import com.example.medicalequipment.iservice.IUserService;
-import com.example.medicalequipment.model.Category;
-import com.example.medicalequipment.model.Employment;
-import com.example.medicalequipment.model.RegistratedUser;
+import com.example.medicalequipment.model.Role;
 import com.example.medicalequipment.model.User;
 import com.example.medicalequipment.repository.IUserRepository;
 
@@ -21,6 +18,11 @@ import com.example.medicalequipment.repository.IUserRepository;
 public class UserService implements IUserService{
 	@Autowired
 	private final IUserRepository UserRepository;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private RoleService roleService;
 	public UserService(IUserRepository userRepository){
     	this.UserRepository = userRepository;
     }
@@ -33,6 +35,33 @@ public class UserService implements IUserService{
 	public User findByEmail(String email) {
 		// TODO Auto-generated method stub
 		return this.UserRepository.findByEmail(email);
+	}
+	public User findById(Long id) throws AccessDeniedException {
+		return UserRepository.findById(id).orElseGet(null);
+	}
+
+	public List<User> findAll() throws AccessDeniedException {
+		return UserRepository.findAll();
+	}
+
+	@Override
+	public User save(UserRequest userRequest) {
+		User u = new User();
+		u.setUsername(userRequest.getUsername());
+		
+		// pre nego sto postavimo lozinku u atribut hesiramo je kako bi se u bazi nalazila hesirana lozinka
+		// treba voditi racuna da se koristi isi password encoder bean koji je postavljen u AUthenticationManager-u kako bi koristili isti algoritam
+		u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+		
+		u.setName(userRequest.getFirstname());
+		u.setSurname(userRequest.getLastname());
+		u.setActive(true);
+		u.setEmail(userRequest.getEmail());
+
+		// u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
+		
+		
+		return this.UserRepository.save(u);
 	}
 
 

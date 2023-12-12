@@ -8,5 +8,5 @@ import com.example.medicalequipment.model.ActivationToken;
 import com.example.medicalequipment.model.RegistratedUser;
 
 public interface IEmailService {
-	public void sendNotificaitionSync(RegistratedUser user,ActivationToken token) throws MailException, InterruptedException, MessagingException;
+	public void sendVerificationEmail(RegistratedUser user) throws MailException, InterruptedException, MessagingException;
 }

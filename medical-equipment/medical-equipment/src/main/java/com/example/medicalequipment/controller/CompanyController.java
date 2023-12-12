@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,6 +40,7 @@ public class CompanyController {
 	
 	@CrossOrigin(origins="http://localhost:4200")
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_ADMIN','ROLE_COMPANY_ADMIN')")
 	public ResponseEntity<List<CompanyDto>> getAllCompanies() throws Exception {
 		List<CompanyDto> companiesDto=new ArrayList<CompanyDto>();
 		for(Company c:companyService.getAll())
@@ -50,6 +52,7 @@ public class CompanyController {
 	
 	 @CrossOrigin(origins="http://localhost:4200")
 	    @GetMapping(value = "/{id}")
+	 @PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_ADMIN','ROLE_COMPANY_ADMIN')")
 		public ResponseEntity<CompanyDto> getCompany(@PathVariable Long id) throws Exception {
 
 			Company company=companyService.findOne(id);
@@ -63,6 +66,7 @@ public class CompanyController {
 	 
 	 @CrossOrigin(origins="http://localhost:4200")
 		@PutMapping(value="{id}")
+	 @PreAuthorize("hasAuthority('ROLE_COMPANY_ADMIN')")
 		public ResponseEntity<CompanyDto> updateCompany(@RequestBody CompanyUpdateDto company,@PathVariable Long id) throws Exception{
 
 			Company c = companyService.findOne(id);
@@ -85,12 +89,14 @@ public class CompanyController {
 	 
 	 @CrossOrigin(origins="http://localhost:4200")
 	    @PostMapping(value="/create")
+	 @PreAuthorize("hasAuthority('ROLE_COMPANY_ADMIN')")
 		public ResponseEntity<CompanyDto> create(@RequestBody Company company) throws Exception {
 			return new ResponseEntity<CompanyDto>(new CompanyDto(companyService.save(company)), HttpStatus.OK);
 		}
 	 
 	 @CrossOrigin(origins="http://localhost:4200")
 	    @GetMapping(value = "/getAllCompanies")
+	 @PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_ADMIN','ROLE_COMPANY_ADMIN')")
 		public ResponseEntity<List<CompanyDto>> getAll() throws Exception {
 
 			List<Company> result = companyService.getAll();
@@ -107,8 +113,9 @@ public class CompanyController {
 
 			return new ResponseEntity<>(resultDto, HttpStatus.OK);
 		}
-	 @CrossOrigin(origins="http://localhost:4200")
+	 	@CrossOrigin(origins="http://localhost:4200")
 		@PutMapping(value = "/addEquipment/{id}")
+	 	@PreAuthorize("hasAuthority('ROLE_SYSTEM_ADMIN')")
 		public ResponseEntity<CompanyDto> addEquipment(@RequestBody Equipment equipment,@PathVariable Long id) throws Exception{
 			
 			Company c=companyService.addEquipment(equipment, id);
@@ -117,6 +124,7 @@ public class CompanyController {
 		}
 	 @CrossOrigin(origins="http://localhost:4200")
 		@PutMapping(value = "/removeEquipment/{company_id}")
+	 @PreAuthorize("hasAuthority('ROLE_SYSTEM_ADMIN')")
 		public ResponseEntity<CompanyDto> removeEquipment(@PathVariable Long company_id,@RequestBody Equipment equipment) throws Exception{
 			Company c=companyService.removeEquipment(company_id, equipment.getEquipment_id());
 			return new ResponseEntity<>(new CompanyDto(c), HttpStatus.OK);

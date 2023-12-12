@@ -1,26 +1,36 @@
 package com.example.medicalequipment.model;
 
+import static javax.persistence.InheritanceType.JOINED;
+
+import java.security.Timestamp;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import static javax.persistence.InheritanceType.JOINED;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "`User`")
 @Inheritance(strategy=JOINED)
-public class User {
+public class User implements UserDetails{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,6 +66,11 @@ public class User {
 	private String infoAboutInstitution;
 	@Column(name = "isActive", nullable = false)
 	private boolean isActive;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
+    private List<Role> roles;
 	public User() {
 	}
 
@@ -90,6 +105,8 @@ public class User {
 	}
 
 
+
+	
 
 	public Long getUser_id() {
 		return user_id;
@@ -221,5 +238,51 @@ public class User {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
-	
+
+
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+
+
+	@JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles;
+    }
+
+
+
+	@JsonIgnore
+	@Override
+	public boolean isAccountNonExpired() {
+	    return true;
+	}
+
+	@JsonIgnore
+	@Override
+	public boolean isAccountNonLocked() {
+	    return true;
+	}
+
+	@JsonIgnore
+	@Override
+	public boolean isCredentialsNonExpired() {
+	    return true;
+	}
+
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return isActive;
+	}
+
 }
