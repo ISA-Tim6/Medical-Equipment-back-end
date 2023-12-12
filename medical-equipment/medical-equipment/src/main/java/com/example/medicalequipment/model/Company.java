@@ -54,9 +54,7 @@ public class Company {
 	inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"))
 	private Set<Equipment> equipment=new HashSet<Equipment>();
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name  = "company_id", nullable=false)
-	private Set<EquipmentStock> equipmentStocks=new HashSet<EquipmentStock>();
+	
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "workingTimeCalendar_id")
@@ -202,15 +200,6 @@ public class Company {
 		return Objects.hashCode(name);
 	}
 
-	
-
-	public Set<EquipmentStock> getEquipmentStocks() {
-		return equipmentStocks;
-	}
-
-	public void setEquipmentStocks(Set<EquipmentStock> equipmentStocks) {
-		this.equipmentStocks = equipmentStocks;
-	}
 
 	public WorkingTimeCalendar getWorkingTimeCalendar() {
 		return workingTimeCalendar;

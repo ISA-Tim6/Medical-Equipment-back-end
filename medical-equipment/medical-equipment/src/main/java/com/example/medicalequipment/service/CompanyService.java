@@ -46,7 +46,7 @@ public class CompanyService implements ICompanyService{
 	
 	@Override 
 	public Company addEquipment(Equipment equipment,Long company_id) {
-		Equipment e=new Equipment(equipment.getDescription(),equipment.getName(),equipment.getType());
+		Equipment e=new Equipment(equipment.getDescription(),equipment.getName(),equipment.getType(),equipment.getPrice(),equipment.getQuantity());
 		e.setCompanies(new HashSet<Company>());
 		Company company=CompanyRepository.findById(company_id).orElseGet(null);
 		e = EquipmentRepository.save(e);
