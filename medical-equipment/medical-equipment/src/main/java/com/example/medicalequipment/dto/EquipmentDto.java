@@ -19,6 +19,7 @@ public class EquipmentDto {
 		this.price=equipment.getPrice();
 		this.quantity=equipment.getQuantity();
 	}
+	public EquipmentDto() {}
 
 	public Double getPrice() {
 		return price;

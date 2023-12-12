@@ -31,10 +31,10 @@ public class Equipment {
 	@NotNull @NotEmpty
 	@Column(name = "type", nullable = false)
 	private String type;
-	@NotNull @NotEmpty
+	@NotNull 
 	@Column(name = "price", nullable = false)
 	private Double price;
-	@NotNull @NotEmpty
+	@NotNull 
 	@Column(name = "quantity", nullable = false)
 	private Integer quantity;
 	

@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.medicalequipment.dto.EquipmentDto;
 import com.example.medicalequipment.iservice.ICompanyService;
 import com.example.medicalequipment.model.Appointment;
 import com.example.medicalequipment.model.AppointmentStatus;
@@ -17,6 +19,7 @@ import com.example.medicalequipment.repository.IAppointmentRepository;
 import com.example.medicalequipment.repository.ICompanyAdminRepository;
 import com.example.medicalequipment.repository.ICompanyRepository;
 import com.example.medicalequipment.repository.IEquipmentRepository;
+import com.example.medicalequipment.repository.IReservationRepository;
 
 @Service
 public class CompanyService implements ICompanyService{
@@ -28,12 +31,16 @@ public class CompanyService implements ICompanyService{
 	private final ICompanyAdminRepository CompanyAdminRepository;
 	@Autowired
 	private final IAppointmentRepository AppointmentRepository;
+	@Autowired
+	private final IReservationRepository ReservationRepository;
     public CompanyService(ICompanyRepository companyRepository,IEquipmentRepository equipmentRepository,
-    		ICompanyAdminRepository companyAdminRepository,IAppointmentRepository appointmentRepository){
+    		ICompanyAdminRepository companyAdminRepository,IAppointmentRepository appointmentRepository,
+    		IReservationRepository reservationRepository){
     	this.CompanyRepository = companyRepository;
     	this.EquipmentRepository=equipmentRepository;
     	this.CompanyAdminRepository=companyAdminRepository;
     	this.AppointmentRepository=appointmentRepository;
+    	this.ReservationRepository=reservationRepository;
     }
 	@Override
 	public Company findOne(Long id) {
@@ -57,9 +64,14 @@ public class CompanyService implements ICompanyService{
 	}
 	@Override
 	public Company removeEquipment(Long company_id, Long equipment_id) {
-		CompanyRepository.deleteEquipmentFromCompany(equipment_id, company_id);
-		Company c=findOne(company_id);
-		return c;
+		List<Long> newReservationsForEquipment=ReservationRepository.getNewReservationForEquipment(equipment_id);
+		if(newReservationsForEquipment.size()==0)
+		{
+			CompanyRepository.deleteEquipmentFromCompany(equipment_id, company_id);
+			Company c=findOne(company_id);
+			return c;
+		}
+		return null;
 	}
 	@Override
 	public List<Company> getAll() {
@@ -109,5 +121,6 @@ public class CompanyService implements ICompanyService{
 
 
 	}
+
 	
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.medicalequipment.dto.EquipmentDto;
 import com.example.medicalequipment.model.Appointment;
 import com.example.medicalequipment.model.Company;
 import com.example.medicalequipment.model.Equipment;

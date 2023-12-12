@@ -73,3 +73,20 @@ INSERT INTO public.system_admin(
 	user_id)
 	VALUES (3);
 
+INSERT INTO public.appointment(
+	appointment_id, appointment_status, local_date, duration, "end", local_time, user_id)
+	VALUES (default, 0, '12-12-2023', 60, '17:00:00', '16:00:00', 2);
+INSERT INTO public.item(
+	item_id, quantity)
+	VALUES (default, 1);
+	
+INSERT INTO public.equipment_item(
+	equipment_id, item_id)
+	VALUES (1, 1);
+	
+INSERT INTO public.reservation(
+	reservation_id, reservation_status, appointment_id, qr_code_id)
+	VALUES (default, 0, 1, null);
+INSERT INTO public.reservation_item(
+	reservation_id, item_id)
+	VALUES (1, 1);

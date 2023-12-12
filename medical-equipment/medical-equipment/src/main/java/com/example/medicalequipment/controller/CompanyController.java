@@ -20,6 +20,7 @@ import com.example.medicalequipment.model.Appointment;
 import java.util.ArrayList;
 import com.example.medicalequipment.dto.CompanyDto;
 import com.example.medicalequipment.dto.CompanyUpdateDto;
+import com.example.medicalequipment.dto.EquipmentDto;
 import com.example.medicalequipment.iservice.ICompanyService;
 import com.example.medicalequipment.model.Company;
 import com.example.medicalequipment.model.Equipment;
@@ -119,7 +120,11 @@ public class CompanyController {
 		@PutMapping(value = "/removeEquipment/{company_id}")
 		public ResponseEntity<CompanyDto> removeEquipment(@PathVariable Long company_id,@RequestBody Equipment equipment) throws Exception{
 			Company c=companyService.removeEquipment(company_id, equipment.getEquipment_id());
-			return new ResponseEntity<>(new CompanyDto(c), HttpStatus.OK);
+			if (c!=null)
+				return new ResponseEntity<>(new CompanyDto(c), HttpStatus.OK);
+			else
+				return new ResponseEntity<>(null, HttpStatus.OK);
+			
 		}
 	 
 
@@ -187,5 +192,5 @@ public class CompanyController {
 				return new ResponseEntity<>(1, HttpStatus.OK);
 			return new ResponseEntity<>(2, HttpStatus.OK);
 		}
-	 
+	
 }
