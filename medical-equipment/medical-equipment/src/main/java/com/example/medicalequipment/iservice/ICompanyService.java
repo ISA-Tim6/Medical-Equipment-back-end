@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.medicalequipment.dto.EquipmentDto;
+import com.example.medicalequipment.model.Appointment;
 import com.example.medicalequipment.model.Company;
 import com.example.medicalequipment.model.Equipment;
 
@@ -19,4 +21,5 @@ public interface ICompanyService {
 	List<Company> findByAddressCity(String city);
 	List<Company> findByNameAndAddressCity(String name, String city);
 	Company removeEquipment(Long company_id,Long equipment_id);
+	Integer addAppointment(Long company_id,Long company_admin_id,Appointment appointment);
 }

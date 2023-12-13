@@ -65,7 +65,6 @@ import com.example.medicalequipment.repository.IUserRepository;
 	
 
 	public CompanyAdmin createWithCompany(CompanyAdmin admin, Long id) {
-		//Company company = CompanyRepository.getById(id);
 		admin.getCompany().setId(id);
 		List<Role> roles = RoleService.findByName("ROLE_COMPANY_ADMIN");
 		System.out.println(roles+"---------");

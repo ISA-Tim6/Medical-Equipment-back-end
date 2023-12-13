@@ -31,6 +31,12 @@ public class Equipment {
 	@NotNull @NotEmpty
 	@Column(name = "type", nullable = false)
 	private String type;
+	@NotNull 
+	@Column(name = "price", nullable = false)
+	private Double price;
+	@NotNull 
+	@Column(name = "quantity", nullable = false)
+	private Integer quantity;
 	
 	@ManyToMany(mappedBy = "equipment",fetch=FetchType.LAZY, cascade = CascadeType.ALL)
 	//@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"),
@@ -39,13 +45,31 @@ public class Equipment {
 	
 	private Equipment() {}
 	
-	public Equipment(String description,String name,String type)
+	public Equipment(String description,String name,String type,Double price,Integer quantity)
 	{
 		this.description=description;
 		this.type=type;
 		this.name=name;
+		this.price=price;
+		this.quantity=quantity;
 	}
 
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
 
 	public Long getEquipment_id() {
 		return equipment_id;

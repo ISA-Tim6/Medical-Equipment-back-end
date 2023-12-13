@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.medicalequipment.dto.CompanyDto;
 import com.example.medicalequipment.dto.CompanySearchDto;
 import com.example.medicalequipment.model.Address;
+import com.example.medicalequipment.model.Appointment;
+
 import java.util.ArrayList;
 import com.example.medicalequipment.dto.CompanyDto;
 import com.example.medicalequipment.dto.CompanyUpdateDto;
+import com.example.medicalequipment.dto.EquipmentDto;
 import com.example.medicalequipment.iservice.ICompanyService;
 import com.example.medicalequipment.model.Company;
 import com.example.medicalequipment.model.Equipment;
@@ -58,8 +61,8 @@ public class CompanyController {
 			if (company == null) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
-
-			return new ResponseEntity<>(new CompanyDto(company), HttpStatus.OK);
+			CompanyDto cdto=new CompanyDto(company);
+			return new ResponseEntity<>(cdto, HttpStatus.OK);
 	 }
 	 
 	 @CrossOrigin(origins="http://localhost:4200")
@@ -125,7 +128,11 @@ public class CompanyController {
 	 @PreAuthorize("hasAuthority('ROLE_SYSTEM_ADMIN')")
 		public ResponseEntity<CompanyDto> removeEquipment(@PathVariable Long company_id,@RequestBody Equipment equipment) throws Exception{
 			Company c=companyService.removeEquipment(company_id, equipment.getEquipment_id());
-			return new ResponseEntity<>(new CompanyDto(c), HttpStatus.OK);
+			if (c!=null)
+				return new ResponseEntity<>(new CompanyDto(c), HttpStatus.OK);
+			else
+				return new ResponseEntity<>(null, HttpStatus.OK);
+			
 		}
 	 
 
@@ -183,6 +190,15 @@ public class CompanyController {
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	 }
 	 
+	 @CrossOrigin(origins="http://localhost:4200")
+		@PutMapping(value = "/addAppointment/{company_id}/{company_admin_id}")
+		public ResponseEntity<Integer> addAppointment(@PathVariable Long company_id, @PathVariable Long company_admin_id,@RequestBody Appointment appointment) throws Exception{
+			Integer c=companyService.addAppointment(company_id,company_admin_id,appointment);
+			if(c==0)
+				return new ResponseEntity<>(0, HttpStatus.OK);
+			if(c==1)
+				return new ResponseEntity<>(1, HttpStatus.OK);
+			return new ResponseEntity<>(2, HttpStatus.OK);
+		}
 	
-	 
 }

@@ -55,11 +55,11 @@ INSERT INTO public.company_admin(
 	
 	
 INSERT INTO public.equipment(
-	equipment_id, description, name, type)
-	VALUES (default, 'Hirurske makaze', 'Oprema 1', 'Hirurska oprema');
+	equipment_id, description, name, type,price,quantity)
+	VALUES (default, 'Hirurske makaze', 'Oprema 1', 'Hirurska oprema',500,5);
 INSERT INTO public.equipment(
-	equipment_id, description, name, type)
-	VALUES (default, 'Zavoj', 'Oprema 2', 'Zavoji');
+	equipment_id, description, name, type,price,quantity)
+	VALUES (default, 'Zavoj', 'Oprema 2', 'Zavoji',100,20);
 	
 INSERT INTO public.company_equipment(
 	company_id, equipment_id)
@@ -73,6 +73,7 @@ INSERT INTO public.system_admin(
 	user_id)
 	VALUES (3);
 
+
 INSERT INTO public.role (name) VALUES ('ROLE_REGISTRATED_USER');
 INSERT INTO public.role (name) VALUES ('ROLE_SYSTEM_ADMIN');
 INSERT INTO public.role (name) VALUES ('ROLE_COMPANY_ADMIN');
@@ -80,3 +81,22 @@ INSERT INTO public.role (name) VALUES ('ROLE_COMPANY_ADMIN');
 INSERT INTO public.user_role (user_id, role_id) VALUES (1, 1); -- user-u dodeljujemo rolu USER
 INSERT INTO public.user_role (user_id, role_id) VALUES (2, 2); -- admin-u dodeljujemo rolu USER
 INSERT INTO public.user_role (user_id, role_id) VALUES (3, 3); -- user-u dodeljujemo rolu ADMIN
+
+INSERT INTO public.appointment(
+	appointment_id, appointment_status, local_date, duration, "end", local_time, user_id)
+	VALUES (default, 0, '12-12-2023', 60, '17:00:00', '16:00:00', 2);
+INSERT INTO public.item(
+	item_id, quantity)
+	VALUES (default, 1);
+	
+INSERT INTO public.equipment_item(
+	equipment_id, item_id)
+	VALUES (1, 1);
+	
+INSERT INTO public.reservation(
+	reservation_id, reservation_status, appointment_id, qr_code_id)
+	VALUES (default, 0, 1, null);
+INSERT INTO public.reservation_item(
+	reservation_id, item_id)
+	VALUES (1, 1);
+

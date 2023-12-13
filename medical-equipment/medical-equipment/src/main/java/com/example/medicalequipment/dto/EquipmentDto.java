@@ -8,12 +8,33 @@ public class EquipmentDto {
 	private String name;
 	private String description;
 	private String type;
+	private Double price;
+	private Integer quantity;
 	
 	public EquipmentDto(Equipment equipment) {
 		this.equipment_id=equipment.getEquipment_id();
 		this.name=equipment.getName();
 		this.description=equipment.getDescription();
 		this.type=equipment.getType();
+		this.price=equipment.getPrice();
+		this.quantity=equipment.getQuantity();
+	}
+	public EquipmentDto() {}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 	public Long getEquipment_id() {

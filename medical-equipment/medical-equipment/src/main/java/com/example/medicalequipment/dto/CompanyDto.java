@@ -6,7 +6,6 @@ import java.util.Set;
 
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.medicalequipment.model.Equipment;
 
@@ -21,6 +20,7 @@ public class CompanyDto {
 	private Set<EquipmentDto> equipment=new HashSet<EquipmentDto>();
 	private LocalTime openingHours;
 	private LocalTime closingHours;
+	private WorkingTimeCalendarDto workingTimeCalendar;
 
 	
 	public CompanyDto(Company company) {
@@ -37,8 +37,17 @@ public class CompanyDto {
 		
 		this.openingHours = company.getOpeningHours();
 		this.closingHours = company.getClosingHours();
+		this.workingTimeCalendar=new WorkingTimeCalendarDto(company.getWorkingTimeCalendar());
 	}
 	
+	public WorkingTimeCalendarDto getWorkingTimeCalendar() {
+		return workingTimeCalendar;
+	}
+
+	public void setWorkingTimeCalendar(WorkingTimeCalendarDto workingTimeCalendar) {
+		this.workingTimeCalendar = workingTimeCalendar;
+	}
+
 	public LocalTime getOpeningHours() {
 		return openingHours;
 	}
