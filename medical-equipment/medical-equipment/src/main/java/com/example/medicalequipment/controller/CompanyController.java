@@ -188,4 +188,10 @@ public class CompanyController {
 			return new ResponseEntity<>(2, HttpStatus.OK);
 		}
 	 
+	 @CrossOrigin(origins="http://localhost:4200")
+	    @PutMapping("/updateAppointment/{company_id}/{company_admin_id}")
+		public ResponseEntity<Integer> updateAppointment(@PathVariable Long company_id, @PathVariable Long company_admin_id,@RequestBody Appointment appointment) {
+			return new ResponseEntity<>(companyService.updateAppointment(company_id,company_admin_id,appointment), HttpStatus.OK);
+		}
+	 
 }

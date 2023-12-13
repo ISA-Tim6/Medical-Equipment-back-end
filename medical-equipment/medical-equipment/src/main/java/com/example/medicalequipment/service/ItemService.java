@@ -30,7 +30,7 @@ public class ItemService implements IItemService {
 	public Item save(Item item) throws MailException, InterruptedException, MessagingException {
 		System.out.println("usao");
 		System.out.println(item);
-		return this.ItemRepository.save(item);
+		return ItemRepository.save(item);
 	
 	}
 
