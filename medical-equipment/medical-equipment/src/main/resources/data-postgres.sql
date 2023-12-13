@@ -55,11 +55,11 @@ INSERT INTO public.company_admin(
 	
 	
 INSERT INTO public.equipment(
-	equipment_id, description, name, type)
-	VALUES (default, 'Hirurske makaze', 'Oprema 1', 'Hirurska oprema');
+	equipment_id, description, name, type,price,quantity)
+	VALUES (default, 'Hirurske makaze', 'Oprema 1', 'Hirurska oprema',500,5);
 INSERT INTO public.equipment(
-	equipment_id, description, name, type)
-	VALUES (default, 'Zavoj', 'Oprema 2', 'Zavoji');
+	equipment_id, description, name, type,price,quantity)
+	VALUES (default, 'Zavoj', 'Oprema 2', 'Zavoji',100,20);
 	
 INSERT INTO public.company_equipment(
 	company_id, equipment_id)

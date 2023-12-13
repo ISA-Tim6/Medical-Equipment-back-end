@@ -15,23 +15,40 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class WorkingTimeCalendar {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "workingTimeCalendar_id", unique = true, nullable = false)
 	private Long workingTimeCalendar_id;
-	@OneToMany()
+	/*@OneToMany()
 	//@JoinColumn(name = "appointment_id", nullable=false)
 	@JoinTable(name = "appointment_calendar", joinColumns = @JoinColumn(name = "workingTimeCalendar_id", referencedColumnName = "workingTimeCalendar_id"),
 	inverseJoinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "appointment_id"))
+	private Set<Appointment> appointments=new HashSet<Appointment>();*/
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	//@JoinColumn(name = "appointment_id", nullable=false)
+	@JsonIgnore
 	private Set<Appointment> appointments=new HashSet<Appointment>();
-
-
 
 	public WorkingTimeCalendar() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+
+
+	public Long getWorkingTimeCalendar_id() {
+		return workingTimeCalendar_id;
+	}
+
+
+
+	public void setWorkingTimeCalendar_id(Long workingTimeCalendar_id) {
+		this.workingTimeCalendar_id = workingTimeCalendar_id;
 	}
 
 

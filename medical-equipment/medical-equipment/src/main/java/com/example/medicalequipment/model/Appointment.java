@@ -2,6 +2,7 @@ package com.example.medicalequipment.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,11 +19,33 @@ public class Appointment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "appointment_id")
 	private Long appointment_id;
-	@OneToOne(cascade = CascadeType.ALL)
+	public Long getAppointment_id() {
+		return appointment_id;
+	}
+	public void setAppointment_id(Long appointment_id) {
+		this.appointment_id = appointment_id;
+	}
+	public AppointmentStatus getAppointmentStatus() {
+		return appointmentStatus;
+	}
+	public void setAppointmentStatus(AppointmentStatus appointmentStatus) {
+		this.appointmentStatus = appointmentStatus;
+	}
+	@OneToOne()
 	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
 	private CompanyAdmin admin;
-	@Column(name = "localDateTime",nullable = false)
-	private LocalDateTime dateTime;
+	@Column(name = "localDate",nullable = false)
+	private LocalDate date;
+	@Column(name = "end",nullable = false)
+	private LocalTime end;
+	public LocalTime getEnd() {
+		return end;
+	}
+	public void setEnd(LocalTime end) {
+		this.end = end;
+	}
+	@Column(name = "localTime",nullable = false)
+	private LocalTime time;
 	@Column(name = "duration",nullable = false)
 	private double duration;
 	@Column(name = "appointmentStatus",nullable = false)
@@ -31,11 +54,18 @@ public class Appointment {
 	{
 		
 	}
-	public Appointment(CompanyAdmin admin, LocalDateTime dateTime, double duration) {
+	public Appointment(CompanyAdmin admin, LocalDate date, double duration,LocalTime time) {
 		super();
 		this.admin = admin;
-		this.dateTime = dateTime;
+		this.date = date;
+		this.time=time;
 		this.duration = duration;
+	}
+	public LocalTime getTime() {
+		return time;
+	}
+	public void setTime(LocalTime time) {
+		this.time = time;
 	}
 	public CompanyAdmin getAdmin() {
 		return admin;
@@ -43,11 +73,11 @@ public class Appointment {
 	public void setAdmin(CompanyAdmin admin) {
 		this.admin = admin;
 	}
-	public LocalDateTime getDateTime() {
-		return dateTime;
+	public LocalDate getDate() {
+		return date;
 	}
-	public void setDateTime(LocalDateTime dateTime) {
-		this.dateTime = dateTime;
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 	public double getDuration() {
 		return duration;
