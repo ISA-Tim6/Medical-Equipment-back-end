@@ -81,4 +81,6 @@ import com.example.medicalequipment.repository.IUserRepository;
 		return this.CompanyAdminRepository.getOtherCompanyAdminsForCompany(company_id, user_id);
 
 	}
+
+	
 }

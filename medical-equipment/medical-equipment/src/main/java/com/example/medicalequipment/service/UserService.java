@@ -63,7 +63,11 @@ public class UserService implements IUserService{
 		
 		return this.UserRepository.save(u);
 	}
-
+	@Override
+	public Long findIdByUsername(String username) {
+		// TODO Auto-generated method stub
+		return this.UserRepository.findIdByUsername(username);
+	}
 
 
 /*
