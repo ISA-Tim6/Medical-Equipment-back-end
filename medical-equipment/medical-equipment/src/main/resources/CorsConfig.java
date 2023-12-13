@@ -7,10 +7,9 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-        .setHeader("Access-Control-Allow-Origin", "*")
+        .setHeader("Access-Control-Allow-Origin")
             .allowedOrigins("http://localhost:4200") // Postavite URL Angular aplikacije
-            .allowedMethods("GET", "POST", "PUT", "DELETE");
-        	.allowedHeaders("Origin", "Content-Type", "Accept", "Authorization")
-
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        	.allowedHeaders("Origin", "Content-Type", "Accept", "Authorization", "*", "X-Requested-With");
     }
 }

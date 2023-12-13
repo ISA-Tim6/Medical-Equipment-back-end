@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.medicalequipment.dto.CompanyCalendarDto;
 import com.example.medicalequipment.dto.CompanyDto;
 import com.example.medicalequipment.dto.CompanySearchDto;
 import com.example.medicalequipment.model.Address;
@@ -21,6 +23,7 @@ import com.example.medicalequipment.model.Appointment;
 import java.util.ArrayList;
 import com.example.medicalequipment.dto.CompanyDto;
 import com.example.medicalequipment.dto.CompanyUpdateDto;
+import com.example.medicalequipment.dto.WorkingTimeCalendarDto;
 import com.example.medicalequipment.iservice.ICompanyService;
 import com.example.medicalequipment.model.Company;
 import com.example.medicalequipment.model.Equipment;
@@ -196,4 +199,13 @@ public class CompanyController {
 			return new ResponseEntity<>(2, HttpStatus.OK);
 		}
 	 
+	 @CrossOrigin(origins="http://localhost:4200")
+	 @GetMapping(value = "/companyCalendar/{company_id}")
+	 @PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_ADMIN','ROLE_COMPANY_ADMIN')")
+	 public ResponseEntity<CompanyCalendarDto> getWorkingCalendar(@PathVariable Long company_id) throws Exception {
+		Company c = companyService.findOne(company_id);
+		WorkingTimeCalendarDto wtc = new WorkingTimeCalendarDto(c.getWorkingTimeCalendar());
+		CompanyCalendarDto dto = new CompanyCalendarDto(wtc);
+		return new ResponseEntity<>(dto, HttpStatus.OK);
+	 }
 }

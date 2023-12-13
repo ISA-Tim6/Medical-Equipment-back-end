@@ -66,7 +66,10 @@ public class CompanyService implements ICompanyService{
 		return CompanyRepository.findAll();
 	}
 
-	
+	@Override
+	public Company find(Long company_id) {
+		return CompanyRepository.find(company_id);
+	}
 	@Override
 	public List<Company> findByName(String name){
 		return CompanyRepository.findByNameContainingIgnoreCase(name);	

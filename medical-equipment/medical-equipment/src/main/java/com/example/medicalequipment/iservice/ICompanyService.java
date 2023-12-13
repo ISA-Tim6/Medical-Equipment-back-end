@@ -21,4 +21,5 @@ public interface ICompanyService {
 	List<Company> findByNameAndAddressCity(String name, String city);
 	Company removeEquipment(Long company_id,Long equipment_id);
 	Integer addAppointment(Long company_id,Long company_admin_id,Appointment appointment);
+	Company find(Long company_id);
 }
