@@ -10,14 +10,17 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.medicalequipment.dto.CompanyDto;
 import com.example.medicalequipment.dto.EquipmentCompaniesDto;
 import com.example.medicalequipment.dto.EquipmentDto;
 import com.example.medicalequipment.iservice.IEquipmentService;
 import com.example.medicalequipment.model.Address;
+import com.example.medicalequipment.model.Company;
 import com.example.medicalequipment.model.Equipment;
 import com.example.medicalequipment.repository.IEquipmentRepository;
 import com.example.medicalequipment.service.EquipmentService;
@@ -62,4 +65,23 @@ public class EquipmentController {
 		
 		return new ResponseEntity<>(e, HttpStatus.OK);
 	}
+	
+	@CrossOrigin(origins="http://localhost:4200")
+	@PutMapping(value="updateEquipment/{equipment_id}")
+	public ResponseEntity<EquipmentDto> updateEquipment(@RequestBody EquipmentDto equipment,@PathVariable Long equipment_id) throws Exception{
+
+		Equipment c=equipmentService.findById(equipment_id);
+		c.setDescription(equipment.getDescription());
+		c.setName(equipment.getName());
+		c.setPrice(equipment.getPrice());
+		c.setQuantity(equipment.getQuantity());
+		c.setType(equipment.getType());
+		Equipment e=equipmentService.save(c);
+
+		return new ResponseEntity<>(new EquipmentDto(e), HttpStatus.OK);
+	}
+	
+
+	
+	
 }
