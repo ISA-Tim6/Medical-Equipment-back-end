@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -35,6 +36,8 @@ public class CompanyAdminController {
 	private ICompanyAdminService companyAdminService;
 	@Autowired
 	private IUserService userService;
+	@Autowired
+    public PasswordEncoder passwordEncoder;
 
 	public CompanyAdminController(ICompanyAdminService _companyAdminService, IUserService _userService) {
 		super();
@@ -52,6 +55,8 @@ public class CompanyAdminController {
 		return new ResponseEntity<>(cadto, HttpStatus.OK);
 	}
 	
+	
+	
 	@CrossOrigin(origins="http://localhost:4200")
 	@PutMapping(value = "/{id}")
 	
@@ -68,7 +73,6 @@ public class CompanyAdminController {
 		ca.setCountry(companyAdmin.getCountry());
 		ca.setEmail(companyAdmin.getEmail());
 		ca.setName(companyAdmin.getName());
-		ca.setPassword(companyAdmin.getPassword());
 		ca.setSurname(companyAdmin.getSurname());
 		ca.setPhoneNumber(companyAdmin.getPhoneNumber());
 		ca.setLoggedBefore(companyAdmin.getLoggedBefore());
@@ -125,6 +129,26 @@ public class CompanyAdminController {
     	CompanyAdmin ca=this.companyAdminService.findOne(id);
     	System.out.println("Email"+ca.getEmail());
 		return new CompanyAdminDto(ca);
+	}
+    
+	@CrossOrigin(origins="http://localhost:4200")
+	@PutMapping(value = "/changePassword/{id}")
+	
+	public ResponseEntity<CompanyAdminDto> changePassword(@PathVariable Long id,@RequestBody String password) {
+
+		CompanyAdmin ca = companyAdminService.findOne(id);
+		if (ca == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		String encodedPassword = passwordEncoder.encode(password);
+		ca.setPassword(encodedPassword);
+		ca.setLoggedBefore(true);
+		
+		companyAdminService.save(ca);
+
+		CompanyAdminDto cadto=new CompanyAdminDto(companyAdminService.findOne(id));
+
+		return new ResponseEntity<>(cadto, HttpStatus.OK);
 	}
     
 }
