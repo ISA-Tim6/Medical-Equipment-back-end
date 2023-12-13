@@ -75,10 +75,9 @@ public class UserController {
 	}
 
 	@GetMapping("/whoami")
-	@PreAuthorize("hasRole('REGISTRATED_USER')")
 	public User user(Principal user) {
-		System.out.println(user.getName());
-		return this.userService.findByUsername(user.getName());
+		User userr=this.userService.findByUsername(user.getName());
+		return userr;
 	}
 	
 	@GetMapping("/foo")

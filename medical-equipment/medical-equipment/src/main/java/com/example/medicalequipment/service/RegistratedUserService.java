@@ -9,6 +9,7 @@ import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +43,7 @@ public class RegistratedUserService implements IRegistratedUserService {
 	private final RoleService RoleService;
 	@Autowired
     public PasswordEncoder passwordEncoder;
+
     public RegistratedUserService(IRegistratedUserRepository registratedUserRepository,EmailService emailService,IActivationTokenRepository tokenRepository, IUserRepository userRepository, IRoleRepository roleRepository, RoleService roleService){
     	this.RegistratedUserRepository = registratedUserRepository;
 		this.UserRepository = userRepository;
@@ -110,6 +112,8 @@ public class RegistratedUserService implements IRegistratedUserService {
 
 	@Override
 	public RegistratedUser findOne(Long id) {
+		RegistratedUser user=RegistratedUserRepository.findById(id).orElseGet(null);
+		
 		return RegistratedUserRepository.findById(id).orElseGet(null);
 	}
 
@@ -122,8 +126,16 @@ public class RegistratedUserService implements IRegistratedUserService {
 	public RegistratedUser update(RegistratedUser user, String oldUsername) {
 		//if(IsValidToUpdate(user, oldUsername))
 		//{
+			if(!user.getPassword().startsWith("$")) {
+				String encodedPassword = passwordEncoder.encode(user.getPassword());
+		        user.setPassword(encodedPassword);
+			}
 			user.setPenals(0);
 			user.setCategory(Category.REGULAR);	//popraviti kasnije
+			user.setActive(true);
+			List<Role> roles = RoleService.findByName("ROLE_REGISTRATED_USER");
+			System.out.println(roles+"---------");
+			user.setRoles(roles);
 			return this.RegistratedUserRepository.save(user);
 		//}
 			
