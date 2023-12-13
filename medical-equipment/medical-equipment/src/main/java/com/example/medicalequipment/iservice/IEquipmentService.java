@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.medicalequipment.model.Equipment;
+import com.example.medicalequipment.model.RegistratedUser;
 
 @Service
 public interface IEquipmentService {
@@ -13,4 +14,5 @@ public interface IEquipmentService {
 	List<Equipment> searchByName(String name);
 	List<Equipment> searchByNameAndCompany(String name, Long company_id);
 	public List<Equipment> search();
+	Equipment update(Equipment equipment);
 }
