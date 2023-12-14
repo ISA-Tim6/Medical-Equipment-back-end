@@ -2,6 +2,7 @@ package com.example.medicalequipment.controller;
 
 
 import java.util.List;
+import java.security.Principal;
 import java.util.ArrayList;
 
 
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.medicalequipment.dto.CompanyAdminDto;
 import com.example.medicalequipment.iservice.ICompanyAdminService;
+import com.example.medicalequipment.iservice.IUserService;
 import com.example.medicalequipment.model.CompanyAdmin;
 import com.example.medicalequipment.model.User;
 
@@ -31,11 +33,13 @@ import com.example.medicalequipment.model.User;
 public class CompanyAdminController {
 	@Autowired
 	private ICompanyAdminService companyAdminService;
-	
+	@Autowired
+	private IUserService userService;
 
-	public CompanyAdminController(ICompanyAdminService _companyAdminService) {
+	public CompanyAdminController(ICompanyAdminService _companyAdminService, IUserService _userService) {
 		super();
 		this.companyAdminService = _companyAdminService;
+		this.userService=_userService;
 	}
 	
 	@CrossOrigin(origins="http://localhost:4200")
@@ -114,6 +118,13 @@ public class CompanyAdminController {
 		}
 		return new ResponseEntity<>(companyAdminDtos, HttpStatus.OK);
 	}
-    
+    @GetMapping("/whoami")
+	public CompanyAdminDto user(Principal user) {
+    	Long id=this.userService.findIdByUsername(user.getName());
+    	System.out.println("Id: "+id);
+    	CompanyAdmin ca=this.companyAdminService.findOne(id);
+    	System.out.println("Email"+ca.getEmail());
+		return new CompanyAdminDto(ca);
+	}
     
 }
