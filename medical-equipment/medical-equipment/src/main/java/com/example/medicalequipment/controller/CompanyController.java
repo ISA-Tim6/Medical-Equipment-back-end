@@ -26,7 +26,9 @@ import com.example.medicalequipment.dto.CompanyDto;
 import com.example.medicalequipment.dto.CompanyUpdateDto;
 import com.example.medicalequipment.dto.WorkingTimeCalendarDto;
 import com.example.medicalequipment.dto.EquipmentDto;
+import com.example.medicalequipment.dto.ReservationDto;
 import com.example.medicalequipment.iservice.ICompanyService;
+import com.example.medicalequipment.iservice.IReservationService;
 import com.example.medicalequipment.model.Company;
 import com.example.medicalequipment.model.Equipment;
 import com.example.medicalequipment.service.CompanyService;
@@ -38,9 +40,13 @@ public class CompanyController {
 	@Autowired
 	private ICompanyService companyService;
 	
-	public CompanyController(ICompanyService _companyService) {
+	@Autowired
+	private IReservationService reservationService;
+	
+	public CompanyController(ICompanyService _companyService, IReservationService _reservationService) {
 		super();
 		this.companyService = _companyService;
+		this.reservationService = _reservationService;
 	}
 	
 	@CrossOrigin(origins="http://localhost:4200")
@@ -211,7 +217,8 @@ public class CompanyController {
 	 public ResponseEntity<CompanyCalendarDto> getWorkingCalendar(@PathVariable Long company_id) throws Exception {
 		Company c = companyService.findOne(company_id);
 		WorkingTimeCalendarDto wtc = new WorkingTimeCalendarDto(c.getWorkingTimeCalendar());
-		CompanyCalendarDto dto = new CompanyCalendarDto(wtc);
+		List<ReservationDto> reservations = reservationService.getAllByCompany(company_id);
+		CompanyCalendarDto dto = new CompanyCalendarDto(wtc, reservations);
 		return new ResponseEntity<>(dto, HttpStatus.OK);
 	 }
 

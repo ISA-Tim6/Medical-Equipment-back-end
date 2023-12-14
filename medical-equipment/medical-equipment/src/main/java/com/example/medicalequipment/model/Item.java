@@ -35,6 +35,10 @@ public class Item {
 		this.equipment = equipment;
 		this.quantity = quantity;
 	}
+	
+	public Long getItemId() {
+		return item_id;
+	}
 	public Equipment getEquipment() {
 		return equipment;
 	}
