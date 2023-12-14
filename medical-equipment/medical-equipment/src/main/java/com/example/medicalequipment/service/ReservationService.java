@@ -1,6 +1,8 @@
 package com.example.medicalequipment.service;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.mail.MessagingException;
 
@@ -9,6 +11,7 @@ import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 import com.example.medicalequipment.iservice.IReservationService;
+import com.example.medicalequipment.model.Item;
 import com.example.medicalequipment.model.Reservation;
 import com.example.medicalequipment.repository.IItemRepository;
 import com.example.medicalequipment.repository.IRegistratedUserRepository;
@@ -28,28 +31,54 @@ public class ReservationService implements IReservationService {
 		this.emailService = emailService;
     }
 	private String generateReservationDetails(Reservation reservation) {
+		//registratedUserService.
 		String date[] = reservation.getAppointment().getDate().toString().split(" ");
-		String appDetails = "Appointment details \n";
-				
+		Reservation newReservation=ReservationRepository.getFullReservation(reservation.getReservation_id()).get(0);
+		System.out.println("dur:"+newReservation.getAppointment().getDuration());
+		String appDetails = "Reservation details \n"
+				+ "Appointment date time: "+ newReservation.getAppointment().getDate()+", "+newReservation.getAppointment().getTime()+"\n"
+				+ "Appointment duration: 60min"+"\n"
+				+ "Admin: " + newReservation.getAppointment().getAdmin().getName()+" "+newReservation.getAppointment().getAdmin().getSurname() + "\n"
+				+ "Company: " + newReservation.getAppointment().getAdmin().getCompany().getName()+"\n"
+				+ "User: " + newReservation.getUser().getName()+" "+newReservation.getUser().getSurname()+"\n"
+				+ "Equipment: ";
+		
+		Iterator<Item> iter=newReservation.getItems().iterator();
+		for(int i=0;i<newReservation.getItems().size();i++) {
+			appDetails+=iter.next().getEquipment().getName()+",";
+		}
 
 		return appDetails;
 	}
 
 	private String generateEmailMessage(Reservation reservation) {
 		String date[] = reservation.getAppointment().getDate().toString().split(" ");
-		String message = "Hi " + reservation.getUser().getName() + " " + reservation.getUser().getSurname() + ". You are successfuly scheduled appointment in our center."
-				+ " You appointment are on " + date[0] + " " + date[1] + " " + date[2] + " " + " at " + reservation.getAppointment().getTime().toString() + ".";
+		Reservation newReservation=ReservationRepository.getFullReservation(reservation.getReservation_id()).get(0);
+		String message = "Hi. You are successfuly scheduled appointment in our center."
+				+ " You appointment are on "+newReservation.getAppointment().getDate().toString()+" at " + newReservation.getAppointment().getTime().toString() + ".";
 		return message;
 	}
 	@Override
 	public Reservation save(Reservation reservation) throws MailException, InterruptedException, MessagingException {
 		// TODO Auto-generated method stub
-		String qrCodeData = generateReservationDetails(reservation);
+		Reservation newReservation=ReservationRepository.save(reservation);
+		String qrCodeData = generateReservationDetails(newReservation);
+		String mail=generateEmailMessage(newReservation);
+		byte[] qrCodeImageBytes = null;
 		try {
 			QRCodeGenerator.generateQRCodeImage(qrCodeData,250,250, QR_CODE_IMAGE_PATH);
 		}catch (WriterException | IOException e) {}
-		//emailService.sendConfirmationEmail(reservation.getUser(), reservation, QR_CODE_IMAGE_PATH);
-		return ReservationRepository.save(reservation);
+		try {
+	        qrCodeImageBytes = QRCodeGenerator.getQRCodeImage(qrCodeData, 250, 250,"mobilenotes://compose");
+	    } catch (WriterException | IOException e) {
+	        // Postupajte s izuzetkom, npr. ispišite ga u konzolu ili logirajte
+	        e.printStackTrace();
+	    }
+		emailService.sendConfirmationEmail(newReservation,mail, qrCodeImageBytes);
+		return newReservation;
 	}
-
+	@Override
+	public List<Reservation> getFullReservation(Long id) {
+		return ReservationRepository.getFullReservation(id);
+	}
 }

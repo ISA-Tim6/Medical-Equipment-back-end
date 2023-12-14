@@ -43,7 +43,7 @@ public class Equipment {
 	//inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"))
 	private Set<Company> companies=new HashSet<Company>();
 	
-	private Equipment() {}
+	public Equipment() {}
 	
 	public Equipment(String description,String name,String type,Double price,Integer quantity)
 	{

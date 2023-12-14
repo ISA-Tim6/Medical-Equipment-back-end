@@ -23,8 +23,6 @@ public class EmailService implements IEmailService{
 
 	@Autowired
 	private Environment env;
-	@Autowired
-	private ReservationService reservationService;
 	public void sendVerificationEmail(RegistratedUser user)
 			throws MailException, InterruptedException, MessagingException {
 		System.out.println(user.getVerificationCode());
@@ -51,18 +49,18 @@ public class EmailService implements IEmailService{
 	    javaMailSender.send(message);
 	     
 	}
-	public void sendConfirmationEmail(RegistratedUser user, Reservation reservation, byte[] qrCodeImage) {
+	public void sendConfirmationEmail(Reservation reservation,String mail, byte[] qrCodeImage) {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             
-            helper.setTo(user.getEmail());
+            helper.setTo("kivana0191@gmail.com");
             helper.setSubject("Potvrda rezervacije");
             
             // Dodajte informacije o rezervaciji u tekst emaila
-            String emailText = String.format("Hvala vam, %s, na vašoj rezervaciji. Detalji:\nDatum: %s\nMjesto: %s\n...");
+            String emailText = String.format("Hvala vam, na vašoj rezervaciji. Detalji:\nDatum: \nMjesto: \n...");
 
-            helper.setText(emailText, true); // true označava da je tekst HTML, možete koristiti false ako koristite običan tekst
+            helper.setText(mail, true); // true označava da je tekst HTML, možete koristiti false ako koristite običan tekst
 
             // Dodaj privitak s QR kodom
             helper.addAttachment("QRCode.png", new ByteArrayResource(qrCodeImage));
