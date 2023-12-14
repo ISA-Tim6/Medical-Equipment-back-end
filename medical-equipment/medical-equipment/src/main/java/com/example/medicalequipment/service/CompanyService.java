@@ -186,34 +186,34 @@ public class CompanyService implements ICompanyService{
 	
 	@Override
 	public Long addExtraordinaryAppointment(Long company_id, Appointment appointment) {
-		Company c=findOne(company_id);
-		Iterator<CompanyAdmin> iterator = c.getAdmins().iterator();
-		CompanyAdmin ca = new CompanyAdmin();
-		if (iterator.hasNext()) {
-		    ca = iterator.next();
-		}
-		appointment.setAdmin(ca);
-		appointment.setEnd(appointment.getTime().plusHours(1));
-		if(appointment.getEnd().isBefore(c.getClosingHours()) && appointment.getTime().isAfter(c.getOpeningHours()))
-		{
-			List<Long> overLapingStarts=AppointmentRepository.getAllOverlappingStart(company_id, appointment.getTime(), appointment.getEnd(), appointment.getDate());
-			List<Long> overLapingEnds=AppointmentRepository.getAllOverlappingEnd(company_id, appointment.getTime(), appointment.getEnd(), appointment.getDate());
+	    Company c = findOne(company_id);
+	    Iterator<CompanyAdmin> iterator = c.getAdmins().iterator();
+	    CompanyAdmin ca = new CompanyAdmin();
+	    if (iterator.hasNext()) {
+	        ca = iterator.next();
+	    }
+	    appointment.setAdmin(ca);
+	    appointment.setEnd(appointment.getTime().plusHours(1));
 
-			if(overLapingStarts.size()==0 && overLapingEnds.size()==0)
-				{
-					appointment = AppointmentRepository.save(appointment);
-					c.getWorkingTimeCalendar().getAppointments().add(appointment);
-					CompanyRepository.save(c);
-					return appointment.getAppointment_id();
-				}
-			else 
-				return Long.parseLong("0");
+	    LocalTime openingHours = c.getOpeningHours();
+	    LocalTime closingHours = c.getClosingHours().minusMinutes(1); // Jedan minut pre zatvaranja
 
-		}
-		else 
-			return Long.parseLong("0");
+	    boolean startsAtOpening = appointment.getTime().equals(openingHours);
+	    boolean endsAtClosing = appointment.getEnd().equals(closingHours);
 
+	    if ((endsAtClosing || appointment.getEnd().isBefore(closingHours)) && (startsAtOpening || appointment.getTime().isAfter(openingHours))) {
+	        List<Long> overlappingStarts = AppointmentRepository.getAllOverlappingStart(company_id, appointment.getTime(), appointment.getEnd(), appointment.getDate());
+	        List<Long> overlappingEnds = AppointmentRepository.getAllOverlappingEnd(company_id, appointment.getTime(), appointment.getEnd(), appointment.getDate());
 
+	        if (overlappingStarts.isEmpty() && overlappingEnds.isEmpty()) {
+	            appointment = AppointmentRepository.save(appointment);
+	            c.getWorkingTimeCalendar().getAppointments().add(appointment);
+	            CompanyRepository.save(c);
+	            return appointment.getAppointment_id();
+	        }
+	    }
+	    return Long.parseLong("0");
 	}
+
 	
 }
