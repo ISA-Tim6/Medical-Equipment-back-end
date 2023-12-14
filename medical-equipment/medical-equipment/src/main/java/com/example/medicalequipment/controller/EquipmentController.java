@@ -22,6 +22,7 @@ import com.example.medicalequipment.iservice.IEquipmentService;
 import com.example.medicalequipment.model.Address;
 import com.example.medicalequipment.model.Company;
 import com.example.medicalequipment.model.Equipment;
+import com.example.medicalequipment.model.RegistratedUser;
 import com.example.medicalequipment.repository.IEquipmentRepository;
 import com.example.medicalequipment.service.EquipmentService;
 
@@ -81,7 +82,14 @@ public class EquipmentController {
 		return new ResponseEntity<>(new EquipmentDto(e), HttpStatus.OK);
 	}
 	
-
 	
-	
+	@CrossOrigin(origins="http://localhost:4200")
+    @PutMapping("/updateEquipment/")
+	public ResponseEntity<Equipment> updateEquipment(@RequestBody Equipment equipment) {
+		System.out.println(equipment.getName());
+		if (equipment == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(equipmentService.update(equipment), HttpStatus.OK);
+	}
 }

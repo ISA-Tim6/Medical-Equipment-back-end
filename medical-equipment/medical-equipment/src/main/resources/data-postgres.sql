@@ -93,8 +93,8 @@ INSERT INTO public.equipment_item(
 	VALUES (1, 1);
 	
 INSERT INTO public.reservation(
-	reservation_id, reservation_status, appointment_id, qr_code_id)
-	VALUES (default, 0, 1, null);
+	reservation_id, reservation_status, appointment_id)
+	VALUES (default, 0, 1);
 INSERT INTO public.reservation_item(
 	reservation_id, item_id)
 	VALUES (1, 1);

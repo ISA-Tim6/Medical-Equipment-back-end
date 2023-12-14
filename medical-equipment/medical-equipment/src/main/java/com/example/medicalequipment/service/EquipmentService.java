@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.medicalequipment.iservice.IEquipmentService;
+import com.example.medicalequipment.model.Category;
 import com.example.medicalequipment.model.Equipment;
+import com.example.medicalequipment.model.RegistratedUser;
 import com.example.medicalequipment.repository.IEquipmentRepository;
 
 @Service
@@ -40,5 +42,12 @@ public class EquipmentService implements IEquipmentService{
 	@Override
 	public List<Equipment> search() {
 		return EquipmentRepository.search();
+	}
+	
+	@Override
+	public Equipment update(Equipment equipment) {
+		System.out.println(equipment.getEquipment_id());
+		return EquipmentRepository.save(equipment);
+	
 	}
 }

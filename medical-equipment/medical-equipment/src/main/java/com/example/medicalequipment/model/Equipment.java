@@ -31,6 +31,7 @@ public class Equipment {
 	@NotNull @NotEmpty
 	@Column(name = "type", nullable = false)
 	private String type;
+
 	@NotNull 
 	@Column(name = "price", nullable = false)
 	private Double price;
