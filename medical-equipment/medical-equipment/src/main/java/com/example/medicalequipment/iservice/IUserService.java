@@ -18,4 +18,5 @@ public interface IUserService {
 	List<User> findAll ();
 	User save(UserRequest userRequest);
 	Long findIdByUsername(String username);
+	User saveSystemAdmin(User user);
 }

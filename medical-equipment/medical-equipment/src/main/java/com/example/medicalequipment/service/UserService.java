@@ -3,21 +3,29 @@ package com.example.medicalequipment.service;
 
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.medicalequipment.dto.UserRequest;
 import com.example.medicalequipment.iservice.IUserService;
+import com.example.medicalequipment.model.Category;
+import com.example.medicalequipment.model.RegistratedUser;
 import com.example.medicalequipment.model.Role;
 import com.example.medicalequipment.model.User;
 import com.example.medicalequipment.repository.IUserRepository;
+
+import net.bytebuddy.utility.RandomString;
 
 @Service
 public class UserService implements IUserService{
 	@Autowired
 	private final IUserRepository UserRepository;
+	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -63,6 +71,29 @@ public class UserService implements IUserService{
 		
 		return this.UserRepository.save(u);
 	}
+	
+	@Override
+	public User saveSystemAdmin(User user) {
+		//if(IsValidToAdd(user))
+		//{
+			String encodedPassword = passwordEncoder.encode(user.getPassword());
+	        user.setPassword(encodedPassword);
+			User newUser =  this.UserRepository.save(user);
+		    user.setActive(true);
+		    List<Role> roles = roleService.findByName("ROLE_SYSTEM_ADMIN");
+			user.setRoles(roles);
+		    this.UserRepository.save(user);
+			return newUser;
+		
+		//}
+
+			
+		//}
+
+			
+		//return null;
+	}
+	
 	@Override
 	public Long findIdByUsername(String username) {
 		// TODO Auto-generated method stub

@@ -81,6 +81,14 @@ public class RegistratedUserService implements IRegistratedUserService {
 		//return null;
 	}
 	@Override
+	public User changePasswordUser(User  user, String password) {
+		String encodedPassword = passwordEncoder.encode(password);
+		user.setPassword(encodedPassword);
+		user.setLoggedBefore(true);
+		return user;
+	}
+	
+	@Override
 	public RegistratedUser saveSystemAdmin(RegistratedUser user) throws MailException, InterruptedException, MessagingException {
 		//if(IsValidToAdd(user))
 		//{
