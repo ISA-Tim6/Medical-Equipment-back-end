@@ -1,9 +1,16 @@
 package com.example.medicalequipment.service;
 
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -120,6 +127,93 @@ public class CompanyService implements ICompanyService{
 		AppointmentRepository.save(appointment);
 		return 1;
 	
+	}
+	
+	@Override
+	public List<LocalTime> findAvailableAppointments(String date, Long company_id) {
+	    LocalDate parsedDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
+	    Company company = findOne(company_id);
+	    Set<Appointment> existing = company.getWorkingTimeCalendar().getAppointments();
+	    List<Appointment> appointmentsForDate = getAppointmentsForDate(parsedDate, existing);
+	    Collections.sort(appointmentsForDate, Comparator.comparing(Appointment::getTime));
+
+	    List<LocalTime> freeSlots = new ArrayList<>();
+
+	    LocalTime currentSlot = company.getOpeningHours();
+
+	    for (Appointment appointment : appointmentsForDate) {
+	        LocalTime appointmentStart = appointment.getTime();
+	        LocalTime appointmentEnd = appointment.getEnd();
+
+	        // Provera da li postoji dovoljno vremena između trenutnog slobodnog termina i narednog zakazanog termina
+	        if (currentSlot.isBefore(appointmentStart)) {
+	            long durationBetweenSlots = java.time.Duration.between(currentSlot, appointmentStart).toMinutes();
+	            while (durationBetweenSlots >= 60) {
+	                freeSlots.add(currentSlot);
+	                currentSlot = currentSlot.plusHours(1);
+	                durationBetweenSlots -= 60;
+	            }
+	        }
+
+	        // Ažuriraj trenutni termin nakon zauzetog termina
+	        if (currentSlot.isBefore(appointmentEnd)) {
+	            currentSlot = appointmentEnd;
+	        }
+	    }
+
+	    // Provera slobodnih termina nakon poslednjeg zakazanog termina
+	    long durationTillClosing = java.time.Duration.between(currentSlot, company.getClosingHours()).toMinutes();
+	    while (durationTillClosing >= 60) {
+	        freeSlots.add(currentSlot);
+	        currentSlot = currentSlot.plusHours(1);
+	        durationTillClosing -= 60;
+	    }
+
+	    return freeSlots;
+	}
+
+
+	
+	private List<Appointment> getAppointmentsForDate(LocalDate date, Set<Appointment> appointments) {
+        List<Appointment> appointmentsForDate = new ArrayList<>();
+        for (Appointment appointment : appointments) {
+            if (appointment.getDate().equals(date)) {
+                appointmentsForDate.add(appointment);
+            }
+        }
+        return appointmentsForDate;
+    }
+	
+	@Override
+	public Long addExtraordinaryAppointment(Long company_id, Appointment appointment) {
+		Company c=findOne(company_id);
+		Iterator<CompanyAdmin> iterator = c.getAdmins().iterator();
+		CompanyAdmin ca = new CompanyAdmin();
+		if (iterator.hasNext()) {
+		    ca = iterator.next();
+		}
+		appointment.setAdmin(ca);
+		appointment.setEnd(appointment.getTime().plusHours(1));
+		if(appointment.getEnd().isBefore(c.getClosingHours()) && appointment.getTime().isAfter(c.getOpeningHours()))
+		{
+			List<Long> overLapingStarts=AppointmentRepository.getAllOverlappingStart(company_id, appointment.getTime(), appointment.getEnd(), appointment.getDate());
+			List<Long> overLapingEnds=AppointmentRepository.getAllOverlappingEnd(company_id, appointment.getTime(), appointment.getEnd(), appointment.getDate());
+
+			if(overLapingStarts.size()==0 && overLapingEnds.size()==0)
+				{
+					appointment = AppointmentRepository.save(appointment);
+					c.getWorkingTimeCalendar().getAppointments().add(appointment);
+					CompanyRepository.save(c);
+					return appointment.getAppointment_id();
+				}
+			else 
+				return Long.parseLong("0");
+
+		}
+		else 
+			return Long.parseLong("0");
+
+
 	}
 	
 }

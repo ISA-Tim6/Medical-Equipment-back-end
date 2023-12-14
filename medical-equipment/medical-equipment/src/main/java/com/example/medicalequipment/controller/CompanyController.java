@@ -1,4 +1,5 @@
 package com.example.medicalequipment.controller;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -192,6 +193,21 @@ public class CompanyController {
 	    @PutMapping("/updateAppointment/{company_id}/{company_admin_id}")
 		public ResponseEntity<Integer> updateAppointment(@PathVariable Long company_id, @PathVariable Long company_admin_id,@RequestBody Appointment appointment) {
 			return new ResponseEntity<>(companyService.updateAppointment(company_id,company_admin_id,appointment), HttpStatus.OK);
+		}
+	 
+	 
+	 @CrossOrigin(origins="http://localhost:4200")
+	 @GetMapping(value = "/findFreeSlots/{company_id}/{date}")
+	 public ResponseEntity<List<LocalTime>> findAvailableAppointments(@PathVariable Long company_id, @PathVariable String date)
+	 {
+		 return new ResponseEntity<>(companyService.findAvailableAppointments(date, company_id), HttpStatus.OK);
+	 }
+	 
+	 @CrossOrigin(origins="http://localhost:4200")
+		@PutMapping(value = "/addExtraordinaryAppointment/{company_id}")
+		public ResponseEntity<Long> addExtraordinaryAppointment(@PathVariable Long company_id,@RequestBody Appointment appointment) throws Exception{
+			Long c=companyService.addExtraordinaryAppointment(company_id,appointment);	//vracam id appointment
+			return new ResponseEntity<>(c, HttpStatus.OK);
 		}
 	 
 }
