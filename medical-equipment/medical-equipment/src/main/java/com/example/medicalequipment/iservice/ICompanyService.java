@@ -1,4 +1,5 @@
 package com.example.medicalequipment.iservice;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,5 +22,7 @@ public interface ICompanyService {
 	List<Company> findByNameAndAddressCity(String name, String city);
 	Company removeEquipment(Long company_id,Long equipment_id);
 	Integer addAppointment(Long company_id,Long company_admin_id,Appointment appointment);
-	Integer updateAppointment(Long company_id,Appointment appointment);
+	Integer updateAppointment(Long company_id,Long company_admin_id,Appointment appointment);
+	List<LocalTime> findAvailableAppointments(String date, Long company_id);
+	Long addExtraordinaryAppointment(Long company_id,Appointment appointment);
 }
