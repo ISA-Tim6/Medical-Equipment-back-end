@@ -111,11 +111,12 @@ public class CompanyService implements ICompanyService{
 	}
 	
 	@Override
-	public Integer updateAppointment(Long company_id,Long company_admin_id,Appointment appointment) {
+	public Integer updateAppointment(Long company_id,Appointment appointment) {
 		//Appointment a=AppointmentRepository.getById(company_admin_id)
-		Company c=findOne(company_id);
-		CompanyAdmin ca=CompanyAdminRepository.getWithCompany(company_admin_id);
-		appointment.setAdmin(ca);
+		//Company c=findOne(company_id);
+		//CompanyAdmin ca=CompanyAdminRepository.getWithCompany(company_admin_id);
+		appointment.setAdmin(null);
+	
 		appointment.setEnd(appointment.getTime().plusHours(1));
 		AppointmentRepository.save(appointment);
 		return 1;

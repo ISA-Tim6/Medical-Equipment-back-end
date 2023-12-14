@@ -5,6 +5,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.example.medicalequipment.iservice.IEmailService;
 import com.example.medicalequipment.model.ActivationToken;
 import com.example.medicalequipment.model.RegistratedUser;
+import com.example.medicalequipment.model.Reservation;
 @Service
 public class EmailService implements IEmailService{
 	@Autowired
@@ -21,7 +23,8 @@ public class EmailService implements IEmailService{
 
 	@Autowired
 	private Environment env;
-
+	@Autowired
+	private ReservationService reservationService;
 	public void sendVerificationEmail(RegistratedUser user)
 			throws MailException, InterruptedException, MessagingException {
 		System.out.println(user.getVerificationCode());
@@ -48,6 +51,27 @@ public class EmailService implements IEmailService{
 	    javaMailSender.send(message);
 	     
 	}
+	public void sendConfirmationEmail(RegistratedUser user, Reservation reservation, byte[] qrCodeImage) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            
+            helper.setTo(user.getEmail());
+            helper.setSubject("Potvrda rezervacije");
+            
+            // Dodajte informacije o rezervaciji u tekst emaila
+            String emailText = String.format("Hvala vam, %s, na vašoj rezervaciji. Detalji:\nDatum: %s\nMjesto: %s\n...");
 
+            helper.setText(emailText, true); // true označava da je tekst HTML, možete koristiti false ako koristite običan tekst
+
+            // Dodaj privitak s QR kodom
+            helper.addAttachment("QRCode.png", new ByteArrayResource(qrCodeImage));
+
+            javaMailSender.send(message);
+        } catch (MessagingException e) {
+            // Postupajte s izuzetkom, npr. ispišite ga u konzolu ili logirajte
+            e.printStackTrace();
+        }
+    }
 	
 }

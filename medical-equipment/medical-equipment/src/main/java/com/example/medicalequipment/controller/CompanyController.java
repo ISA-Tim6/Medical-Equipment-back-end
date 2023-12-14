@@ -40,7 +40,7 @@ public class CompanyController {
 	
 	@CrossOrigin(origins="http://localhost:4200")
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_ADMIN','ROLE_COMPANY_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_ADMIN','ROLE_COMPANY_ADMIN','ROLE_REGISTRATED_USER')")
 	public ResponseEntity<List<CompanyDto>> getAllCompanies() throws Exception {
 		List<CompanyDto> companiesDto=new ArrayList<CompanyDto>();
 		for(Company c:companyService.getAll())
@@ -52,7 +52,7 @@ public class CompanyController {
 	
 	 @CrossOrigin(origins="http://localhost:4200")
 	    @GetMapping(value = "/{id}")
-	 @PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_ADMIN','ROLE_COMPANY_ADMIN')")
+	 @PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_ADMIN','ROLE_COMPANY_ADMIN','ROLE_REGISTRATED_USER')")
 		public ResponseEntity<CompanyDto> getCompany(@PathVariable Long id) throws Exception {
 
 			Company company=companyService.findOne(id);
@@ -197,9 +197,9 @@ public class CompanyController {
 		}
 	 
 	 @CrossOrigin(origins="http://localhost:4200")
-	    @PutMapping("/updateAppointment/{company_id}/{company_admin_id}")
-		public ResponseEntity<Integer> updateAppointment(@PathVariable Long company_id, @PathVariable Long company_admin_id,@RequestBody Appointment appointment) {
-			return new ResponseEntity<>(companyService.updateAppointment(company_id,company_admin_id,appointment), HttpStatus.OK);
+	    @PutMapping("/updateAppointment/{company_id}")
+		public ResponseEntity<Integer> updateAppointment(@PathVariable Long company_id,@RequestBody Appointment appointment) {
+			return new ResponseEntity<>(companyService.updateAppointment(company_id,appointment), HttpStatus.OK);
 		}
 	 
 }
