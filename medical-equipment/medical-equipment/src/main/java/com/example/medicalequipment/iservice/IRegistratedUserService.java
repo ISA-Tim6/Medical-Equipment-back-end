@@ -5,6 +5,7 @@ import javax.mail.MessagingException;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
+import com.example.medicalequipment.model.CompanyAdmin;
 import com.example.medicalequipment.model.RegistratedUser;
 import com.example.medicalequipment.model.User;
 
@@ -17,4 +18,5 @@ public interface IRegistratedUserService {
 	RegistratedUser findByEmail(String email);
 	RegistratedUser saveSystemAdmin(RegistratedUser user)
 			throws MailException, InterruptedException, MessagingException;
+	CompanyAdmin changePassword(String password, Long id);
 }

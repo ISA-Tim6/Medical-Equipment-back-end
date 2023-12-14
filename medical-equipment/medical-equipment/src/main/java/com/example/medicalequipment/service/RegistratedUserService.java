@@ -16,11 +16,13 @@ import org.springframework.stereotype.Service;
 import com.example.medicalequipment.iservice.IRegistratedUserService;
 import com.example.medicalequipment.model.ActivationToken;
 import com.example.medicalequipment.model.Category;
+import com.example.medicalequipment.model.CompanyAdmin;
 import com.example.medicalequipment.model.Employment;
 import com.example.medicalequipment.model.RegistratedUser;
 import com.example.medicalequipment.model.Role;
 import com.example.medicalequipment.model.User;
 import com.example.medicalequipment.repository.IActivationTokenRepository;
+import com.example.medicalequipment.repository.ICompanyAdminRepository;
 import com.example.medicalequipment.repository.IRegistratedUserRepository;
 import com.example.medicalequipment.repository.IRoleRepository;
 import com.example.medicalequipment.repository.IUserRepository;
@@ -43,14 +45,18 @@ public class RegistratedUserService implements IRegistratedUserService {
 	private final RoleService RoleService;
 	@Autowired
     public PasswordEncoder passwordEncoder;
+	@Autowired
+	private ICompanyAdminRepository CompanyAdminRepository;
 
-    public RegistratedUserService(IRegistratedUserRepository registratedUserRepository,EmailService emailService,IActivationTokenRepository tokenRepository, IUserRepository userRepository, IRoleRepository roleRepository, RoleService roleService){
+    public RegistratedUserService(IRegistratedUserRepository registratedUserRepository,EmailService emailService,IActivationTokenRepository tokenRepository, IUserRepository userRepository, IRoleRepository roleRepository, RoleService roleService,
+    		ICompanyAdminRepository companyAdminRepository){
     	this.RegistratedUserRepository = registratedUserRepository;
 		this.UserRepository = userRepository;
 		this.TokenRepository = tokenRepository;
     	this.EmailService=emailService;
 		this.RoleRepository = roleRepository;
 		this.RoleService = roleService;
+		this.CompanyAdminRepository=companyAdminRepository;
     }
 	
 	@Override
@@ -80,6 +86,8 @@ public class RegistratedUserService implements IRegistratedUserService {
 			
 		//return null;
 	}
+	
+	
 	@Override
 	public RegistratedUser saveSystemAdmin(RegistratedUser user) throws MailException, InterruptedException, MessagingException {
 		//if(IsValidToAdd(user))
@@ -160,6 +168,15 @@ public class RegistratedUserService implements IRegistratedUserService {
 	        return true;
 	    }
 	     
+	}
+	@Override
+	public CompanyAdmin changePassword(String password, Long id) {
+		CompanyAdmin ca=CompanyAdminRepository.getWithCompany(id);	
+		String encodedPassword = passwordEncoder.encode(password);
+        ca.setPassword(encodedPassword);
+        ca.setLoggedBefore(true);
+        ca.setActive(true);
+        return CompanyAdminRepository.save(ca);
 	}
 	
 	
