@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,6 +70,8 @@ public class EquipmentController {
 	
 	@CrossOrigin(origins="http://localhost:4200")
 	@PutMapping(value="updateEquipment/{equipment_id}")
+	@PreAuthorize("hasAnyAuthority('ROLE_COMPANY_ADMIN')")
+
 	public ResponseEntity<EquipmentDto> updateEquipment(@RequestBody EquipmentDto equipment,@PathVariable Long equipment_id) throws Exception{
 
 		Equipment c=equipmentService.findById(equipment_id);
