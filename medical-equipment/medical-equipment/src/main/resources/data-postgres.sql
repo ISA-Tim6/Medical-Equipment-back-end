@@ -43,7 +43,9 @@ INSERT INTO public."user"(
 INSERT INTO public."user"(
 	user_id, city, country, email, employment, info_about_institution, logged_before, name, password, phone_number, surname, username, is_active)
 	VALUES (default, 'Nevesinje', 'BiH', 'ducic.ra5.2020@uns.ac.rs', 0, 'No info', false, 'Ivana', '$2a$10$N1N7lG1i9VXTw4i2mbzN1OwbfS5G04EcuQHAUkVgupo.FEhtGu1TS', '012345678', 'Kovacevic', 'ivana', true); --lozinka ivana
-
+INSERT INTO public."user"(
+	user_id, city, country, email, employment, info_about_institution, logged_before, name, password, phone_number, surname, username, is_active)
+	VALUES (default, 'Trebinje', 'BiH', 'kovace2vic.ra15.2020@uns.ac.rs', 1, 'No info', false, 'Anja', '$2a$10$e7XlFOO4M3on0lR25rgGa.RMg7gsVatulqO3CVurJyJNHNatlg4iG', '012345678', 'Ducic', 'anja2',true); --lozinka anja
 
 
 INSERT INTO public.registrated_user(
@@ -52,6 +54,9 @@ INSERT INTO public.registrated_user(
 INSERT INTO public.company_admin(
 	user_id, company_id)
 	VALUES (2, 1);
+INSERT INTO public.system_admin(
+	user_id)
+	VALUES (4);
 	
 	
 INSERT INTO public.equipment(
@@ -69,18 +74,15 @@ INSERT INTO public.company_equipment(
 	VALUES (1, 2);
 
 
-INSERT INTO public.system_admin(
-	user_id)
-	VALUES (3);
-
 
 INSERT INTO public.role (name) VALUES ('ROLE_REGISTRATED_USER');
 INSERT INTO public.role (name) VALUES ('ROLE_SYSTEM_ADMIN');
 INSERT INTO public.role (name) VALUES ('ROLE_COMPANY_ADMIN');
 
 INSERT INTO public.user_role (user_id, role_id) VALUES (1, 1); -- user-u dodeljujemo rolu USER
-INSERT INTO public.user_role (user_id, role_id) VALUES (2, 2); -- admin-u dodeljujemo rolu USER
-INSERT INTO public.user_role (user_id, role_id) VALUES (3, 3); -- user-u dodeljujemo rolu ADMIN
+INSERT INTO public.user_role (user_id, role_id) VALUES (2, 3); -- admin-u dodeljujemo rolu COMPANY ADMIN
+INSERT INTO public.user_role (user_id, role_id) VALUES (3, 1); -- user-u dodeljujemo rolu USER
+INSERT INTO public.user_role (user_id, role_id) VALUES (4, 2); -- user-u dodeljujemo rolu ADMIN
 
 INSERT INTO public.appointment(
 	appointment_id, appointment_status, local_date, duration, "end", local_time, user_id)

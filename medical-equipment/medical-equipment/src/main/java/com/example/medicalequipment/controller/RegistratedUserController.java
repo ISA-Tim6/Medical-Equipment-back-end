@@ -49,9 +49,12 @@ public class RegistratedUserController {
 	private ActivationTokenService tokenService;
 	@Autowired
 	private IActivationTokenRepository tokenRepository;
-    @Autowired
-    public RegistratedUserController(RegistratedUserService userService){
+	
+	private UserService adminService;
+
+    public RegistratedUserController(RegistratedUserService userService, UserService adminService){
         this.userService = userService;
+        this.adminService = adminService;
     }
     
     @CrossOrigin(origins="http://localhost:4200")
@@ -79,7 +82,7 @@ public class RegistratedUserController {
 		return r;
 	}
     
-    
+	
     @CrossOrigin(origins="http://localhost:4200")
     @PutMapping("updateUser/{oldUsername}")
 	public ResponseEntity<RegistratedUser> updateUser(@PathVariable String oldUsername, @RequestBody RegistratedUser user) {

@@ -44,9 +44,9 @@ import com.example.medicalequipment.service.UserService;
 @CrossOrigin
 public class UserController {
 	@Autowired
-    private final IUserService userService;
+    private IUserService userService;
 	@Autowired
-    private final IUserRepository userRepository;
+    private IUserRepository userRepository;
 	@Autowired
     private IRegistratedUserService regUserService;
 
@@ -120,16 +120,15 @@ public class UserController {
 	}
 	
 	@CrossOrigin(origins="http://localhost:4200")
-	@PutMapping(value = "/changePassword/{id}")	
+	@PutMapping(value = "/changePasswordAdmin/{id}")	
 	public ResponseEntity<User> changePassword(@PathVariable Long id,@RequestBody String password) {
 
 		User ca = userService.findById(id);
+
 		if (ca == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		ca = regUserService.changePasswordUser(ca, password);
-		
-		userService.saveSystemAdmin(ca);
 
 
 		return new ResponseEntity<>(ca, HttpStatus.OK);

@@ -85,6 +85,7 @@ public class RegistratedUserService implements IRegistratedUserService {
 		String encodedPassword = passwordEncoder.encode(password);
 		user.setPassword(encodedPassword);
 		user.setLoggedBefore(true);
+		UserRepository.save(user);
 		return user;
 	}
 	
