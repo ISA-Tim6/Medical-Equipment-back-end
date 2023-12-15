@@ -41,7 +41,6 @@ public class CompanyController {
 	
 	@CrossOrigin(origins="http://localhost:4200")
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_ADMIN','ROLE_COMPANY_ADMIN','ROLE_REGISTRATED_USER')")
 	public ResponseEntity<List<CompanyDto>> getAllCompanies() throws Exception {
 		List<CompanyDto> companiesDto=new ArrayList<CompanyDto>();
 		for(Company c:companyService.getAll())

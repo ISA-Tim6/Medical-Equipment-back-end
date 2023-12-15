@@ -1,6 +1,10 @@
 package com.example.medicalequipment.service;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,6 +15,7 @@ import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 import com.example.medicalequipment.iservice.IReservationService;
+import com.example.medicalequipment.model.Appointment;
 import com.example.medicalequipment.model.Item;
 import com.example.medicalequipment.model.Reservation;
 import com.example.medicalequipment.repository.IItemRepository;
@@ -80,5 +85,18 @@ public class ReservationService implements IReservationService {
 	@Override
 	public List<Reservation> getFullReservation(Long id) {
 		return ReservationRepository.getFullReservation(id);
+	}
+	@Override
+	public List<Appointment> getAllUserReservation(Long id) {
+		List<Reservation> storedUserReservation=ReservationRepository.getAllUserReservation(id);
+		List<Appointment> userReservation=new ArrayList<Appointment>();
+		for(Reservation r : storedUserReservation) {
+			if(r.getAppointment().getDate().isAfter(LocalDate.now())) {
+				userReservation.add(r.getAppointment());
+				System.out.println("usao u rezervaciju");
+			
+			}
+		}
+		return userReservation;
 	}
 }

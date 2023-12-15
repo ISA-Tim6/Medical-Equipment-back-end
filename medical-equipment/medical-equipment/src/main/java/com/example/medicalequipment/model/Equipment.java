@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -39,6 +41,7 @@ public class Equipment {
 	private Integer quantity;
 	
 	@ManyToMany(mappedBy = "equipment",fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	//@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"),
 	//inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"))
 	private Set<Company> companies=new HashSet<Company>();

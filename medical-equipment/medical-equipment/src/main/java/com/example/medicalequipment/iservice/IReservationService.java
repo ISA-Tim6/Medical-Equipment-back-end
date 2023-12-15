@@ -7,6 +7,7 @@ import javax.mail.MessagingException;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
+import com.example.medicalequipment.model.Appointment;
 import com.example.medicalequipment.model.RegistratedUser;
 import com.example.medicalequipment.model.Reservation;
 
@@ -14,4 +15,5 @@ import com.example.medicalequipment.model.Reservation;
 public interface IReservationService {
 	Reservation save(Reservation reservation) throws MailException, InterruptedException, MessagingException;
 	List<Reservation> getFullReservation(Long id);
+	List<Appointment> getAllUserReservation(Long id);
 }
