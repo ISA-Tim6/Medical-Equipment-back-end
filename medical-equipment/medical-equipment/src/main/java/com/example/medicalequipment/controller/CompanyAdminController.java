@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.medicalequipment.dto.CompanyAdminDto;
 import com.example.medicalequipment.iservice.ICompanyAdminService;
+import com.example.medicalequipment.iservice.IRegistratedUserService;
 import com.example.medicalequipment.iservice.IUserService;
 import com.example.medicalequipment.model.CompanyAdmin;
 import com.example.medicalequipment.model.User;
@@ -37,12 +38,15 @@ public class CompanyAdminController {
 	@Autowired
 	private IUserService userService;
 	@Autowired
+	private IRegistratedUserService registratedUserService;
+	@Autowired
     public PasswordEncoder passwordEncoder;
 
-	public CompanyAdminController(ICompanyAdminService _companyAdminService, IUserService _userService) {
+	public CompanyAdminController(ICompanyAdminService _companyAdminService, IUserService _userService,IRegistratedUserService rus) {
 		super();
 		this.companyAdminService = _companyAdminService;
 		this.userService=_userService;
+		this.registratedUserService=rus;
 	}
 	
 	@CrossOrigin(origins="http://localhost:4200")
@@ -136,15 +140,18 @@ public class CompanyAdminController {
 	
 	public ResponseEntity<CompanyAdminDto> changePassword(@PathVariable Long id,@RequestBody String password) {
 
-		CompanyAdmin ca = companyAdminService.findOne(id);
+		/*CompanyAdmin ca = companyAdminService.findOne(id);
 		if (ca == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		String encodedPassword = passwordEncoder.encode(password);
+		System.out.println(encodedPassword);
 		ca.setPassword(encodedPassword);
 		ca.setLoggedBefore(true);
+		ca.setActive(true);
 		
-		companyAdminService.save(ca);
+		companyAdminService.save(ca);*/
+		CompanyAdmin ca=this.registratedUserService.changePassword(password, id);
 
 		CompanyAdminDto cadto=new CompanyAdminDto(companyAdminService.findOne(id));
 
