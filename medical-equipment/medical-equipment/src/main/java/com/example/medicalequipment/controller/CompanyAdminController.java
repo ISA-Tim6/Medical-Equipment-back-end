@@ -96,6 +96,7 @@ public class CompanyAdminController {
 
 	@CrossOrigin(origins="http://localhost:4200")
     @PostMapping(value="/create/{id}")
+	@PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_ADMIN')")
 	public ResponseEntity<CompanyAdmin> createWithCompany(@RequestBody CompanyAdmin companyAdmin, @PathVariable Long id) throws Exception {
 		return new ResponseEntity<CompanyAdmin>(companyAdminService.createWithCompany(companyAdmin, id), HttpStatus.OK);
 	}

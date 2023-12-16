@@ -99,7 +99,7 @@ public class CompanyController {
 	 
 	 @CrossOrigin(origins="http://localhost:4200")
 	    @PostMapping(value="/create")
-	 @PreAuthorize("hasAuthority('ROLE_COMPANY_ADMIN')")
+	 @PreAuthorize("hasAuthority('ROLE_SYSTEM_ADMIN')")
 		public ResponseEntity<CompanyDto> create(@RequestBody Company company) throws Exception {
 			return new ResponseEntity<CompanyDto>(new CompanyDto(companyService.save(company)), HttpStatus.OK);
 		}
@@ -125,7 +125,7 @@ public class CompanyController {
 		}
 	 	@CrossOrigin(origins="http://localhost:4200")
 		@PutMapping(value = "/addEquipment/{id}")
-	 	@PreAuthorize("hasAuthority('ROLE_SYSTEM_ADMIN')")
+	 	@PreAuthorize("hasAuthority('ROLE_COMPANY_ADMIN')")
 		public ResponseEntity<CompanyDto> addEquipment(@RequestBody Equipment equipment,@PathVariable Long id) throws Exception{
 			
 			Company c=companyService.addEquipment(equipment, id);
@@ -134,7 +134,7 @@ public class CompanyController {
 		}
 	 @CrossOrigin(origins="http://localhost:4200")
 		@PutMapping(value = "/removeEquipment/{company_id}")
-	 @PreAuthorize("hasAuthority('ROLE_SYSTEM_ADMIN')")
+	 @PreAuthorize("hasAuthority('ROLE_COMPANY_ADMIN')")
 		public ResponseEntity<CompanyDto> removeEquipment(@PathVariable Long company_id,@RequestBody Equipment equipment) throws Exception{
 			Company c=companyService.removeEquipment(company_id, equipment.getEquipment_id());
 			if (c!=null)
