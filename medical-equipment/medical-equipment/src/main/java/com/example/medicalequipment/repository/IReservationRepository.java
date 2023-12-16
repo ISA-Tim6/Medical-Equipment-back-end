@@ -18,6 +18,6 @@ import com.example.medicalequipment.model.Reservation;
 public interface IReservationRepository extends JpaRepository<Reservation, Long> {
 	@Query("select r from Reservation r join fetch r.items join fetch r.user join fetch r.appointment a join fetch a.admin ca join fetch ca.company c where r.reservation_id=?1")
 	List<Reservation> getFullReservation(Long id);
-	@Query("select r from Reservation r join fetch r.items join fetch r.user u join fetch r.appointment a join fetch a.admin ca join fetch ca.company c where u.user_id=?1")
+	@Query("select r from Reservation r join fetch r.user u join fetch r.appointment a join fetch a.admin ca join fetch ca.company c where u.user_id=?1")
 	List<Reservation> getAllUserReservation(Long id);
 }
