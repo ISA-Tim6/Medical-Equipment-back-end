@@ -1,5 +1,7 @@
 package com.example.medicalequipment.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -18,7 +20,7 @@ public class CompanyAdmin extends User{
 	
 	
 	public CompanyAdmin(String name, String surname, String username, String password, String email, String phoneNumber,
-			String city,String country, Employment employment,Company company,String info,boolean isActive) {
+			String city,String country, Employment employment,Company company,String info,boolean isActive ) {
 		super(name,surname,username,password,email,phoneNumber,city,country,employment,info,isActive);
 		this.company=company;
 	}

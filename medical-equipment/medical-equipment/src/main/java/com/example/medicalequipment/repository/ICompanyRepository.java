@@ -26,4 +26,7 @@ public interface ICompanyRepository extends JpaRepository<Company, Long> {
 	@Transactional
 	@Query(value = "DELETE FROM company_equipment WHERE equipment_id=?1 and company_id=?2", nativeQuery = true)
 	void deleteEquipmentFromCompany(Long userId, Long fishingInstructorId);
+	
+	@Query("select e from Company e join fetch e.workingTimeCalendar wtc join fetch wtc.appointments where e.company_id=?1")
+	Company find(Long company_id);
 }

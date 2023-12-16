@@ -2,6 +2,8 @@ package com.example.medicalequipment.model;
 
 import static javax.persistence.InheritanceType.JOINED;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -16,7 +18,8 @@ public class RegistratedUser extends User {
 	private int penals;
 	@Column(name = "category", nullable = false)
 	private Category category;
-	
+	@Column(name = "verification_code", length = 64)
+    private String verificationCode;
 	public RegistratedUser() {
 		this.penals = 0;
 		this.category = Category.REGULAR;
@@ -51,6 +54,14 @@ public class RegistratedUser extends User {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	public String getVerificationCode() {
+		return verificationCode;
+	}
+
+	public void setVerificationCode(String verificationCode) {
+		this.verificationCode = verificationCode;
 	}
 	
 	

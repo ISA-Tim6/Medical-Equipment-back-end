@@ -18,7 +18,7 @@ public class Item {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long item_id;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@JoinTable(name = "equipment_item", joinColumns = @JoinColumn(name = "item_id", referencedColumnName = "item_id"),
 	inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"))
 	private Equipment equipment;
@@ -34,6 +34,10 @@ public class Item {
 		super();
 		this.equipment = equipment;
 		this.quantity = quantity;
+	}
+	
+	public Long getItemId() {
+		return item_id;
 	}
 	public Equipment getEquipment() {
 		return equipment;
