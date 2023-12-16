@@ -9,7 +9,9 @@ import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -171,7 +173,14 @@ public class RegistratedUserService implements IRegistratedUserService {
 	     
 	}
 	
-	
+	public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName(); // Dohvatanje korisničkog imena
+        RegistratedUser user = getByEmail(username);
+        System.out.print("=============================="+user.getEmail()+"\n");
+        // Možete dohvatiti više informacija kao što su role, authorities, itd.
+        return user;
+    }
 	
 	
 	

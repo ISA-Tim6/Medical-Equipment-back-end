@@ -51,7 +51,6 @@ public class CompanyController {
 	
 	@CrossOrigin(origins="http://localhost:4200")
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_ADMIN','ROLE_COMPANY_ADMIN')")
 	public ResponseEntity<List<CompanyDto>> getAllCompanies() throws Exception {
 		List<CompanyDto> companiesDto=new ArrayList<CompanyDto>();
 		for(Company c:companyService.getAll())
@@ -63,7 +62,7 @@ public class CompanyController {
 	
 	 @CrossOrigin(origins="http://localhost:4200")
 	    @GetMapping(value = "/{id}")
-	 @PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_ADMIN','ROLE_COMPANY_ADMIN')")
+	 @PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_ADMIN','ROLE_COMPANY_ADMIN','ROLE_REGISTRATED_USER')")
 		public ResponseEntity<CompanyDto> getCompany(@PathVariable Long id) throws Exception {
 
 			Company company=companyService.findOne(id);

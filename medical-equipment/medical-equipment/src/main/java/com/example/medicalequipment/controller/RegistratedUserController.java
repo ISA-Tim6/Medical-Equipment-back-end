@@ -36,6 +36,8 @@ import com.example.medicalequipment.service.EmailService;
 import com.example.medicalequipment.service.RegistratedUserService;
 import com.example.medicalequipment.service.UserService;
 
+import io.swagger.annotations.Authorization;
+
 
 
 @RestController
@@ -85,6 +87,7 @@ public class RegistratedUserController {
 	
     @CrossOrigin(origins="http://localhost:4200")
     @PutMapping("updateUser/{oldUsername}")
+    @PreAuthorize("hasAuthority('ROLE_REGISTRATED_USER')")
 	public ResponseEntity<RegistratedUser> updateUser(@PathVariable String oldUsername, @RequestBody RegistratedUser user) {
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

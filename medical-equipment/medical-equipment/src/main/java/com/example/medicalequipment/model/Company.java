@@ -52,6 +52,7 @@ public class Company {
 	@ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"),
 	inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"))
+	@JsonIgnore
 	private Set<Equipment> equipment=new HashSet<Equipment>();
 	
 	

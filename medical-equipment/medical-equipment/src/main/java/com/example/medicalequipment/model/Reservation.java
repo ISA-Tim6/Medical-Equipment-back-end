@@ -24,7 +24,7 @@ public class Reservation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long reservation_id;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@JoinTable(name = "reservation_user", joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "reservation_id"),
 			inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"))
 	private RegistratedUser user;
