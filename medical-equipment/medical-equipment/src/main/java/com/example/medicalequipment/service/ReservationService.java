@@ -97,7 +97,8 @@ public class ReservationService implements IReservationService {
 			if(r.getAppointment().getDate().isAfter(LocalDate.now())) {
 				userReservation.add(r.getAppointment());
 				System.out.println("usao u rezervaciju");
-			
+			}else if(r.getAppointment().getDate().isEqual(LocalDate.now()) && r.getAppointment().getTime().isAfter(LocalTime.now())) {
+				userReservation.add(r.getAppointment());
 			}
 		}
 		return userReservation;

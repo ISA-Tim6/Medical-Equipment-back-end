@@ -55,7 +55,7 @@ public class EmailService implements IEmailService{
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             
             helper.setTo("kivana0191@gmail.com");
-            helper.setSubject("Potvrda rezervacije");
+            helper.setSubject("Reservation approved");
             
             // Dodajte informacije o rezervaciji u tekst emaila
             String emailText = String.format("Hvala vam, na vašoj rezervaciji. Detalji:\nDatum: \nMjesto: \n...");
