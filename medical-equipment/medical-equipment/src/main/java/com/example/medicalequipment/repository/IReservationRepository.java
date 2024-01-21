@@ -14,6 +14,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.example.medicalequipment.model.Appointment;
+import com.example.medicalequipment.model.CompanyAdmin;
 import com.example.medicalequipment.model.Item;
 import com.example.medicalequipment.model.RegistratedUser;
 import com.example.medicalequipment.model.Reservation;
@@ -36,5 +37,21 @@ public interface IReservationRepository extends JpaRepository<Reservation, Long>
 	
 	@Query("select r from Reservation r join fetch r.user u join fetch r.appointment a join fetch a.admin ca join fetch ca.company c where u.user_id=?1")
 	List<Reservation> getAllUserReservation(Long id);
+	
+	@Query(value = "SELECT r.reservation_id from reservation r inner join reservation_item ri on "
+			+ "	ri.reservation_id=r.reservation_id inner join item i on ri.item_id=i.item_id"
+			+ "	inner join equipment_item ei on ei.item_id=i.item_id "
+			+ "	inner join appointment ap on ap.appointment_id=r.appointment_id"
+			+ "	inner join company_admin ca on ca.user_id=ap.user_id"
+			+ "	where r.reservation_status=0 and ca.user_id=:user_id", nativeQuery = true)
+	List<Long> getNewReservationForAdmin(Long user_id);
+	
+	@Query(value = "SELECT r FROM Reservation r join fetch r.user u join fetch r.appointment a join fetch r.items i join fetch i.equipment  where r.reservation_id=?1")
+	Reservation getReservation(Long id);
+	
+	
+	@Query("select distinct r from Reservation r join fetch r.items join fetch r.user join fetch r.appointment a join fetch a.admin ca join fetch ca.company c where ca.user_id=?1")
+	List<Reservation> getAllByCompanyAdmin(Long user_id);
+
 
 }
