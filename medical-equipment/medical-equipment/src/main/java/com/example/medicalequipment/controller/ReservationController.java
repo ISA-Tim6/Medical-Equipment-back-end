@@ -33,7 +33,7 @@ public class ReservationController {
     @PostMapping("saveReservation")
 	@PreAuthorize("hasAuthority('ROLE_REGISTRATED_USER')")
     public Reservation save(@RequestBody Reservation reservation) throws MailException, InterruptedException, MessagingException {
-    	return reservationService.save(reservation);
+    	return reservationService.saveAndSendEmail(reservation);
     }
 	@CrossOrigin(origins="http://localhost:4200")
     @GetMapping("getFutureReservation/{id}")

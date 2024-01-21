@@ -14,7 +14,7 @@ import com.example.medicalequipment.model.Reservation;
 
 @Service
 public interface IReservationService {
-	Reservation save(Reservation reservation) throws MailException, InterruptedException, MessagingException;
+	Reservation saveAndSendEmail(Reservation reservation) throws MailException, InterruptedException, MessagingException;
 	List<ReservationDto> getAllByCompany(Long company_id);
 	List<Reservation> getFullReservation(Long id);
 	List<Appointment> getAllUserReservation(Long id);

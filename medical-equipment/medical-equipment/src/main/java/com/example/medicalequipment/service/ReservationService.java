@@ -15,6 +15,8 @@ import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.medicalequipment.dto.ReservationDto;
 import com.example.medicalequipment.iservice.IReservationService;
@@ -67,7 +69,7 @@ public class ReservationService implements IReservationService {
 		return message;
 	}
 	@Override
-	public Reservation save(Reservation reservation) throws MailException, InterruptedException, MessagingException {
+	public Reservation saveAndSendEmail(Reservation reservation) throws MailException, InterruptedException, MessagingException {
 		// TODO Auto-generated method stub
 		Reservation newReservation=ReservationRepository.save(reservation);
 		String qrCodeData = generateReservationDetails(newReservation);
@@ -84,6 +86,12 @@ public class ReservationService implements IReservationService {
 	    }
 		emailService.sendConfirmationEmail(newReservation,mail, qrCodeImageBytes);
 		return newReservation;
+	}
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	private Reservation save(Reservation reservation)
+	{
+		return ReservationRepository.save(reservation);
 	}
 	@Override
 	public List<Reservation> getFullReservation(Long id) {

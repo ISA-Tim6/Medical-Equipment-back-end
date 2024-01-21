@@ -14,6 +14,8 @@ import java.util.Iterator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.medicalequipment.dto.EquipmentDto;
 import com.example.medicalequipment.iservice.ICompanyService;
@@ -103,6 +105,8 @@ public class CompanyService implements ICompanyService{
 	public List<Company> findByNameAndAddressCity(String name, String city) {
 		return CompanyRepository.findByNameContainingIgnoreCaseAndAddressCityContainingIgnoreCase(name, city);
 	}
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public Integer addAppointment(Long company_id, Long company_admin_id, Appointment appointment) {
 		Company c=findOne(company_id);
@@ -128,8 +132,6 @@ public class CompanyService implements ICompanyService{
 		}
 		else 
 			return 1;
-
-
 	}
 
 	
