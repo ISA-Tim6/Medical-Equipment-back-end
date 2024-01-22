@@ -123,7 +123,7 @@ public class ReservationService implements IReservationService {
 	}
 	@Override
 	public ReservationDto getNewByCompanyAdmin(Long user_id){
-		ReservationDto result ;
+		ReservationDto result =null;
 		List<Reservation> reservations=ReservationRepository.getAllByCompanyAdmin(user_id);
 
 
