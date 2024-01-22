@@ -121,26 +121,27 @@ public class ReservationService implements IReservationService {
 		}
 		return result;
 	}
-	
-	public List<ReservationDto> getNewByCompanyAdmin(Long user_id){
-		List<ReservationDto> result = new ArrayList<ReservationDto>();
+	@Override
+	public ReservationDto getNewByCompanyAdmin(Long user_id){
+		ReservationDto result ;
 		List<Reservation> reservations=ReservationRepository.getAllByCompanyAdmin(user_id);
 
 
 		for(Reservation reservation: reservations) {
 			boolean isToday=reservation.getAppointment().getDate().isEqual(LocalDate.now());
-			boolean isAfter=reservation.getAppointment().getDate().isAfter(LocalDate.now());
-			if(reservation!=null && (isToday||isAfter) && reservation.getReservationStatus()==ReservationStatus.NEW)
-				result.add(new ReservationDto(reservation.getReservation_id(), reservation.getUser(), reservation.getItems(), reservation.getAppointment(), reservation.getReservationStatus().toString()));
+			boolean isBeforeEnd=reservation.getAppointment().getEnd().isBefore(LocalTime.now().plusHours(1));
+			boolean isAfterStart=LocalTime.now().isAfter(reservation.getAppointment().getTime());
+			if(reservation!=null && isToday && isAfterStart&& isBeforeEnd && reservation.getReservationStatus()==ReservationStatus.NEW)
+				result=new ReservationDto(reservation.getReservation_id(), reservation.getUser(), reservation.getItems(), reservation.getAppointment(), reservation.getReservationStatus().toString());
 		}
 		
 		return result;
 	}
-	
+	@Override
 	@Transactional(readOnly = false,  propagation = Propagation.REQUIRES_NEW)
-	public List<ReservationDto> DeliverReservation(Long id){
+	public ReservationDto DeliverReservation(Long id){
 		Long Id=null;
-		String mailText="Poštovani, oprema koju ste rezervisali Vam je isporučena.\n"
+		String mailText="Poštovani, oprema koju ste rezervisali Vam je isporučena. \n"
 				+ "Oprema: ";
 
 		List<Reservation> reservations=ReservationRepository.getFullReservation(id);

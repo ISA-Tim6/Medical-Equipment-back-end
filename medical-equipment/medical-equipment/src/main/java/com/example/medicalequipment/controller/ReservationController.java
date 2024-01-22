@@ -49,17 +49,17 @@ public class ReservationController {
 	 @CrossOrigin(origins="http://localhost:4200")
 	 @GetMapping(value = "/findNewReservations/{admin_id}")
 	 @PreAuthorize("hasAuthority('ROLE_COMPANY_ADMIN')")
-	 public ResponseEntity<List<ReservationDto>> findNewReservations(@PathVariable Long admin_id)
+	 public ResponseEntity<ReservationDto> findNewReservations(@PathVariable Long admin_id)
 	 {
-		 List<ReservationDto> result=reservationService.getNewByCompanyAdmin(admin_id);
+		 ReservationDto result=reservationService.getNewByCompanyAdmin(admin_id);
 		 return new ResponseEntity<>(result, HttpStatus.OK);
 	 }
 	 @CrossOrigin(origins="http://localhost:4200")
 	 @GetMapping(value = "/deliverReservation/{id}")
 	 @PreAuthorize("hasAuthority('ROLE_COMPANY_ADMIN')")
-	 public ResponseEntity<List<ReservationDto>> deliverReservation(@PathVariable Long id)
+	 public ResponseEntity<ReservationDto> deliverReservation(@PathVariable Long id)
 	 {
-		 List<ReservationDto> result=reservationService.DeliverReservation(id);
+		 ReservationDto result=reservationService.DeliverReservation(id);
 		 return new ResponseEntity<>(result, HttpStatus.OK);
 	 }
 }
