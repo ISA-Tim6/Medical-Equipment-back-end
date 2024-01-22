@@ -8,6 +8,7 @@ import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 import com.example.medicalequipment.dto.ReservationDto;
 import com.example.medicalequipment.model.Appointment;
+import com.example.medicalequipment.model.CanceledAppointment;
 import com.example.medicalequipment.model.RegistratedUser;
 import com.example.medicalequipment.model.Reservation;
 
@@ -18,4 +19,6 @@ public interface IReservationService {
 	List<ReservationDto> getAllByCompany(Long company_id);
 	List<Reservation> getFullReservation(Long id);
 	List<Appointment> getAllUserReservation(Long id);
+	boolean cancelReservation(Long appointmentId);
+	List<CanceledAppointment> getCanceledAppointments(Long id);
 }
