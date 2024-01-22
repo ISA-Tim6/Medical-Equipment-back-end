@@ -202,6 +202,7 @@ public class CompanyService implements ICompanyService{
         return appointmentsForDate;
     }
 	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public Long addExtraordinaryAppointment(Long company_id, Appointment appointment) {
 	    Company c = findOne(company_id);
