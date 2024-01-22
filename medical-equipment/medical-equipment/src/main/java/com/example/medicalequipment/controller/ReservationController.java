@@ -87,5 +87,12 @@ public class ReservationController {
 		 List<ReservationDto> result=reservationService.DeliverReservation(id);
 		 return new ResponseEntity<>(result, HttpStatus.OK);
 	 }
+	 @CrossOrigin(origins="http://localhost:4200")
+	    @GetMapping("/acceptedReservations/{id}")
+		@PreAuthorize("hasAuthority('ROLE_REGISTRATED_USER')")
+	    public List<ReservationDto> getAcceptedReservationsByUser(@PathVariable Long id){
+			return reservationService.getAcceptedReservationsByUser(id);
+	    }
+
 
 }

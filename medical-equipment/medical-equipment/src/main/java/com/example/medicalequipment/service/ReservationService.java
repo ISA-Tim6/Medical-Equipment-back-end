@@ -278,4 +278,16 @@ public class ReservationService implements IReservationService {
 			
 		}
 	}
+	@Override
+	public List<ReservationDto> getAcceptedReservationsByUser(Long id) {
+		List<Reservation> userReservations = ReservationRepository.getUserReservationsWithItems(id);
+		List<ReservationDto> retReservations = new ArrayList<ReservationDto>();
+		for (Reservation reservation : userReservations) {
+	    	if(reservation.getReservationStatus().toString()=="ACCEPTED") {
+	    		retReservations.add(new ReservationDto(reservation.getReservation_id(), reservation.getUser(), reservation.getItems(), reservation.getAppointment(), reservation.getReservationStatus().toString()));
+	    	}
+		}
+		return retReservations;
+		
+	}
 }
