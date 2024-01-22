@@ -72,4 +72,27 @@ public class EmailService implements IEmailService{
         }
     }
 	
+	public void sendDeliveryEmail(String mail) {
+        try {
+    	    MimeMessage message = javaMailSender.createMimeMessage();
+    	    MimeMessageHelper helper = new MimeMessageHelper(message,true);
+            
+            helper.setTo("milicavujic2001@gmail.com");
+            helper.setSubject("Isporuka rezervisane opreme");
+            
+            // Dodajte informacije o rezervaciji u tekst emaila
+            String emailText = String.format("Vaša rezervacija je uspešno poslata");
+
+            helper.setText(mail, true); // true označava da je tekst HTML, možete koristiti false ako koristite običan tekst
+
+            javaMailSender.send(message);
+            
+
+        } catch (MessagingException e) {
+            // Postupajte s izuzetkom, npr. ispišite ga u konzolu ili logirajte
+            e.printStackTrace();
+            System.out.println(e);
+        }
+    }
+	
 }

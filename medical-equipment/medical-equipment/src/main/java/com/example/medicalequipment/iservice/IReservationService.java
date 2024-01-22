@@ -22,4 +22,6 @@ public interface IReservationService {
 	public List<byte[]> regenerateNewQR(Long id) throws InterruptedException, MessagingException;
 	public List<byte[]> regenerateAcceptedQR(Long id) throws InterruptedException, MessagingException;
 	public List<byte[]> regenerateRejectedQR(Long id) throws InterruptedException, MessagingException;
+	List<ReservationDto> getNewByCompanyAdmin(Long admin_id);
+	List<ReservationDto> DeliverReservation(Long id);
 }
