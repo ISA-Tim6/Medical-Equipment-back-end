@@ -86,7 +86,7 @@ INSERT INTO public.user_role (user_id, role_id) VALUES (4, 2); -- user-u dodelju
 
 INSERT INTO public.appointment(
 	appointment_id, appointment_status, local_date, duration, "end", local_time, user_id)
-	VALUES (default, 0, '2-5-2024', 60, '17:00:00', '16:00:00', 2);
+	VALUES (default, 0, '22-1-2024', 60, '23:00:00', '22:00:00', 2);
 INSERT INTO public.item(
 	item_id, quantity)
 	VALUES (default, 1);
