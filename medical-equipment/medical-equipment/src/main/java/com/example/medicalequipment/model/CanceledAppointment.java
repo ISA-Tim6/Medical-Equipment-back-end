@@ -14,7 +14,7 @@ public class CanceledAppointment {
 	@Column(name = "canceledAppointment_id")
 	private Long id;
 	private Long user_id;
-	private Long appointmentId;
+	private Long appointment_id;
 	private Date cancelingDate;
 	public CanceledAppointment() {
 		super();
@@ -22,7 +22,7 @@ public class CanceledAppointment {
 	public CanceledAppointment(Long userId, Long appointmentId, Date cancelingDate) {
 		super();
 		this.user_id = userId;
-		this.appointmentId = appointmentId;
+		this.appointment_id = appointmentId;
 		this.cancelingDate = cancelingDate;
 	}
 	public Long getId() {
@@ -38,10 +38,10 @@ public class CanceledAppointment {
 		this.user_id = userId;
 	}
 	public Long getAppointmentId() {
-		return appointmentId;
+		return appointment_id;
 	}
 	public void setAppointmentId(Long appointmentId) {
-		this.appointmentId = appointmentId;
+		this.appointment_id = appointmentId;
 	}
 	public Date getCancelingDate() {
 		return cancelingDate;

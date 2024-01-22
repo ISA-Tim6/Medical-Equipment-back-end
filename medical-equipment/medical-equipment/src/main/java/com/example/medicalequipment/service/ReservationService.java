@@ -113,10 +113,6 @@ public class ReservationService implements IReservationService {
 	        e.printStackTrace();
 	    }
 		emailService.sendConfirmationEmail(newReservation,mail, qrCodeImageBytes);
-		appointment.setAdmin(admin);
-		appointment.setAppointmentStatus(AppointmentStatus.RESERVED);
-		appointment.setEnd(appointment.getTime().plusHours(1));
-		appRepository.save(appointment);
 		return newReservation;
 	}
 	@Override
