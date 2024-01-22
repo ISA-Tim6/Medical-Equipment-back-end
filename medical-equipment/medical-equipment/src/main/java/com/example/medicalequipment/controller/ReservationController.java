@@ -42,4 +42,29 @@ public class ReservationController {
     	System.out.println("usao u kontroler");
 		return reservationService.getAllUserReservation(id);
     }
+	
+	@CrossOrigin(origins="http://localhost:4200")
+	@GetMapping("/qrs/{id}")
+	@PreAuthorize("hasAuthority('ROLE_REGISTRATED_USER')")
+    public List<byte[]> getQrsByUser(@PathVariable Long id) throws InterruptedException, MessagingException {
+        return reservationService.regenerateQR(id);
+    }
+    @CrossOrigin(origins="http://localhost:4200")
+	@GetMapping("/newqrs/{id}")
+	@PreAuthorize("hasAuthority('ROLE_REGISTRATED_USER')")
+    public List<byte[]> getNewQrsByUser(@PathVariable Long id) throws InterruptedException, MessagingException {
+        return reservationService.regenerateNewQR(id);
+    }
+    @CrossOrigin(origins="http://localhost:4200")
+	@GetMapping("/acceptedqrs/{id}")
+	@PreAuthorize("hasAuthority('ROLE_REGISTRATED_USER')")
+    public List<byte[]> getAcceptedQrsByUser(@PathVariable Long id) throws InterruptedException, MessagingException {
+        return reservationService.regenerateAcceptedQR(id);
+    }
+    @CrossOrigin(origins="http://localhost:4200")
+	@GetMapping("/rejectedqrs/{id}")
+	@PreAuthorize("hasAuthority('ROLE_REGISTRATED_USER')")
+    public List<byte[]> getRejectedQrsByUser(@PathVariable Long id) throws InterruptedException, MessagingException {
+        return reservationService.regenerateRejectedQR(id);
+    }
 }

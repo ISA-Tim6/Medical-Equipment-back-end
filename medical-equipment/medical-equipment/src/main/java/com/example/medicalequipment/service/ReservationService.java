@@ -49,6 +49,7 @@ public class ReservationService implements IReservationService {
 				+ "Admin: " + newReservation.getAppointment().getAdmin().getName()+" "+newReservation.getAppointment().getAdmin().getSurname() + "\n"
 				+ "Company: " + newReservation.getAppointment().getAdmin().getCompany().getName()+"\n"
 				+ "User: " + newReservation.getUser().getName()+" "+newReservation.getUser().getSurname()+"\n"
+				+ "Status: " + newReservation.getReservationStatus().toString() + "\n"
 				+ "Equipment: ";
 		
 		Iterator<Item> iter=newReservation.getItems().iterator();
@@ -113,6 +114,104 @@ public class ReservationService implements IReservationService {
 			}
 		}
 		return result;
+	}
+	@Override
+	public List<byte[]> regenerateQR(Long id) throws InterruptedException, MessagingException {
+		// TODO Auto-generated method stub
+		 List<byte[]> qrCodeImages = new ArrayList<>();
+		    List<Reservation> userReservations = ReservationRepository.getAllUserReservation(id);
+
+		    for (Reservation reservation : userReservations) {
+		        String qrCodeData = generateReservationDetails(reservation);
+		        byte[] qrCodeImageBytes;
+				try {
+					qrCodeImageBytes = QRCodeGenerator.getQRCodeImage(qrCodeData, 250, 250, "mobilenotes://compose");
+					qrCodeImages.add(qrCodeImageBytes);
+				} catch (WriterException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        
+		    }
+		 return qrCodeImages;
+	}
+	
+	@Override
+	public List<byte[]> regenerateNewQR(Long id) throws InterruptedException, MessagingException {
+		// TODO Auto-generated method stub
+		 List<byte[]> qrCodeImages = new ArrayList<>();
+		    List<Reservation> userReservations = ReservationRepository.getAllUserReservation(id);
+
+		    for (Reservation reservation : userReservations) {
+		    	if(reservation.getReservationStatus().toString()=="NEW") {
+		        String qrCodeData = generateReservationDetails(reservation);
+		        byte[] qrCodeImageBytes;
+				try {
+					qrCodeImageBytes = QRCodeGenerator.getQRCodeImage(qrCodeData, 250, 250, "mobilenotes://compose");
+					qrCodeImages.add(qrCodeImageBytes);
+				} catch (WriterException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    	}
+		        
+		    }
+		 return qrCodeImages;
+	}
+	@Override
+	public List<byte[]> regenerateAcceptedQR(Long id) throws InterruptedException, MessagingException {
+		// TODO Auto-generated method stub
+		 List<byte[]> qrCodeImages = new ArrayList<>();
+		    List<Reservation> userReservations = ReservationRepository.getAllUserReservation(id);
+
+		    for (Reservation reservation : userReservations) {
+		    	if(reservation.getReservationStatus().toString()=="ACCEPTED") {
+		        String qrCodeData = generateReservationDetails(reservation);
+		        byte[] qrCodeImageBytes;
+				try {
+					qrCodeImageBytes = QRCodeGenerator.getQRCodeImage(qrCodeData, 250, 250, "mobilenotes://compose");
+					qrCodeImages.add(qrCodeImageBytes);
+				} catch (WriterException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    } 
+		   }
+		 return qrCodeImages;
+	}
+	@Override
+	public List<byte[]> regenerateRejectedQR(Long id) throws InterruptedException, MessagingException {
+		// TODO Auto-generated method stub
+		 List<byte[]> qrCodeImages = new ArrayList<>();
+		    List<Reservation> userReservations = ReservationRepository.getAllUserReservation(id);
+
+		    for (Reservation reservation : userReservations) {
+		    	if(reservation.getReservationStatus().toString()=="REJECTED") {
+		        String qrCodeData = generateReservationDetails(reservation);
+		        byte[] qrCodeImageBytes;
+				try {
+					qrCodeImageBytes = QRCodeGenerator.getQRCodeImage(qrCodeData, 250, 250, "mobilenotes://compose");
+					qrCodeImages.add(qrCodeImageBytes);
+				} catch (WriterException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    }
+		        
+		    }
+		 return qrCodeImages;
 	}
 
 }

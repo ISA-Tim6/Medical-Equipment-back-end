@@ -18,4 +18,8 @@ public interface IReservationService {
 	List<ReservationDto> getAllByCompany(Long company_id);
 	List<Reservation> getFullReservation(Long id);
 	List<Appointment> getAllUserReservation(Long id);
+	public List<byte[]> regenerateQR(Long id) throws InterruptedException, MessagingException;
+	public List<byte[]> regenerateNewQR(Long id) throws InterruptedException, MessagingException;
+	public List<byte[]> regenerateAcceptedQR(Long id) throws InterruptedException, MessagingException;
+	public List<byte[]> regenerateRejectedQR(Long id) throws InterruptedException, MessagingException;
 }
