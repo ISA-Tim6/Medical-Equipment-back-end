@@ -20,4 +20,5 @@ public interface IReservationService {
 	List<Appointment> getAllUserReservation(Long id);
 	List<ReservationDto> getNewByCompanyAdmin(Long admin_id);
 	List<ReservationDto> DeliverReservation(Long id);
+	void checkExpiration();
 }

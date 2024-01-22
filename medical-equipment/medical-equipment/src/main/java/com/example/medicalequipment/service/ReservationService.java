@@ -15,6 +15,7 @@ import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.example.medicalequipment.dto.ReservationDto;
@@ -142,7 +143,7 @@ public class ReservationService implements IReservationService {
 		Long Id=null;
 		String mailText="Poštovani, oprema koju ste rezervisali Vam je isporučena.\n"
 				+ "Oprema: ";
-
+		
 		List<Reservation> reservations=ReservationRepository.getFullReservation(id);
 		for(Reservation reservation:reservations)
 		{
@@ -175,6 +176,23 @@ public class ReservationService implements IReservationService {
 			equipment.setQuantity(newQuantity);
 			EquipmentRepository.save(equipment);
 			
+		}
+	}
+	
+	private boolean hasExpired(Reservation reservation) {
+		return reservation.getAppointment().getDate().isBefore(LocalDate.now()) || (reservation.getAppointment().getDate().isEqual(LocalDate.now()) && reservation.getAppointment().getEnd().isBefore(LocalTime.now()));
+	}
+	
+	@Scheduled(cron = "0 0 * * * *")
+	public void checkExpiration() {
+		List<Reservation> reservations = ReservationRepository.getNotRejected();
+		for(var r: reservations)
+		{
+			if(hasExpired(r))
+			{
+				r.setReservationStatus(ReservationStatus.REJECTED);
+				ReservationRepository.save(r);
+			}
 		}
 	}
 }
