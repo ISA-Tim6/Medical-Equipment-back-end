@@ -122,9 +122,9 @@ public class ReservationService implements IReservationService {
 		}
 		return result;
 	}
-	
-	public List<ReservationDto> getNewByCompanyAdmin(Long user_id){
-		List<ReservationDto> result = new ArrayList<ReservationDto>();
+	@Override
+	public ReservationDto getNewByCompanyAdmin(Long user_id){
+		ReservationDto result = null;
 		List<Reservation> reservations=ReservationRepository.getAllByCompanyAdmin(user_id);
 
 
@@ -132,14 +132,14 @@ public class ReservationService implements IReservationService {
 			boolean isToday=reservation.getAppointment().getDate().isEqual(LocalDate.now());
 			boolean isAfter=reservation.getAppointment().getDate().isAfter(LocalDate.now());
 			if(reservation!=null && (isToday||isAfter) && reservation.getReservationStatus()==ReservationStatus.NEW)
-				result.add(new ReservationDto(reservation.getReservation_id(), reservation.getUser(), reservation.getItems(), reservation.getAppointment(), reservation.getReservationStatus().toString()));
+				result=new ReservationDto(reservation.getReservation_id(), reservation.getUser(), reservation.getItems(), reservation.getAppointment(), reservation.getReservationStatus().toString());
 		}
 		
 		return result;
 	}
-	
+	@Override
 	@Transactional(readOnly = false,  propagation = Propagation.REQUIRES_NEW)
-	public List<ReservationDto> DeliverReservation(Long id){
+	public ReservationDto DeliverReservation(Long id){
 		Long Id=null;
 		String mailText="Poštovani, oprema koju ste rezervisali Vam je isporučena.\n"
 				+ "Oprema: ";
@@ -164,7 +164,7 @@ public class ReservationService implements IReservationService {
 		
 		return getNewByCompanyAdmin(Id);
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void UpdateEquipmentQuantity(Reservation reservation)
 	{
