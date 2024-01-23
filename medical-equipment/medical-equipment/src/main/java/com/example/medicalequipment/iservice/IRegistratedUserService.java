@@ -1,5 +1,7 @@
 package com.example.medicalequipment.iservice;
 
+import java.util.List;
+
 import javax.mail.MessagingException;
 
 import org.springframework.mail.MailException;
@@ -21,5 +23,4 @@ public interface IRegistratedUserService {
 
 	public User changePasswordUser(User  user, String password);
 	CompanyAdmin changePassword(String password, Long id);
-
 }
