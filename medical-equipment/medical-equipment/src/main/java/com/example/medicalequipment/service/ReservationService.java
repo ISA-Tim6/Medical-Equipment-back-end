@@ -23,6 +23,7 @@ import com.example.medicalequipment.iservice.IReservationService;
 import com.example.medicalequipment.model.Appointment;
 import com.example.medicalequipment.model.Equipment;
 import com.example.medicalequipment.model.Item;
+import com.example.medicalequipment.model.RegistratedUser;
 import com.example.medicalequipment.model.Reservation;
 import com.example.medicalequipment.model.ReservationStatus;
 import com.example.medicalequipment.repository.IEquipmentRepository;
@@ -39,12 +40,16 @@ public class ReservationService implements IReservationService {
 	@Autowired
 	private final IEquipmentRepository EquipmentRepository;
 	@Autowired
+	private final IRegistratedUserRepository RegistratedUserRepository;
+	@Autowired
 	private final EmailService emailService;
 	private static final String QR_CODE_IMAGE_PATH = "./src/main/resources/images/QRCode.png";
-	public ReservationService(IReservationRepository reservationRepository, EmailService emailService, IEquipmentRepository equipmentRepository){
+	public ReservationService(IReservationRepository reservationRepository, EmailService emailService, IEquipmentRepository equipmentRepository,
+			IRegistratedUserRepository registratedUserRepository){
     	this.ReservationRepository = reservationRepository;
 		this.emailService = emailService;
 		this.EquipmentRepository=equipmentRepository;
+		this.RegistratedUserRepository=registratedUserRepository;
     }
 	private String generateReservationDetails(Reservation reservation) {
 		//registratedUserService.
@@ -148,8 +153,9 @@ public class ReservationService implements IReservationService {
 		for(Reservation reservation:reservations)
 		{
 			Id=reservation.getAppointment().getAdmin().getUser_id();
-			reservation.setReservationStatus(ReservationStatus.ACCEPTED);
-			ReservationRepository.save(reservation);
+			Integer updateEquipmentResult=this.UpdateEquipmentQuantity(reservation);
+			if(updateEquipmentResult==0)
+			{
 					for(Item i:reservation.getItems())
 					{
 						mailText+=i.getEquipment().getName();
@@ -158,39 +164,54 @@ public class ReservationService implements IReservationService {
 						mailText+=" ,količina: ";
 						mailText+=i.getQuantity();
 					}
-			this.UpdateEquipmentQuantity(reservation);
+			reservation.setReservationStatus(ReservationStatus.ACCEPTED);
+			ReservationRepository.save(reservation);
+			}
+
+
 		}
+		if(mailText.equals("Poštovani, oprema koju ste rezervisali Vam je isporučena.\n"
+				+ "Oprema: "))
 		emailService.sendDeliveryEmail(mailText);
 		
 		return getNewByCompanyAdmin(Id);
 	}
 
 	@Transactional(readOnly = false)
-	public void UpdateEquipmentQuantity(Reservation reservation)
+	public Integer UpdateEquipmentQuantity(Reservation reservation)
 	{
 		for(Item i:reservation.getItems())
 		{
 			Equipment equipment=i.getEquipment();
 			Integer oldQuantity=equipment.getQuantity();
+			if(oldQuantity-i.getQuantity()<0)
+				return 1;
 			Integer newQuantity=oldQuantity-i.getQuantity();
 			equipment.setQuantity(newQuantity);
 			EquipmentRepository.save(equipment);
 			
 		}
+		return 0;
 	}
 	
 	private boolean hasExpired(Reservation reservation) {
 		return reservation.getAppointment().getDate().isBefore(LocalDate.now()) || (reservation.getAppointment().getDate().isEqual(LocalDate.now()) && reservation.getAppointment().getEnd().isBefore(LocalTime.now()));
 	}
 	
-	@Scheduled(cron = "0 0 * * * *")
+	@Scheduled(cron = "0 * * * * *")
 	public void checkExpiration() {
 		List<Reservation> reservations = ReservationRepository.getNotRejected();
+		System.out.println(reservations.size());
 		for(var r: reservations)
 		{
 			if(hasExpired(r))
 			{
+				System.out.println("USER"+r.getUser().getUsername());
 				r.setReservationStatus(ReservationStatus.REJECTED);
+				RegistratedUser ru=r.getUser();
+				Integer penals=ru.getPenals();
+				ru.setPenals(penals+2);
+				RegistratedUserRepository.save(ru);			
 				ReservationRepository.save(r);
 			}
 		}
