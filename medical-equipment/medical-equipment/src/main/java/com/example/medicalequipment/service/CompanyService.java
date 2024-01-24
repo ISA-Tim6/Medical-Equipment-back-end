@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.medicalequipment.dto.EquipmentDto;
 import com.example.medicalequipment.iservice.ICompanyService;
@@ -134,6 +135,7 @@ public class CompanyService implements ICompanyService{
 
 	
 	@Override
+	@Transactional
 	public Integer updateAppointment(Long company_id,Long company_admin_id,Appointment appointment) {
 		//Appointment a=AppointmentRepository.getById(company_admin_id)
 		Company c=findOne(company_id);
@@ -201,6 +203,7 @@ public class CompanyService implements ICompanyService{
     }
 	
 	@Override
+	@Transactional(readOnly = false)
 	public Long addExtraordinaryAppointment(Long company_id, Appointment appointment) {
 	    Company c = findOne(company_id);
 	    Iterator<CompanyAdmin> iterator = c.getAdmins().iterator();
