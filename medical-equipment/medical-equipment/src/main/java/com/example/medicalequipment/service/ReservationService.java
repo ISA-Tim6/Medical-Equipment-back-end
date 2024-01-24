@@ -96,10 +96,6 @@ public class ReservationService implements IReservationService {
 	public Reservation save(Reservation reservation) throws MailException, InterruptedException, MessagingException {
 		// TODO Auto-generated method stub
 		Reservation newReservation=ReservationRepository.save(reservation);
-		Appointment appointment=reservation.getAppointment();
-		
-		System.out.println("admin::::"+appointment.getAdmin().getUsername());
-		CompanyAdmin admin=CompanyAdminRepository.getByUsername(appointment.getAdmin().getUsername());
 		String qrCodeData = generateReservationDetails(newReservation);
 		String mail=generateEmailMessage(newReservation);
 		byte[] qrCodeImageBytes = null;
@@ -158,8 +154,11 @@ public class ReservationService implements IReservationService {
 	public boolean IsTwoPenals(Appointment appointment){
 		LocalDateTime currentDateTime = LocalDateTime.now();
 		LocalDate appointmentDate = appointment.getDate();
+		LocalTime appointmentTime = appointment.getTime();
+		LocalDateTime appointmentDateTime = LocalDateTime.of(appointmentDate, appointmentTime);
 		LocalDateTime twentyFourHoursBefore = currentDateTime.plus(24, ChronoUnit.HOURS);
-		return appointmentDate.isBefore(ChronoLocalDate.from(twentyFourHoursBefore));
+		System.out.println("datumnovi: "+twentyFourHoursBefore+"appointment: "+appointmentDateTime);
+		return appointmentDateTime.isBefore(twentyFourHoursBefore);
 	}
 	public boolean cancelReservation(Long appointmentId) {
 		try {
@@ -173,8 +172,9 @@ public class ReservationService implements IReservationService {
 					appointment=a;
 				}
 			}
-			
+			System.out.println("is two"+IsTwoPenals(appointment));
 			if(IsTwoPenals(appointment)) {
+				System.out.println("uslo u 2");
 				canceledAppointmentService.save(new CanceledAppointment(userId, appointmentId, currentDate));
 				int penals = userService.getCurrentRegisteredUser().getPenals()+2;
 				RegistratedUser user=userService.getCurrentRegisteredUser();
@@ -183,11 +183,13 @@ public class ReservationService implements IReservationService {
 				reservation=getUserReservationByAppointmentId(appointmentId, userId);
 				reservation.setReservationStatus(ReservationStatus.REJECTED);
 				ReservationRepository.save(reservation);
-				CompanyAdmin admin=CompanyAdminRepository.getByUsername(appointment.getAdmin().getUsername());
-				appointment.setAdmin(admin);
-				appointment.setAppointmentStatus(AppointmentStatus.AVAILABLE);
-				appointment.setEnd(appointment.getTime().plusHours(1));
-				appRepository.save(appointment);
+				if(CompanyAdminRepository.getByUsername(appointment.getAdmin().getUsername())!=null) {
+					CompanyAdmin admin=CompanyAdminRepository.getByUsername(appointment.getAdmin().getUsername());
+					appointment.setAdmin(admin);
+					appointment.setAppointmentStatus(AppointmentStatus.AVAILABLE);
+					appointment.setEnd(appointment.getTime().plusHours(1));
+					appRepository.save(appointment);
+				}
 			}else {
 				canceledAppointmentService.save(new CanceledAppointment(userId, appointmentId, currentDate));
 				int penals = userService.getCurrentRegisteredUser().getPenals()+1;
@@ -197,11 +199,13 @@ public class ReservationService implements IReservationService {
 				reservation=getUserReservationByAppointmentId(appointmentId, userId);
 				reservation.setReservationStatus(ReservationStatus.REJECTED);
 				ReservationRepository.save(reservation);
-				CompanyAdmin admin=CompanyAdminRepository.getByUsername(appointment.getAdmin().getUsername());
-				appointment.setAdmin(admin);
-				appointment.setAppointmentStatus(AppointmentStatus.AVAILABLE);
-				appointment.setEnd(appointment.getTime().plusHours(1));
-				appRepository.save(appointment);
+				if(CompanyAdminRepository.getByUsername(appointment.getAdmin().getUsername())!=null) {
+					CompanyAdmin admin=CompanyAdminRepository.getByUsername(appointment.getAdmin().getUsername());
+					appointment.setAdmin(admin);
+					appointment.setAppointmentStatus(AppointmentStatus.AVAILABLE);
+					appointment.setEnd(appointment.getTime().plusHours(1));
+					appRepository.save(appointment);
+				}
 			}
 			
 			return true;
