@@ -123,7 +123,7 @@ public class ReservationService implements IReservationService {
 		return result;
 	}
 	
-	public List<ReservationDto> getNewByCompanyAdmin(Long user_id){
+	public ReservationDto getNewByCompanyAdmin(Long user_id){
 		List<ReservationDto> result = new ArrayList<ReservationDto>();
 		List<Reservation> reservations=ReservationRepository.getAllByCompanyAdmin(user_id);
 
@@ -135,11 +135,11 @@ public class ReservationService implements IReservationService {
 				result.add(new ReservationDto(reservation.getReservation_id(), reservation.getUser(), reservation.getItems(), reservation.getAppointment(), reservation.getReservationStatus().toString()));
 		}
 		
-		return result;
+		return result.get(0);
 	}
 	
 	@Transactional(readOnly = false,  propagation = Propagation.REQUIRES_NEW)
-	public List<ReservationDto> DeliverReservation(Long id){
+	public ReservationDto DeliverReservation(Long id){
 		Long Id=null;
 		String mailText="Poštovani, oprema koju ste rezervisali Vam je isporučena.\n"
 				+ "Oprema: ";
