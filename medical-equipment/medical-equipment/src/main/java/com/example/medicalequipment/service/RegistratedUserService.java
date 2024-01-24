@@ -149,7 +149,7 @@ public class RegistratedUserService implements IRegistratedUserService {
 				String encodedPassword = passwordEncoder.encode(user.getPassword());
 		        user.setPassword(encodedPassword);
 			}
-			user.setPenals(0);
+			user.setPenals(user.getPenals());
 			user.setCategory(Category.REGULAR);	//popraviti kasnije
 			user.setActive(true);
 			List<Role> roles = RoleService.findByName("ROLE_REGISTRATED_USER");
@@ -199,7 +199,14 @@ public class RegistratedUserService implements IRegistratedUserService {
         return user;
     }
 	
-	
+	public RegistratedUser getCurrentRegisteredUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName(); // Dohvatanje korisničkog imena
+        RegistratedUser user = findByUsername(username);
+        //System.out.print("=============================="+user.getEmail()+"\n");
+        // Možete dohvatiti više informacija kao što su role, authorities, itd.
+        return user;
+    }
 	
 	//Validation
 	/*private boolean IsValidToUpdate(RegistratedUser user, String oldUsername)
