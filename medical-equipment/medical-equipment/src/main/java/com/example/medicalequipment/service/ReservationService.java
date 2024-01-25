@@ -43,7 +43,7 @@ public class ReservationService implements IReservationService {
 	private final IRegistratedUserRepository RegistratedUserRepository;
 	@Autowired
 	private final EmailService emailService;
-	private static final String QR_CODE_IMAGE_PATH = "./src/main/resources/images/QRCode.png";
+	private static final String QR_CODE_IMAGE_PATH = "./src/main/resources/QRCode.png";
 	public ReservationService(IReservationRepository reservationRepository, EmailService emailService, IEquipmentRepository equipmentRepository,
 			IRegistratedUserRepository registratedUserRepository){
     	this.ReservationRepository = reservationRepository;
@@ -59,6 +59,7 @@ public class ReservationService implements IReservationService {
 		String appDetails = "Reservation details \n"
 				+ "Appointment date time: "+ newReservation.getAppointment().getDate()+", "+newReservation.getAppointment().getTime()+"\n"
 				+ "Appointment duration: 60min"+"\n"
+				+ "Reservation number: " + newReservation.getReservation_id() + "\n"
 				+ "Admin: " + newReservation.getAppointment().getAdmin().getName()+" "+newReservation.getAppointment().getAdmin().getSurname() + "\n"
 				+ "Company: " + newReservation.getAppointment().getAdmin().getCompany().getName()+"\n"
 				+ "User: " + newReservation.getUser().getName()+" "+newReservation.getUser().getSurname()+"\n"
@@ -142,6 +143,8 @@ public class ReservationService implements IReservationService {
 		
 		return result;
 	}
+	
+	//TODO CHECK RESERVATION STATUS BEFORE ACCEPTING!!!!!! MILICA
 	@Override
 	@Transactional(readOnly = false,  propagation = Propagation.REQUIRES_NEW)
 	public ReservationDto DeliverReservation(Long id){
@@ -167,8 +170,6 @@ public class ReservationService implements IReservationService {
 			reservation.setReservationStatus(ReservationStatus.ACCEPTED);
 			ReservationRepository.save(reservation);
 			}
-
-
 		}
 		if(mailText.equals("Poštovani, oprema koju ste rezervisali Vam je isporučena.\n"
 				+ "Oprema: "))
@@ -215,5 +216,13 @@ public class ReservationService implements IReservationService {
 				ReservationRepository.save(r);
 			}
 		}
+	}
+	
+	public ReservationDto deliverUsingQRCode(byte[] qrCodeBytes) {
+		String qrCodeText = QRCodeGenerator.decodeQR(qrCodeBytes);
+		String reservation_id = qrCodeText.split("Reservation number: ")[1].split("\n")[0];
+		ReservationDto result = DeliverReservation(Long.decode(reservation_id));
+		
+		return new ReservationDto(ReservationRepository.getById(Long.decode(reservation_id)));
 	}
 }

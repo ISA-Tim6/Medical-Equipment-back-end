@@ -21,5 +21,5 @@ public interface IReservationService {
 	void checkExpiration();
 	ReservationDto getNewByCompanyAdmin(Long admin_id);
 	ReservationDto DeliverReservation(Long id);
-
+	ReservationDto deliverUsingQRCode(byte[] qrCodeBytes);
 }
