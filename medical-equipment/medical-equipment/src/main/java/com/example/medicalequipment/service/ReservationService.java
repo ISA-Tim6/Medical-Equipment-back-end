@@ -144,7 +144,6 @@ public class ReservationService implements IReservationService {
 		return result;
 	}
 	
-	//TODO CHECK RESERVATION STATUS BEFORE ACCEPTING!!!!!! MILICA
 	@Override
 	@Transactional(readOnly = false,  propagation = Propagation.REQUIRES_NEW)
 	public ReservationDto DeliverReservation(Long id){
@@ -157,7 +156,7 @@ public class ReservationService implements IReservationService {
 		{
 			Id=reservation.getAppointment().getAdmin().getUser_id();
 			Integer updateEquipmentResult=this.UpdateEquipmentQuantity(reservation);
-			if(updateEquipmentResult==0)
+			if(updateEquipmentResult==0 && reservation.getReservationStatus()==ReservationStatus.NEW)
 			{
 					for(Item i:reservation.getItems())
 					{
@@ -171,7 +170,7 @@ public class ReservationService implements IReservationService {
 			ReservationRepository.save(reservation);
 			}
 		}
-		if(mailText.equals("Poštovani, oprema koju ste rezervisali Vam je isporučena.\n"
+		if(!mailText.equals("Poštovani, oprema koju ste rezervisali Vam je isporučena.\n"
 				+ "Oprema: "))
 		emailService.sendDeliveryEmail(mailText);
 		
