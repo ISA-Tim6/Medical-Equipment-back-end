@@ -1,5 +1,10 @@
 package rs.ac.uns.ftn.informatika.rabbitmq;
 
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Exchange;
+import org.springframework.amqp.core.ExchangeBuilder;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -24,10 +29,35 @@ public class RabbitmqProducerExampleApplication {
 	    @Value("${spring.rabbitmq.password}")
 	    String password;
 	    
+	    @Value("${spring.rabbitmq.queueSimulator}")
+	    private String queueSimulator;
+	    @Value("${spring.rabbitmq.exchange}")
+	    private String exchange;
+	    @Value("${spring.rabbitmq.routingkeySimulator}")
+	    private String routingkeySimulator;
+	    
 	public static void main(String[] args) {
 		SpringApplication.run(RabbitmqProducerExampleApplication.class, args);
 	}
 
+	 @Bean
+	    Queue queue() {
+	        return new Queue(queueSimulator, true);
+	 }
+	 
+	 @Bean
+	    Exchange myExchange() {
+	        return ExchangeBuilder.directExchange(exchange).durable(true).build();
+	    }
+	    @Bean
+	    Binding binding() {
+	        return BindingBuilder
+	                .bind(queue())
+	                .to(myExchange())
+	                .with(routingkeySimulator)
+	                .noargs();
+	  }
+	 
 	@Bean
     CachingConnectionFactory connectionFactory() {
         CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(host);
