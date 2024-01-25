@@ -20,10 +20,14 @@ public class RabbitMQConfig {
 
 	@Value("${spring.rabbitmq.queue}")
     private String queue;
+	@Value("${spring.rabbitmq.queue1}")
+    private String queue1;
     @Value("${spring.rabbitmq.exchange}")
     private String exchange;
     @Value("${spring.rabbitmq.routingkey}")
     private String routingKey;
+    @Value("${spring.rabbitmq.routingkey1}")
+    private String routingKey1;
     @Value("${spring.rabbitmq.username}")
     private String username;
     @Value("${spring.rabbitmq.password}")
@@ -35,6 +39,10 @@ public class RabbitMQConfig {
         return new Queue(queue, true);
     }
     @Bean
+    Queue queue1() {
+        return new Queue(queue1, true);
+    }
+    @Bean
     Exchange myExchange() {
         return ExchangeBuilder.directExchange(exchange).durable(true).build();
     }
@@ -44,6 +52,14 @@ public class RabbitMQConfig {
                 .bind(queue())
                 .to(myExchange())
                 .with(routingKey)
+                .noargs();
+    }
+    @Bean
+    Binding binding1() {
+        return BindingBuilder
+                .bind(queue1())
+                .to(myExchange())
+                .with(routingKey1)
                 .noargs();
     }
     @Bean

@@ -5,7 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.example.medicalequipment.iservice.IContractCompanyService;
 
 @Component
 public class RabbitMQReceiver implements RabbitListenerConfigurer {
@@ -17,4 +20,15 @@ public class RabbitMQReceiver implements RabbitListenerConfigurer {
     public void receivedMessage(Location loc) {
         logger.info("User Details Received is.. " + loc.toString());
     }
+    
+    @Autowired
+    private IContractCompanyService contractCompanyService;
+    @RabbitListener(queues = "${spring.rabbitmq.queue1}")
+    public void receivedMessage(Contract c) {
+        logger.info("Contract is.. " + c.toString());
+        ContractCompany contractCompany=new ContractCompany(c.getEquipment(),c.getDayInMonth(),c.getCompany(),c.getQuantity());
+        contractCompanyService.save(contractCompany);
+    }
+    
+    
 }

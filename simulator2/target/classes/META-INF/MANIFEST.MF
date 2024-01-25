@@ -3,8 +3,8 @@ Built-By: Milica
 Build-Jdk: 17.0.6
 Implementation-Title: rabbitmq-producer-example
 Implementation-Version: 0.0.1-SNAPSHOT
-Implementation-Vendor-Id: rs.ac.uns.ftn.informatika.rabbitmq
+Implementation-Vendor-Id: rs.ac.uns.ftn.informatika.rabbitmq1
 Implementation-URL: https://projects.spring.io/spring-boot/#/spring-boot
- -starter-parent/rabbitmq-producer-example
+ -starter-parent/rabbitmq-producer-example1
 Created-By: Maven Integration for Eclipse
 
