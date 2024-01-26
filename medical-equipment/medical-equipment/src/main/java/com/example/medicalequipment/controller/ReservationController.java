@@ -24,6 +24,7 @@ import com.example.medicalequipment.dto.ReservationDto;
 import com.example.medicalequipment.iservice.IReservationService;
 import com.example.medicalequipment.model.Appointment;
 import com.example.medicalequipment.model.CanceledAppointment;
+import com.example.medicalequipment.model.RegistratedUser;
 import com.example.medicalequipment.model.Reservation;
 import com.example.medicalequipment.service.CanceledAppointmentService;
 
@@ -37,10 +38,12 @@ public class ReservationController {
 		this.reservationService = service;
 	}
 	@CrossOrigin(origins="http://localhost:4200")
-    @PostMapping("saveReservation")
+    @PostMapping("saveReservation/{penals}")
 	@PreAuthorize("hasAuthority('ROLE_REGISTRATED_USER')")
-    public Reservation save(@RequestBody Reservation reservation) throws MailException, InterruptedException, MessagingException {
-    	return reservationService.save(reservation);
+    public Reservation save(@RequestBody Reservation reservation, @PathVariable int penals) throws MailException, InterruptedException, MessagingException {
+    	if(penals>=3)
+    		return null;
+		return reservationService.save(reservation);
     }
 	@CrossOrigin(origins="http://localhost:4200")
     @GetMapping("getFutureReservation/{id}")

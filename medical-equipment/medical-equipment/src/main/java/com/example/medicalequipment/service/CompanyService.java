@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -187,7 +188,19 @@ public class CompanyService implements ICompanyService{
 	        durationTillClosing -= 60;
 	    }
 
-	    return freeSlots;
+	    List<LocalTime> retVal = new ArrayList<LocalTime>();
+	  
+		    for(LocalTime time : freeSlots)
+		    {
+		    	if(parsedDate.getYear()==LocalDate.now().getYear() && parsedDate.getMonth()==LocalDate.now().getMonth() && parsedDate.getDayOfMonth()==LocalDate.now().getDayOfMonth()  && time.plusHours(1).isAfter(LocalTime.now()))
+		    	{
+				}
+		    	else
+		    		retVal.add(time);
+		    	
+		    }
+
+	    return retVal;
 	}
 
 

@@ -21,5 +21,6 @@ public interface IRegistratedUserService {
 
 	public User changePasswordUser(User  user, String password);
 	CompanyAdmin changePassword(String password, Long id);
+	void resetPenals();
 
 }
