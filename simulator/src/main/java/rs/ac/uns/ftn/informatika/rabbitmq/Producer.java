@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.informatika.rabbitmq;
 
 import java.io.Serializable;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -13,6 +14,14 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 public class Producer implements Serializable{
 	private double longitude;
 	private double latitude;
+	public Producer() {
+        // Prazan (default) konstruktor
+    }
+
+    public Producer(double longitude, double latitude) {
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
 	public double getLongitude() {
 		return longitude;
 	}
