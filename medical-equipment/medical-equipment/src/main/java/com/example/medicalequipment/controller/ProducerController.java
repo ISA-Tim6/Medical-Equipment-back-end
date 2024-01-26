@@ -26,4 +26,11 @@ public class ProducerController {
         System.out.println(message.toString());
         return message;
     }
+    
+    @PostMapping(value = "producer1")
+    public String publishDelivery(@RequestBody String message) {
+        rabbitMqSender.sendMessage(message);
+        System.out.println(message.toString());
+        return message;
+    }
 }
