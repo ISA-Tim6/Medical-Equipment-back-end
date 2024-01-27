@@ -25,5 +25,10 @@ public class ContractCompanyService implements IContractCompanyService{
 	public List<ContractCompany> getAllForCompany(String name) {
 		return this.ContractRepository.getAllForCompany(name);
 	}
+	@Override
+	public void deleteAllForCompany(String company) {
+		// TODO Auto-generated method stub
+		this.ContractRepository.deleteAllForCompany(company);
+	}
 
 }

@@ -26,4 +26,13 @@ public class RabbitMQSender {
     public void sendMessage(String message){
         rabbitTemplate.convertAndSend(exchange,routingkey2, message);
     }
+    
+    /*@Scheduled(cron = "0 0 * * * *")
+    @Value("${spring.rabbitmq.routingkey2}")
+    private String routingkey2;
+    public void sendMessage(String message){
+        rabbitTemplate.convertAndSend(exchange,routingkey2, message);
+    }*/
+    
+    
 }

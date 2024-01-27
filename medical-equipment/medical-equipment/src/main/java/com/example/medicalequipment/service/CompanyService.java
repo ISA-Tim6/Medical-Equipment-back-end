@@ -246,6 +246,12 @@ public class CompanyService implements ICompanyService{
 	    }
 	    return Long.parseLong("0");
 	}
+	
+	@Override
+	public Company findOneByName(String name)
+	{
+		List<Company> stored = CompanyRepository.findByName(name);
+		return stored.isEmpty() ? null : stored.get(0);	}
 
 	
 }
