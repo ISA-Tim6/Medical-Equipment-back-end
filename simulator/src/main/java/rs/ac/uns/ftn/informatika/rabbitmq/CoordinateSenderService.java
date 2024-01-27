@@ -29,13 +29,13 @@ public class CoordinateSenderService {
         
     }
 
-    public void sendCoordinate(double startLatitude, double startLongitude, int bloodUnist) throws JsonProcessingException, ExecutionException, InterruptedException {
+    public List<Producer> sendCoordinate(double startLatitude, double startLongitude, int bloodUnist) throws JsonProcessingException, ExecutionException, InterruptedException {
         
         if(startLatitude == -1 && startLatitude==-1){
             Producer endSight = new Producer(-1.0, -1.0);
-            String jsonCoordinate = objectMapper.writeValueAsString(endSight);
-            rabbitTemplate.convertAndSend("vehicle-coordinates-queue", jsonCoordinate);
-            return;
+           // String jsonCoordinate = objectMapper.writeValueAsString(endSight);
+            //rabbitTemplate.convertAndSend("vehicle-coordinates-queue", jsonCoordinate);
+            return null;
         }
         List<Producer> northernCoordinates = new ArrayList<>();
         northernCoordinates.add(new Producer(51.5074, -0.1278));
@@ -52,11 +52,12 @@ public class CoordinateSenderService {
         int time =2;
         for (Producer c: coord){
             //time = refreshPeriodService.findRefreshPeriodAsync(userService.getAuthUser()).get();
-            String jsonCoordinate = objectMapper.writeValueAsString(c);
-            rabbitTemplate.convertAndSend("vehicle-coordinates-queue", jsonCoordinate);
-            sleep(time);
+            //String jsonCoordinate = objectMapper.writeValueAsString(c);
+            //rabbitTemplate.convertAndSend("vehicle-coordinates-queue", jsonCoordinate);
+            //sleep(time);
         }
         System.out.println("Kretanje vozila zavrseno!");
+        return coord;
     }
 
     private void sleep(int seconds) {

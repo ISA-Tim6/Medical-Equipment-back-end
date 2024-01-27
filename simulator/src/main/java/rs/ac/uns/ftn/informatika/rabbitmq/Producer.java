@@ -15,7 +15,6 @@ public class Producer implements Serializable{
 	private double longitude;
 	private double latitude;
 	public Producer() {
-        // Prazan (default) konstruktor
     }
 
     public Producer(double longitude, double latitude) {
