@@ -192,7 +192,7 @@ public class CompanyService implements ICompanyService{
 	  
 		    for(LocalTime time : freeSlots)
 		    {
-		    	if(parsedDate.getYear()==LocalDate.now().getYear() && parsedDate.getMonth()==LocalDate.now().getMonth() && parsedDate.getDayOfMonth()==LocalDate.now().getDayOfMonth()  && time.plusHours(1).isAfter(LocalTime.now()))
+		    	if(parsedDate.getYear()==LocalDate.now().getYear() && parsedDate.getMonth()==LocalDate.now().getMonth() && parsedDate.getDayOfMonth()==LocalDate.now().getDayOfMonth()  && time.isBefore(LocalTime.now()))
 		    	{
 				}
 		    	else
