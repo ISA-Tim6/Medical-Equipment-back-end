@@ -19,6 +19,7 @@ import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -259,6 +260,7 @@ public class ReservationService implements IReservationService {
 		 return qrCodeImages;
 	}
 	
+
 	@Override
 	public List<byte[]> regenerateNewQR(Long id) throws InterruptedException, MessagingException {
 		// TODO Auto-generated method stub
@@ -335,7 +337,7 @@ public class ReservationService implements IReservationService {
 	}
 
 	@Override
-	public List<ReservationDto> getNewByCompanyAdmin(Long user_id){
+	public ReservationDto getNewByCompanyAdmin(Long user_id){
 		List<ReservationDto> result = new ArrayList<ReservationDto>();
 		List<Reservation> reservations=ReservationRepository.getAllByCompanyAdmin(user_id);
 
@@ -346,15 +348,15 @@ public class ReservationService implements IReservationService {
 				result.add(new ReservationDto(reservation.getReservation_id(), reservation.getUser(), reservation.getItems(), reservation.getAppointment(), reservation.getReservationStatus().toString()));
 		}
 		
-		return result;
+		return result.get(0);
 	}
 	
 	@Transactional(readOnly = false,  propagation = Propagation.REQUIRES_NEW)
-	public List<ReservationDto> DeliverReservation(Long id){
+	public ReservationDto DeliverReservation(Long id){
 		Long Id=null;
 		String mailText="Poštovani, oprema koju ste rezervisali Vam je isporučena.\n"
 				+ "Oprema: ";
-
+		
 		List<Reservation> reservations=ReservationRepository.getFullReservation(id);
 		for(Reservation reservation:reservations)
 		{
@@ -389,6 +391,7 @@ public class ReservationService implements IReservationService {
 			
 		}
 	}
+
 	@Override
 	public List<ReservationDto> getAcceptedReservationsByUser(Long id) {
 		List<Reservation> userReservations = ReservationRepository.getUserReservationsWithItems(id);
@@ -400,5 +403,23 @@ public class ReservationService implements IReservationService {
 		}
 		return retReservations;
 		
+	}
+	
+	private boolean hasExpired(Reservation reservation) {
+		return reservation.getAppointment().getDate().isBefore(LocalDate.now()) || (reservation.getAppointment().getDate().isEqual(LocalDate.now()) && reservation.getAppointment().getEnd().isBefore(LocalTime.now()));
+	}
+	
+	@Scheduled(cron = "0 0 * * * *")
+	public void checkExpiration() {
+		List<Reservation> reservations = ReservationRepository.getNotRejected();
+		for(var r: reservations)
+		{
+			if(hasExpired(r))
+			{
+				r.setReservationStatus(ReservationStatus.REJECTED);
+				ReservationRepository.save(r);
+			}
+		}
+
 	}
 }

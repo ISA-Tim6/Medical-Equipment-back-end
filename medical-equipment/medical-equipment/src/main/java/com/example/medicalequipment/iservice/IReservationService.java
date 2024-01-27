@@ -23,9 +23,11 @@ public interface IReservationService {
 	public List<byte[]> regenerateNewQR(Long id) throws InterruptedException, MessagingException;
 	public List<byte[]> regenerateAcceptedQR(Long id) throws InterruptedException, MessagingException;
 	public List<byte[]> regenerateRejectedQR(Long id) throws InterruptedException, MessagingException;
-	List<ReservationDto> getNewByCompanyAdmin(Long admin_id);
-	List<ReservationDto> DeliverReservation(Long id);
 	List<ReservationDto> getAcceptedReservationsByUser(Long id);
 	boolean cancelReservation(Long appointmentId);
 	List<CanceledAppointment> getCanceledAppointments(Long id);
+	void checkExpiration();
+	ReservationDto getNewByCompanyAdmin(Long admin_id);
+	ReservationDto DeliverReservation(Long id);
+
 }

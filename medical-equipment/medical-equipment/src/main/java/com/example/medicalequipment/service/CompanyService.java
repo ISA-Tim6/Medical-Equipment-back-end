@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.medicalequipment.dto.EquipmentDto;
@@ -134,9 +135,8 @@ public class CompanyService implements ICompanyService{
 
 	}
 
-	
+	@Transactional(readOnly = false,  propagation = Propagation.REQUIRES_NEW)
 	@Override
-	@Transactional
 	public Integer updateAppointment(Long company_id,Long company_admin_id,Appointment appointment) {
 		//Appointment a=AppointmentRepository.getById(company_admin_id)
 		Company c=findOne(company_id);
