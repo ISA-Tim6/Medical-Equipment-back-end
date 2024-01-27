@@ -19,6 +19,7 @@ public interface IContractRepository extends JpaRepository<ContractCompany, Long
 	@Modifying
 	@Query(value = "DELETE FROM contract_company WHERE company_name = :company", nativeQuery = true)
 	void deleteAllForCompany(String company);
+	
 
 
 }
