@@ -30,13 +30,13 @@ public class RabbitMQSender {
     	for(Producer p: coords)
     	{
     		rabbitTemplate.convertAndSend(exchange,routingkey, p);
-    		this.sleep(Integer.decode(timeInterval));
+    		this.sleep(Math.round(Double.parseDouble(timeInterval)*1000));
     	}
     }
     
-    private void sleep(int seconds) {
+    private void sleep(long milliseconds) {
         try {
-            TimeUnit.SECONDS.sleep(seconds);
+            TimeUnit.MILLISECONDS.sleep(milliseconds);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
