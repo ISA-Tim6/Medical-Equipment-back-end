@@ -2,6 +2,7 @@ package com.example.medicalequipment.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -21,8 +22,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		registry.addEndpoint("/socket") // Definisemo endpoint koji ce klijenti koristiti da se povezu sa serverom.
 									   // U ovom slucaju, URL za konekciju ce biti http://localhost:8080/socket/
-				.setAllowedOrigins("*") // Dozvoljavamo serveru da prima zahteve bilo kog porekla
-				.withSockJS(); // Koristi se SockJS: https://github.com/sockjs/sockjs-protocol
+				.setAllowedOrigins("http://localhost:4200"); // Dozvoljavamo serveru da prima zahteve bilo kog porekla
+				//withSockJS(); // Koristi se SockJS: https://github.com/sockjs/sockjs-protocol
 	}
 
 	/*
