@@ -30,7 +30,7 @@ public class RabbitMQReceiver implements RabbitListenerConfigurer {
     public void receivedMessage(Contract c) {
         logger.info("Contract is.. " + c.toString());
         boolean equipmentExists = false;
-        ContractCompany contractCompany=new ContractCompany(c.getEquipment(),c.getDayInMonth(),c.getCompany(),c.getQuantity());
+        ContractCompany contractCompany = new ContractCompany(c.getEquipment(),c.getDayInMonth(),c.getCompany(),c.getQuantity());
         Company storedCompany = companyService.findOneByName(contractCompany.getCompanyName());
         if(storedCompany != null)
         {

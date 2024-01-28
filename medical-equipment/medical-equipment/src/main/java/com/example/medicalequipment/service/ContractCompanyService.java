@@ -44,7 +44,7 @@ public class ContractCompanyService implements IContractCompanyService{
 		ContractCompany storedContract = this.ContractRepository.getById(id);
 		List<Company> stored = this.CompanyRepository.findByName(company);
 		Company storedCompany = stored.isEmpty() ? null : stored.get(0);	//kompanija iz ugovora
-		
+		 
 		return false;
 	}
 
