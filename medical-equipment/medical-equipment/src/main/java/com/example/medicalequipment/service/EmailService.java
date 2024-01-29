@@ -56,6 +56,7 @@ public class EmailService implements IEmailService{
             
             helper.setTo(reservation.getUser().getEmail());
             helper.setSubject("Potvrda rezervacije");
+
             
             // Dodajte informacije o rezervaciji u tekst emaila
             String emailText = String.format("Hvala vam, na vašoj rezervaciji. Detalji:\nDatum: \nMjesto: \n...");

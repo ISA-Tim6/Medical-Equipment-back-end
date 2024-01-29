@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.example.medicalequipment.model.Appointment;
+import com.example.medicalequipment.model.RegistratedUser;
 
 @Repository
 public interface IAppointmentRepository extends JpaRepository<Appointment, Long>{
