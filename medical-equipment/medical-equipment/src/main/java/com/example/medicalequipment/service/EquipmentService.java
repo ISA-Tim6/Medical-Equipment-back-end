@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.example.medicalequipment.iservice.IEquipmentService;
@@ -22,6 +23,7 @@ public class EquipmentService implements IEquipmentService{
     public EquipmentService(IEquipmentRepository equipmentRepository){
     	this.EquipmentRepository=equipmentRepository;
     }
+    @Cacheable("equipment")
 	@Override
 	public Equipment findById(Long id) {
 		return EquipmentRepository.findById(id).orElseGet(null);

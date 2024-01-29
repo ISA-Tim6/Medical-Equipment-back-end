@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.mail.MailException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -65,7 +66,6 @@ public class ReservationService implements IReservationService {
 	private final CanceledAppointmentService canceledAppointmentService;
 	@Autowired
 	private final IAppointmentRepository appRepository;
-
 
 
 	public ReservationService(IReservationRepository reservationRepository, EmailService emailService, IAppointmentRepository appRepository, RegistratedUserService userService, CanceledAppointmentService canceledAppointmentService, ICompanyAdminRepository companyAdminRepository, ICanceledAppointmentRepository canceledAppointmentRepository, IEquipmentRepository equipmentRepository, IRegistratedUserRepository registratedUserRepository){
@@ -131,10 +131,13 @@ public class ReservationService implements IReservationService {
 		emailService.sendConfirmationEmail(newReservation,mail, qrCodeImageBytes);
 		return newReservation;
 	}
+	@Cacheable(value = "reservations")
 	@Override
 	public List<Reservation> getFullReservation(Long id) {
 		return ReservationRepository.getFullReservation(id);
 	}
+	
+	@Cacheable(value = "reservations")
 	@Override
 	public List<Appointment> getAllUserReservation(Long id) {
 		List<Reservation> storedUserReservation=ReservationRepository.getAllUserReservation(id);
@@ -149,7 +152,7 @@ public class ReservationService implements IReservationService {
 		}
 		return userReservation;
 	}
-	
+	@Cacheable(value = "reservations")
 	@Override
 	public List<ReservationDto> getAllByCompany(Long company_id){
 		List<ReservationDto> result = new ArrayList<ReservationDto>();
@@ -162,7 +165,8 @@ public class ReservationService implements IReservationService {
 		}
 		return result;
 	}
-
+	
+	@Cacheable(value = "reservations")
 	@Override
 	public Reservation getUserReservationByAppointmentId(Long appointmentId,Long userId) {
 		List<Reservation> storedUserReservation=ReservationRepository.getAllUserReservation(userId);

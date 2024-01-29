@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +53,7 @@ public class CompanyService implements ICompanyService{
     	this.AppointmentRepository=appointmentRepository;
     	this.ReservationRepository=reservationRepository;
     }
+    @Cacheable("company")
 	@Override
 	public Company findOne(Long id) {
 		return CompanyRepository.findById(id).orElseGet(null);
@@ -87,21 +89,22 @@ public class CompanyService implements ICompanyService{
 	public List<Company> getAll() {
 		return CompanyRepository.findAll();
 	}
-
+	@Cacheable("company")
 	@Override
 	public Company find(Long company_id) {
 		return CompanyRepository.find(company_id);
 	}
+	@Cacheable("company")
 	@Override
 	public List<Company> findByName(String name){
 		return CompanyRepository.findByNameContainingIgnoreCase(name);	
 	}
-	
+	@Cacheable("company")
 	@Override
 	public List<Company> findByAddressCity(String city) {
 		return CompanyRepository.findByAddressCityContainingIgnoreCase(city);
 	}
-	
+	@Cacheable("company")
 	@Override
 	public List<Company> findByNameAndAddressCity(String name, String city) {
 		return CompanyRepository.findByNameContainingIgnoreCaseAndAddressCityContainingIgnoreCase(name, city);
@@ -247,6 +250,7 @@ public class CompanyService implements ICompanyService{
 	    return Long.parseLong("0");
 	}
 	
+	@Cacheable("company")
 	@Override
 	public Company findOneByName(String name)
 	{
