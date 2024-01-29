@@ -29,4 +29,6 @@ public interface ICompanyRepository extends JpaRepository<Company, Long> {
 	
 	@Query("select e from Company e join fetch e.workingTimeCalendar wtc join fetch wtc.appointments where e.company_id=?1")
 	Company find(Long company_id);
+	
+	List<Company> findByName(String name);
 }

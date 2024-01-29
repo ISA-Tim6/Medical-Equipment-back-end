@@ -34,4 +34,13 @@ public class ContractCompanyController {
 			List<ContractCompany> contracts=this.contractService.getAllForCompany(company);
 			return new ResponseEntity<>(contracts, HttpStatus.OK);
 	 }
+	 
+	 @CrossOrigin(origins="http://localhost:4200")
+	    @GetMapping(value = "/{id}/{company}")
+	 @PreAuthorize("hasAnyAuthority('ROLE_SYSTEM_ADMIN','ROLE_COMPANY_ADMIN')")
+		public boolean cancelContract(@PathVariable long id, @PathVariable String company) throws Exception {
+
+			return this.contractService.cancelIfPossible(id, company);
+			
+	 }
 }

@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -187,7 +188,19 @@ public class CompanyService implements ICompanyService{
 	        durationTillClosing -= 60;
 	    }
 
-	    return freeSlots;
+	    List<LocalTime> retVal = new ArrayList<LocalTime>();
+	  
+		    for(LocalTime time : freeSlots)
+		    {
+		    	if(parsedDate.getYear()==LocalDate.now().getYear() && parsedDate.getMonth()==LocalDate.now().getMonth() && parsedDate.getDayOfMonth()==LocalDate.now().getDayOfMonth()  && time.isBefore(LocalTime.now()))
+		    	{
+				}
+		    	else
+		    		retVal.add(time);
+		    	
+		    }
+
+	    return retVal;
 	}
 
 
@@ -203,6 +216,7 @@ public class CompanyService implements ICompanyService{
     }
 	
 	@Override
+	@Transactional(readOnly = false)
 	public Long addExtraordinaryAppointment(Long company_id, Appointment appointment) {
 	    Company c = findOne(company_id);
 	    Iterator<CompanyAdmin> iterator = c.getAdmins().iterator();
@@ -232,6 +246,12 @@ public class CompanyService implements ICompanyService{
 	    }
 	    return Long.parseLong("0");
 	}
+	
+	@Override
+	public Company findOneByName(String name)
+	{
+		List<Company> stored = CompanyRepository.findByName(name);
+		return stored.isEmpty() ? null : stored.get(0);	}
 
 	
 }

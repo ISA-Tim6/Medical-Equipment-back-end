@@ -9,6 +9,7 @@ import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,7 @@ import com.example.medicalequipment.model.Category;
 import com.example.medicalequipment.model.CompanyAdmin;
 import com.example.medicalequipment.model.Employment;
 import com.example.medicalequipment.model.RegistratedUser;
+import com.example.medicalequipment.model.Reservation;
 import com.example.medicalequipment.model.Role;
 import com.example.medicalequipment.model.User;
 import com.example.medicalequipment.repository.IActivationTokenRepository;
@@ -149,7 +151,7 @@ public class RegistratedUserService implements IRegistratedUserService {
 				String encodedPassword = passwordEncoder.encode(user.getPassword());
 		        user.setPassword(encodedPassword);
 			}
-			user.setPenals(0);
+			user.setPenals(user.getPenals());
 			user.setCategory(Category.REGULAR);	//popraviti kasnije
 			user.setActive(true);
 			List<Role> roles = RoleService.findByName("ROLE_REGISTRATED_USER");
@@ -197,77 +199,27 @@ public class RegistratedUserService implements IRegistratedUserService {
         System.out.print("=============================="+user.getEmail()+"\n");
         // Možete dohvatiti više informacija kao što su role, authorities, itd.
         return user;
+	}
+	
+	public RegistratedUser getCurrentRegisteredUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName(); // Dohvatanje korisničkog imena
+        RegistratedUser user = findByUsername(username);
+        //System.out.print("=============================="+user.getEmail()+"\n");
+        // Možete dohvatiti više informacija kao što su role, authorities, itd.
+        return user;
     }
 	
-	
-	
-	//Validation
-	/*private boolean IsValidToUpdate(RegistratedUser user, String oldUsername)
-	{
-		return IsUsernameValidToUpdate(user.getUsername(), oldUsername) && IsNameValid(user.getName()) && IsNameValid(user.getSurname()) && IsPhoneNumberValid(user.getPhoneNumber())
-				&& AreOtherInfoValid(user.getPassword()) && IsNameValid(user.getCity()) && IsNameValid(user.getCountry()) && IsEmploymentValid(user.getEmployment()) && AreOtherInfoValid(user.getInfoAboutInstitution());
-	}
-	
-	
-	private boolean IsValidToAdd(RegistratedUser user)
-	{
-		return IsUsernameValid(user.getUsername()) && IsNameValid(user.getName()) && IsNameValid(user.getSurname()) && IsPhoneNumberValid(user.getPhoneNumber())
-				&& AreOtherInfoValid(user.getPassword()) && IsNameValid(user.getCity()) && IsNameValid(user.getCountry()) && IsEmploymentValid(user.getEmployment()) && AreOtherInfoValid(user.getInfoAboutInstitution());
-	}
-	
-	private boolean IsUsernameValid(String username)
-	{
-		return (username!=null && !username.equals("") && findByUsername(username)==null);
-	}
-	
-	private boolean IsUsernameValidToUpdate(String username, String oldUsername)
-	{
-		return (username!=null && !username.equals("") && (findByUsername(username)==null || username.equals(oldUsername)));
-	}
-	
-	private boolean IsNameValid(String name)
-	{
-		if (name == null || name.isEmpty()) {
-            return false;
-        }
-
-        String regex = "^[A-Z][A-Za-z ]*";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(name);
-
-        return matcher.matches();
-	}
-	
-	private boolean IsPhoneNumberValid(String number)
-	{
-		if (number == null || number.isEmpty()) {
-            return false;
-        }
-
-        String regex = "^[0-9]{9,10}";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(number);
-
-        return matcher.matches();
-		
-	}
-	
-	private boolean AreOtherInfoValid(String info)
-	{
-		return (info!=null && !info.isEmpty());
-	}
-	
-	private boolean IsEmploymentValid(Employment employment)
-	{
-		try {
-            Employment toCheck = Employment.valueOf(employment.toString());
-            return true;
-            
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
-	}*/
-
-	
-
+	@Scheduled(cron = "0 0 0 1 * ?")//u ponoc prvog u mjesecu
+	 public void resetPenals() {
+		List<RegistratedUser> all = RegistratedUserRepository.findAllUsers();
+		for (RegistratedUser user : all)
+		{
+			user.setPenals(0);
+			update(user, user.getUsername());
+		}
+	 }
 }
+
+	
+

@@ -25,12 +25,6 @@ public class Appointment {
 	public void setAppointment_id(Long appointment_id) {
 		this.appointment_id = appointment_id;
 	}
-	public AppointmentStatus getAppointmentStatus() {
-		return appointmentStatus;
-	}
-	public void setAppointmentStatus(AppointmentStatus appointmentStatus) {
-		this.appointmentStatus = appointmentStatus;
-	}
 	@OneToOne()
 	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
 	private CompanyAdmin admin;
@@ -84,6 +78,12 @@ public class Appointment {
 	}
 	public void setDuration(double duration) {
 		this.duration = duration;
+	}
+	public AppointmentStatus getAppointmentStatus() {
+		return appointmentStatus;
+	}
+	public void setAppointmentStatus(AppointmentStatus appointmentStatus) {
+		this.appointmentStatus = appointmentStatus;
 	}
 	
 }

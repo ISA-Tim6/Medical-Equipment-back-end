@@ -10,5 +10,7 @@ import com.example.medicalequipment.model.ContractCompany;
 public interface IContractCompanyService {
 	ContractCompany save(ContractCompany contract);
 	List<ContractCompany> getAllForCompany(String name);
+	void deleteAllForCompany (String company);
+	boolean cancelIfPossible(long id, String company);
 
 }

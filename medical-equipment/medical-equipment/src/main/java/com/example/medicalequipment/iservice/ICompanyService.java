@@ -27,5 +27,7 @@ public interface ICompanyService {
 	Integer updateAppointment(Long company_id,Long company_admin_id,Appointment appointment);
 	List<LocalTime> findAvailableAppointments(String date, Long company_id);
 	Long addExtraordinaryAppointment(Long company_id,Appointment appointment);
+	Company findOneByName(String name);
+	
 
 }
