@@ -30,4 +30,5 @@ public interface IReservationService {
 	ReservationDto getNewByCompanyAdmin(Long admin_id);
 	ReservationDto DeliverReservation(Long id);
 	ReservationDto deliverUsingQRCode(byte[] qrCodeBytes);
+	Reservation getUserReservationByAppointmentId(Long appointmentId,Long userId);
 }

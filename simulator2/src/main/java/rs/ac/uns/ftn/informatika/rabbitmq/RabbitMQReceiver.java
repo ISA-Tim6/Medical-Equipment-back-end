@@ -7,16 +7,13 @@ import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
 import org.springframework.stereotype.Component;
 
-import reactor.core.publisher.UnicastProcessor;
 
 
 @Component
 public class RabbitMQReceiver implements RabbitListenerConfigurer {
     private static final Logger logger = LoggerFactory.getLogger(RabbitMQReceiver.class);
-    private final UnicastProcessor<String> eventPublisher;
 
     public RabbitMQReceiver() {
-        this.eventPublisher = UnicastProcessor.create();
     }
 
     @Override

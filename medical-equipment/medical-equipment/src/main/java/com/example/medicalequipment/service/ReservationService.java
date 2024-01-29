@@ -58,19 +58,17 @@ public class ReservationService implements IReservationService {
 	private final ICompanyAdminRepository CompanyAdminRepository;
 	@Autowired
 	private final ICanceledAppointmentRepository CanceledAppointmentRepository;
-	@Autowired
-	private final IAppointmentRepository appRepository;
 
-	@Autowired
-	private final EmailService emailService;
 	@Autowired
 	private final RegistratedUserService userService;
 	@Autowired
 	private final CanceledAppointmentService canceledAppointmentService;
-	private static final String QR_CODE_IMAGE_PATH = "./src/main/resources/images/QRCode.png";
+	@Autowired
+	private final IAppointmentRepository appRepository;
 
 
-	public ReservationService(IReservationRepository reservationRepository, EmailService emailService, IAppointmentRepository appRepository, RegistratedUserService userService, CanceledAppointmentService canceledAppointmentService, ICompanyAdminRepository companyAdminRepository, ICanceledAppointmentRepository canceledAppointmentRepository, IEquipmentRepository equipmentRepository){
+
+	public ReservationService(IReservationRepository reservationRepository, EmailService emailService, IAppointmentRepository appRepository, RegistratedUserService userService, CanceledAppointmentService canceledAppointmentService, ICompanyAdminRepository companyAdminRepository, ICanceledAppointmentRepository canceledAppointmentRepository, IEquipmentRepository equipmentRepository, IRegistratedUserRepository registratedUserRepository){
 
     	this.ReservationRepository = reservationRepository;
 		this.CompanyAdminRepository = companyAdminRepository;
@@ -351,9 +349,8 @@ public class ReservationService implements IReservationService {
 		List<Reservation> reservations=ReservationRepository.getAllByCompanyAdmin(user_id);
 
 		for(Reservation reservation: reservations) {
-			boolean isToday=reservation.getAppointment().getDate().isEqual(LocalDate.now());
-			boolean isAfter=reservation.getAppointment().getDate().isAfter(LocalDate.now());
-			if(reservation!=null && (isToday||isAfter) && reservation.getReservationStatus()==ReservationStatus.NEW)
+			boolean isInTime = reservation.getAppointment().getDate().equals(LocalDate.now()) && reservation.getAppointment().getTime().isBefore(LocalTime.now()) && reservation.getAppointment().getEnd().isAfter(LocalTime.now());
+			if(reservation!=null && (isInTime) && reservation.getReservationStatus()==ReservationStatus.NEW)
 				result=new ReservationDto(reservation.getReservation_id(), reservation.getUser(), reservation.getItems(), reservation.getAppointment(), reservation.getReservationStatus().toString());
 		}
 		
@@ -368,11 +365,13 @@ public class ReservationService implements IReservationService {
 				+ "Oprema: ";
 		
 		List<Reservation> reservations=ReservationRepository.getFullReservation(id);
+		String address = "";
 		for(Reservation reservation:reservations)
 		{
-			Id=reservation.getAppointment().getAdmin().getUser_id();
-			Integer updateEquipmentResult=this.UpdateEquipmentQuantity(reservation);
-			if(updateEquipmentResult==0 && reservation.getReservationStatus()==ReservationStatus.NEW)
+			Id = reservation.getAppointment().getAdmin().getUser_id();
+			Integer updateEquipmentResult = this.UpdateEquipmentQuantity(reservation);
+			boolean isInTime = reservation.getAppointment().getDate().equals(LocalDate.now()) && reservation.getAppointment().getTime().isBefore(LocalTime.now()) && reservation.getAppointment().getEnd().isAfter(LocalTime.now());
+			if(updateEquipmentResult==0 && reservation.getReservationStatus()==ReservationStatus.NEW && isInTime)
 			{
 					for(Item i:reservation.getItems())
 					{
@@ -382,13 +381,14 @@ public class ReservationService implements IReservationService {
 						mailText+=" ,količina: ";
 						mailText+=i.getQuantity();
 					}
+			address = reservation.getUser().getEmail();
 			reservation.setReservationStatus(ReservationStatus.ACCEPTED);
 			ReservationRepository.save(reservation);
 			}
 		}
 		if(!mailText.equals("Poštovani, oprema koju ste rezervisali Vam je isporučena.\n"
 				+ "Oprema: "))
-		emailService.sendDeliveryEmail(mailText);
+		emailService.sendDeliveryEmail(address, mailText);
 		
 		return getNewByCompanyAdmin(Id);
 	}

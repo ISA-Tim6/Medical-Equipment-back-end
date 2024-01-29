@@ -9,5 +9,5 @@ import com.example.medicalequipment.model.RegistratedUser;
 
 public interface IEmailService {
 	public void sendVerificationEmail(RegistratedUser user) throws MailException, InterruptedException, MessagingException;
-	public void sendDeliveryEmail(String mail);
+	void sendDeliveryEmail(String address, String mail);
 }
