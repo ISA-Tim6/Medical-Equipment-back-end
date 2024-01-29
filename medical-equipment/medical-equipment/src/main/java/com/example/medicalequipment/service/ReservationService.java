@@ -51,6 +51,10 @@ public class ReservationService implements IReservationService {
 	@Autowired
 	private final IEquipmentRepository EquipmentRepository;
 	@Autowired
+	private final IRegistratedUserRepository RegistratedUserRepository;
+	@Autowired
+	private final EmailService emailService;
+	private static final String QR_CODE_IMAGE_PATH = "./src/main/resources/QRCode.png";
 	private final ICompanyAdminRepository CompanyAdminRepository;
 	@Autowired
 	private final ICanceledAppointmentRepository CanceledAppointmentRepository;
@@ -74,8 +78,10 @@ public class ReservationService implements IReservationService {
 		this.appRepository = appRepository;
 		this.emailService = emailService;
 		this.EquipmentRepository=equipmentRepository;
+		this.RegistratedUserRepository=registratedUserRepository;
 		this.userService = userService;
 		this.canceledAppointmentService = canceledAppointmentService;
+
     }
 	private String generateReservationDetails(Reservation reservation) {
 		//registratedUserService.
@@ -85,6 +91,7 @@ public class ReservationService implements IReservationService {
 		String appDetails = "Reservation details \n"
 				+ "Appointment date time: "+ newReservation.getAppointment().getDate()+", "+newReservation.getAppointment().getTime()+"\n"
 				+ "Appointment duration: 60min"+"\n"
+				+ "Reservation number: " + newReservation.getReservation_id() + "\n"
 				+ "Admin: " + newReservation.getAppointment().getAdmin().getName()+" "+newReservation.getAppointment().getAdmin().getSurname() + "\n"
 				+ "Company: " + newReservation.getAppointment().getAdmin().getCompany().getName()+"\n"
 				+ "User: " + newReservation.getUser().getName()+" "+newReservation.getUser().getSurname()+"\n"
@@ -157,6 +164,8 @@ public class ReservationService implements IReservationService {
 		}
 		return result;
 	}
+
+	@Override
 	public Reservation getUserReservationByAppointmentId(Long appointmentId,Long userId) {
 		List<Reservation> storedUserReservation=ReservationRepository.getAllUserReservation(userId);
 		Reservation reservation=null;
@@ -338,19 +347,20 @@ public class ReservationService implements IReservationService {
 
 	@Override
 	public ReservationDto getNewByCompanyAdmin(Long user_id){
-		List<ReservationDto> result = new ArrayList<ReservationDto>();
+		ReservationDto result = null;
 		List<Reservation> reservations=ReservationRepository.getAllByCompanyAdmin(user_id);
 
 		for(Reservation reservation: reservations) {
 			boolean isToday=reservation.getAppointment().getDate().isEqual(LocalDate.now());
 			boolean isAfter=reservation.getAppointment().getDate().isAfter(LocalDate.now());
 			if(reservation!=null && (isToday||isAfter) && reservation.getReservationStatus()==ReservationStatus.NEW)
-				result.add(new ReservationDto(reservation.getReservation_id(), reservation.getUser(), reservation.getItems(), reservation.getAppointment(), reservation.getReservationStatus().toString()));
+				result=new ReservationDto(reservation.getReservation_id(), reservation.getUser(), reservation.getItems(), reservation.getAppointment(), reservation.getReservationStatus().toString());
 		}
 		
-		return result.get(0);
+		return result;
 	}
 	
+	@Override
 	@Transactional(readOnly = false,  propagation = Propagation.REQUIRES_NEW)
 	public ReservationDto DeliverReservation(Long id){
 		Long Id=null;
@@ -361,8 +371,9 @@ public class ReservationService implements IReservationService {
 		for(Reservation reservation:reservations)
 		{
 			Id=reservation.getAppointment().getAdmin().getUser_id();
-			reservation.setReservationStatus(ReservationStatus.ACCEPTED);
-			ReservationRepository.save(reservation);
+			Integer updateEquipmentResult=this.UpdateEquipmentQuantity(reservation);
+			if(updateEquipmentResult==0 && reservation.getReservationStatus()==ReservationStatus.NEW)
+			{
 					for(Item i:reservation.getItems())
 					{
 						mailText+=i.getEquipment().getName();
@@ -371,25 +382,32 @@ public class ReservationService implements IReservationService {
 						mailText+=" ,količina: ";
 						mailText+=i.getQuantity();
 					}
-			this.UpdateEquipmentQuantity(reservation);
+			reservation.setReservationStatus(ReservationStatus.ACCEPTED);
+			ReservationRepository.save(reservation);
+			}
 		}
+		if(!mailText.equals("Poštovani, oprema koju ste rezervisali Vam je isporučena.\n"
+				+ "Oprema: "))
 		emailService.sendDeliveryEmail(mailText);
 		
 		return getNewByCompanyAdmin(Id);
 	}
-	
+
 	@Transactional(readOnly = false)
-	public void UpdateEquipmentQuantity(Reservation reservation)
+	public Integer UpdateEquipmentQuantity(Reservation reservation)
 	{
 		for(Item i:reservation.getItems())
 		{
 			Equipment equipment=i.getEquipment();
 			Integer oldQuantity=equipment.getQuantity();
+			if(oldQuantity-i.getQuantity()<0)
+				return 1;
 			Integer newQuantity=oldQuantity-i.getQuantity();
 			equipment.setQuantity(newQuantity);
 			EquipmentRepository.save(equipment);
 			
 		}
+		return 0;
 	}
 
 	@Override
@@ -409,17 +427,31 @@ public class ReservationService implements IReservationService {
 		return reservation.getAppointment().getDate().isBefore(LocalDate.now()) || (reservation.getAppointment().getDate().isEqual(LocalDate.now()) && reservation.getAppointment().getEnd().isBefore(LocalTime.now()));
 	}
 	
-	@Scheduled(cron = "0 0 * * * *")
+	@Scheduled(cron = "0 * * * * *")
 	public void checkExpiration() {
 		List<Reservation> reservations = ReservationRepository.getNotRejected();
+		System.out.println(reservations.size());
 		for(var r: reservations)
 		{
 			if(hasExpired(r))
 			{
+				System.out.println("USER"+r.getUser().getUsername());
 				r.setReservationStatus(ReservationStatus.REJECTED);
+				RegistratedUser ru=r.getUser();
+				Integer penals=ru.getPenals();
+				ru.setPenals(penals+2);
+				RegistratedUserRepository.save(ru);			
 				ReservationRepository.save(r);
 			}
 		}
 
+	}
+	
+	public ReservationDto deliverUsingQRCode(byte[] qrCodeBytes) {
+		String qrCodeText = QRCodeGenerator.decodeQR(qrCodeBytes);
+		String reservation_id = qrCodeText.split("Reservation number: ")[1].split("\n")[0];
+		ReservationDto result = DeliverReservation(Long.decode(reservation_id));
+		
+		return new ReservationDto(ReservationRepository.getById(Long.decode(reservation_id)));
 	}
 }

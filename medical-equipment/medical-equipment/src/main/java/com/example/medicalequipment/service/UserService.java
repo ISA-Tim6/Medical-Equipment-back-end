@@ -1,6 +1,7 @@
 package com.example.medicalequipment.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -100,7 +101,15 @@ public class UserService implements IUserService{
 		return this.UserRepository.findIdByUsername(username);
 	}
 
-
+	@Override
+	public List<User> getRegistratedUsersThatHaveReservationsAtCompany(Long company_id) {
+		List<Long> usersIds=UserRepository.getRegistratedUsersThatMadeReservationAtCompany(company_id);
+		List<User> users=new ArrayList<User>();
+		for(Long id:usersIds) {
+			users.add(UserRepository.findById(id).orElseGet(null));
+		}
+		return users;
+	}
 /*
 	@Override
 	public User findOne(Long id) 

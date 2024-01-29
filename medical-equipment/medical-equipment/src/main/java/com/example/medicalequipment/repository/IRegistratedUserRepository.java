@@ -21,9 +21,10 @@ public interface IRegistratedUserRepository extends JpaRepository<RegistratedUse
 	
 	@Query("SELECT u FROM User u WHERE u.verificationCode = ?1")
     public RegistratedUser findByVerificationCode(String code);
-	
+
 	@Query("SELECT u FROM RegistratedUser u")
 	List<RegistratedUser> findAllUsers();
 	//@Modifying
 	//public void resetPenalsForAllUsers();
+
 }
