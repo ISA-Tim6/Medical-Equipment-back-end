@@ -109,6 +109,7 @@ public class CompanyService implements ICompanyService{
 	public List<Company> findByNameAndAddressCity(String name, String city) {
 		return CompanyRepository.findByNameContainingIgnoreCaseAndAddressCityContainingIgnoreCase(name, city);
 	}
+	@Transactional(readOnly = false,  propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public Integer addAppointment(Long company_id, Long company_admin_id, Appointment appointment) {
 		Company c=findOne(company_id);
