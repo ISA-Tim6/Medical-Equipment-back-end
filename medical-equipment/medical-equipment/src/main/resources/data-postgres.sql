@@ -36,7 +36,7 @@ INSERT INTO public.company(
 	
 INSERT INTO public."user"(
 	user_id, city, country, email, employment, info_about_institution, logged_before, name, password, phone_number, surname, username, is_active)
-	VALUES (default, 'Trebinje', 'BiH', 'kovacevic.ra15.2020@uns.ac.rs', 2, 'No info', false, 'Anja', '$2a$10$e7XlFOO4M3on0lR25rgGa.RMg7gsVatulqO3CVurJyJNHNatlg4iG', '012345678', 'Ducic', 'anja',true); --lozinka anja
+	VALUES (default, 'Trebinje', 'BiH', 'anja.lovric@gmail.com', 2, 'No info', false, 'Anja', '$2a$10$e7XlFOO4M3on0lR25rgGa.RMg7gsVatulqO3CVurJyJNHNatlg4iG', '012345678', 'Ducic', 'anja',true); --lozinka anja
 INSERT INTO public."user"(
 	user_id, city, country, email, employment, info_about_institution, logged_before, name, password, phone_number, surname, username, is_active)
 	VALUES (default, 'Ruma', 'Srbija', 'milicavujic2001@gmail.com', 0, 'No info', false, 'Milica', '$2a$10$ipZcyjzB32XgfhX.ib1EZezNK14F6DHC/TdzmBUDnnuWahuBZgUBe', '012345678', 'Vujic', 'milica', true); --lozinka milica
