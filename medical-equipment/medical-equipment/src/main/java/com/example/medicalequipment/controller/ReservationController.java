@@ -34,6 +34,8 @@ import com.example.medicalequipment.model.RegistratedUser;
 import com.example.medicalequipment.model.Reservation;
 import com.example.medicalequipment.service.CanceledAppointmentService;
 
+import io.micrometer.core.annotation.Timed;
+
 @RestController
 @RequestMapping(path="api/reservation/")
 public class ReservationController {
@@ -43,6 +45,7 @@ public class ReservationController {
 	{
 		this.reservationService = service;
 	}
+	@Timed(value = "reservation.time", description = "Time taken to save reservation")
 	@CrossOrigin(origins="http://localhost:4200")
     @PostMapping("saveReservation/{penals}")
 	@PreAuthorize("hasAuthority('ROLE_REGISTRATED_USER')")
@@ -92,6 +95,7 @@ public class ReservationController {
 		 ReservationDto result=reservationService.getNewByCompanyAdmin(admin_id);
 		 return new ResponseEntity<>(result, HttpStatus.OK);
 	 }
+	 @Timed(value = "delivery.time", description = "Time taken to deliver reservation")
 	 @CrossOrigin(origins="http://localhost:4200")
 	 @GetMapping(value = "/deliverReservation/{id}")
 	 @PreAuthorize("hasAuthority('ROLE_COMPANY_ADMIN')")
