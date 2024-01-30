@@ -51,6 +51,9 @@ INSERT INTO public."user"(
 INSERT INTO public.registrated_user(
 	category, penals, user_id)
 	VALUES (0, 0, 1);
+INSERT INTO public.registrated_user(
+	category, penals, user_id)
+	VALUES (0, 0, 3);
 INSERT INTO public.company_admin(
 	user_id, company_id)
 	VALUES (2, 1);
@@ -65,6 +68,12 @@ INSERT INTO public.equipment(
 INSERT INTO public.equipment(
 	equipment_id, description, name, type,price,quantity)
 	VALUES (default, 'Zavoj', 'Oprema 2', 'Zavoji',100,20);
+INSERT INTO public.equipment(
+	equipment_id, description, name, type,price,quantity)
+	VALUES (default, 'Pakovanje od 10 komada', 'Flasteri', 'Flasteri',150,100);
+INSERT INTO public.equipment(
+	equipment_id, description, name, type,price,quantity)
+	VALUES (default, 'Paket od 10l', 'Fizioloski rastvor', 'Hirurska oprema',505,20);
 	
 INSERT INTO public.company_equipment(
 	company_id, equipment_id)
@@ -72,7 +81,12 @@ INSERT INTO public.company_equipment(
 INSERT INTO public.company_equipment(
 	company_id, equipment_id)
 	VALUES (1, 2);
-
+INSERT INTO public.company_equipment(
+	company_id, equipment_id)
+	VALUES (1, 3);
+INSERT INTO public.company_equipment(
+	company_id, equipment_id)
+	VALUES (1, 4);
 
 
 INSERT INTO public.role (name) VALUES ('ROLE_REGISTRATED_USER');
