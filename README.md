@@ -42,3 +42,5 @@ Otvorite terminal u Visual Studio Code-u, a zatim otkucajte sledeće komande:
 $ npm install
 $ ng serve
 Web aplikacija će biti pokrenut na portu 4200
+Prometheus se pokreće na putanji http://localhost:9090
+Grafana se pokreće na putanji http://localhost:3000
