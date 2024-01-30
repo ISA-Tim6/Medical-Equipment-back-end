@@ -37,6 +37,8 @@ import com.example.medicalequipment.service.RegistratedUserService;
 import com.example.medicalequipment.service.UserService;
 import com.example.medicalequipment.util.TokenUtils;
 
+import io.micrometer.core.annotation.Timed;
+
 @RestController
 @RequestMapping(path="api/auth/")
 public class AuthentificationController {
@@ -59,6 +61,7 @@ public class AuthentificationController {
 		this.userService = userService;
 		this.authenticationManager=authenticationManager;
     }
+    @Timed(value = "login.time", description = "Time taken to login")
     @PostMapping("/login")
 	public ResponseEntity<AuthResponse> createAuthenticationToken(
 			@RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response) {
