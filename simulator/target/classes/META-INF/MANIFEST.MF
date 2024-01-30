@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
-Built-By: Milica
-Build-Jdk: 17.0.6
+Built-By: Hp
+Build-Jdk: 17.0.9
 Implementation-Title: rabbitmq-producer-example
 Implementation-Version: 0.0.1-SNAPSHOT
 Implementation-Vendor-Id: rs.ac.uns.ftn.informatika.rabbitmq
