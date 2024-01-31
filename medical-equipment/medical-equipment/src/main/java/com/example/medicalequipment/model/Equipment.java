@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Version;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -46,6 +47,7 @@ public class Equipment {
 	//@JoinTable(name = "company_equipment", joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "company_id"),
 	//inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "equipment_id"))
 	private Set<Company> companies=new HashSet<Company>();
+	
 	
 	public Equipment() {}
 	

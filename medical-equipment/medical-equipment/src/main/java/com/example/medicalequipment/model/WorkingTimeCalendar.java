@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -33,6 +34,9 @@ public class WorkingTimeCalendar {
 	//@JoinColumn(name = "appointment_id", nullable=false)
 	@JsonIgnore
 	private Set<Appointment> appointments=new HashSet<Appointment>();
+	
+	@Version
+	private Integer version;
 
 	public WorkingTimeCalendar() {
 		super();

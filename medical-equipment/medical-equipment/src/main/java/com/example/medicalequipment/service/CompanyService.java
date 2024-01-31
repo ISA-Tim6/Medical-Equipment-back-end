@@ -33,6 +33,7 @@ import com.example.medicalequipment.repository.ICompanyRepository;
 import com.example.medicalequipment.repository.IEquipmentRepository;
 import com.example.medicalequipment.repository.IReservationRepository;
 
+//@Transactional(readOnly = true)
 @Service
 public class CompanyService implements ICompanyService{
 	@Autowired

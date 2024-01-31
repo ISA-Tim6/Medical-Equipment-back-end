@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Version;
 
 @Entity
 public class Reservation {
@@ -41,6 +42,9 @@ public class Reservation {
 	/*@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "qr_code_id", referencedColumnName = "qr_code_id")
 	private QRCode qr_code;*/
+	
+	@Version
+	private Integer version;
 	
 	public Long getReservation_id() {
 		return reservation_id;

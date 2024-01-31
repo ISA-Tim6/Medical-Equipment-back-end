@@ -44,6 +44,7 @@ import com.example.medicalequipment.repository.IRegistratedUserRepository;
 import com.example.medicalequipment.repository.IReservationRepository;
 import com.google.zxing.WriterException;
 
+//@Transactional(readOnly = true)
 @Service
 public class ReservationService implements IReservationService {
 

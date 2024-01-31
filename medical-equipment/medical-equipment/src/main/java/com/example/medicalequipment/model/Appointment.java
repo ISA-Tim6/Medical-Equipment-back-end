@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 @Entity
 public class Appointment {
 	@Id
@@ -44,6 +45,7 @@ public class Appointment {
 	private double duration;
 	@Column(name = "appointmentStatus",nullable = false)
 	private AppointmentStatus appointmentStatus;
+	
 	public Appointment() 
 	{
 		
