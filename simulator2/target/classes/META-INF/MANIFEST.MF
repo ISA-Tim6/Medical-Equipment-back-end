@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Built-By: Hp
+Built-By: Anja
 Build-Jdk: 17.0.9
 Implementation-Title: rabbitmq-producer-example
 Implementation-Version: 0.0.1-SNAPSHOT

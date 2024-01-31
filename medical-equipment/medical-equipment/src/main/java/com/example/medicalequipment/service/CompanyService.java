@@ -26,6 +26,7 @@ import com.example.medicalequipment.model.AppointmentStatus;
 import com.example.medicalequipment.model.Company;
 import com.example.medicalequipment.model.CompanyAdmin;
 import com.example.medicalequipment.model.Equipment;
+import com.example.medicalequipment.model.Reservation;
 import com.example.medicalequipment.repository.IAppointmentRepository;
 import com.example.medicalequipment.repository.ICompanyAdminRepository;
 import com.example.medicalequipment.repository.ICompanyRepository;
@@ -148,7 +149,17 @@ public class CompanyService implements ICompanyService{
 	@Transactional(readOnly = false,  propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public Integer updateAppointment(Long company_id,Long company_admin_id,Appointment appointment) {
-		//Appointment a=AppointmentRepository.getById(company_admin_id)
+		AppointmentStatus reserved = AppointmentRepository.findByDateAndTime(appointment.getDate(), appointment.getTime());
+		if(reserved!= null && reserved.equals(AppointmentStatus.RESERVED))
+		{
+			List<Reservation> stored = ReservationRepository.getByAppointmentId(appointment.getAppointment_id());
+			if(stored!=null)
+				ReservationRepository.delete(stored.get(1));
+			return 0;
+		}
+			
+
+		
 		Company c=findOne(company_id);
 		CompanyAdmin ca=CompanyAdminRepository.getWithCompany(company_admin_id);
 		appointment.setAdmin(ca);
@@ -228,6 +239,11 @@ public class CompanyService implements ICompanyService{
 	@Override
 	@Transactional(readOnly = false)
 	public Long addExtraordinaryAppointment(Long company_id, Appointment appointment) {
+		AppointmentStatus reserved = AppointmentRepository.findByDateAndTime(appointment.getDate(), appointment.getTime());
+		if(reserved!= null && reserved.equals(AppointmentStatus.RESERVED))
+			return Long.parseLong("0");
+		
+		
 	    Company c = findOne(company_id);
 	    Iterator<CompanyAdmin> iterator = c.getAdmins().iterator();
 	    CompanyAdmin ca = new CompanyAdmin();

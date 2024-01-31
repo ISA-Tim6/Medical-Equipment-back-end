@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.example.medicalequipment.model.Appointment;
+import com.example.medicalequipment.model.AppointmentStatus;
 import com.example.medicalequipment.model.RegistratedUser;
 
 @Repository
@@ -35,4 +36,11 @@ public interface IAppointmentRepository extends JpaRepository<Appointment, Long>
 			+ "	and"
 			+ "	a.end<:endTime", nativeQuery = true)
 	List<Long> getAllOverlappingEnd(Long wtcid,LocalTime startTime,LocalTime endTime,LocalDate date);
+	
+	@Query(value = "SELECT appointment_status from appointment a "
+			+ "	where"
+			+ "	a.local_date=:date"
+			+ "	and"
+			+ "	a.local_time=:time", nativeQuery = true)
+	AppointmentStatus findByDateAndTime(LocalDate date, LocalTime time);
 }
