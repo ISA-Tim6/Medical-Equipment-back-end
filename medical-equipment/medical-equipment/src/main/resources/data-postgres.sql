@@ -36,7 +36,7 @@ INSERT INTO public.company(
 	
 INSERT INTO public."user"(
 	user_id, city, country, email, employment, info_about_institution, logged_before, name, password, phone_number, surname, username, is_active)
-	VALUES (default, 'Trebinje', 'BiH', 'kovacevic.ra15.2020@uns.ac.rs', 2, 'No info', false, 'Anja', '$2a$10$e7XlFOO4M3on0lR25rgGa.RMg7gsVatulqO3CVurJyJNHNatlg4iG', '012345678', 'Ducic', 'anja',true); --lozinka anja
+	VALUES (default, 'Trebinje', 'BiH', 'anja.lovric@gmail.com', 2, 'No info', false, 'Anja', '$2a$10$e7XlFOO4M3on0lR25rgGa.RMg7gsVatulqO3CVurJyJNHNatlg4iG', '012345678', 'Ducic', 'anja',true); --lozinka anja
 INSERT INTO public."user"(
 	user_id, city, country, email, employment, info_about_institution, logged_before, name, password, phone_number, surname, username, is_active)
 	VALUES (default, 'Ruma', 'Srbija', 'milicavujic2001@gmail.com', 0, 'No info', false, 'Milica', '$2a$10$ipZcyjzB32XgfhX.ib1EZezNK14F6DHC/TdzmBUDnnuWahuBZgUBe', '012345678', 'Vujic', 'milica', true); --lozinka milica
@@ -51,6 +51,9 @@ INSERT INTO public."user"(
 INSERT INTO public.registrated_user(
 	category, penals, user_id)
 	VALUES (0, 0, 1);
+INSERT INTO public.registrated_user(
+	category, penals, user_id)
+	VALUES (0, 0, 3);
 INSERT INTO public.company_admin(
 	user_id, company_id)
 	VALUES (2, 1);
@@ -65,6 +68,12 @@ INSERT INTO public.equipment(
 INSERT INTO public.equipment(
 	equipment_id, description, name, type,price,quantity)
 	VALUES (default, 'Zavoj', 'Oprema 2', 'Zavoji',100,20);
+INSERT INTO public.equipment(
+	equipment_id, description, name, type,price,quantity)
+	VALUES (default, 'Pakovanje od 10 komada', 'Flasteri', 'Flasteri',150,100);
+INSERT INTO public.equipment(
+	equipment_id, description, name, type,price,quantity)
+	VALUES (default, 'Paket od 10l', 'Fizioloski rastvor', 'Hirurska oprema',505,20);
 	
 INSERT INTO public.company_equipment(
 	company_id, equipment_id)
@@ -72,7 +81,12 @@ INSERT INTO public.company_equipment(
 INSERT INTO public.company_equipment(
 	company_id, equipment_id)
 	VALUES (1, 2);
-
+INSERT INTO public.company_equipment(
+	company_id, equipment_id)
+	VALUES (1, 3);
+INSERT INTO public.company_equipment(
+	company_id, equipment_id)
+	VALUES (1, 4);
 
 
 INSERT INTO public.role (name) VALUES ('ROLE_REGISTRATED_USER');
@@ -86,7 +100,7 @@ INSERT INTO public.user_role (user_id, role_id) VALUES (4, 2); -- user-u dodelju
 
 INSERT INTO public.appointment(
 	appointment_id, appointment_status, local_date, duration, "end", local_time, user_id)
-	VALUES (default, 0, '12-22-2023', 60, '17:00:00', '16:00:00', 2);
+	VALUES (default, 0, '5-1-2024', 60, '10:00:00', '9:00:00', 2);
 INSERT INTO public.item(
 	item_id, quantity)
 	VALUES (default, 1);
@@ -100,5 +114,9 @@ INSERT INTO public.reservation(
 	VALUES (default, 0, 1);
 INSERT INTO public.reservation_item(
 	reservation_id, item_id)
+	VALUES (1, 1);
+
+INSERT INTO public.reservation_user(
+	 user_id,reservation_id)
 	VALUES (1, 1);
 

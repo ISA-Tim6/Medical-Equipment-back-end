@@ -9,11 +9,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.medicalequipment.dto.EquipmentDto;
 import com.example.medicalequipment.iservice.ICompanyService;
@@ -22,6 +26,7 @@ import com.example.medicalequipment.model.AppointmentStatus;
 import com.example.medicalequipment.model.Company;
 import com.example.medicalequipment.model.CompanyAdmin;
 import com.example.medicalequipment.model.Equipment;
+import com.example.medicalequipment.model.Reservation;
 import com.example.medicalequipment.repository.IAppointmentRepository;
 import com.example.medicalequipment.repository.ICompanyAdminRepository;
 import com.example.medicalequipment.repository.ICompanyRepository;
@@ -49,6 +54,7 @@ public class CompanyService implements ICompanyService{
     	this.AppointmentRepository=appointmentRepository;
     	this.ReservationRepository=reservationRepository;
     }
+    @Cacheable("company")
 	@Override
 	public Company findOne(Long id) {
 		return CompanyRepository.findById(id).orElseGet(null);
@@ -84,25 +90,27 @@ public class CompanyService implements ICompanyService{
 	public List<Company> getAll() {
 		return CompanyRepository.findAll();
 	}
-
+	@Cacheable("company")
 	@Override
 	public Company find(Long company_id) {
 		return CompanyRepository.find(company_id);
 	}
+	@Cacheable("company")
 	@Override
 	public List<Company> findByName(String name){
 		return CompanyRepository.findByNameContainingIgnoreCase(name);	
 	}
-	
+	@Cacheable("company")
 	@Override
 	public List<Company> findByAddressCity(String city) {
 		return CompanyRepository.findByAddressCityContainingIgnoreCase(city);
 	}
-	
+	@Cacheable("company")
 	@Override
 	public List<Company> findByNameAndAddressCity(String name, String city) {
 		return CompanyRepository.findByNameContainingIgnoreCaseAndAddressCityContainingIgnoreCase(name, city);
 	}
+	@Transactional(readOnly = false,  propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public Integer addAppointment(Long company_id, Long company_admin_id, Appointment appointment) {
 		Company c=findOne(company_id);
@@ -117,9 +125,9 @@ public class CompanyService implements ICompanyService{
 
 			if(overLapingStarts.size()==0 && overLapingEnds.size()==0)
 				{
-					appointment = AppointmentRepository.save(appointment);
-					c.getWorkingTimeCalendar().getAppointments().add(appointment);
-					CompanyRepository.save(c);
+				appointment = AppointmentRepository.save(appointment);
+				c.getWorkingTimeCalendar().getAppointments().add(appointment);
+				CompanyRepository.save(c);
 					return 2;
 				}
 			else 
@@ -128,14 +136,30 @@ public class CompanyService implements ICompanyService{
 		}
 		else 
 			return 1;
-
-
 	}
 
+	//@Transactional(readOnly = false,  propagation = Propagation.REQUIRED)
+	public Appointment saveCompanyToRepository(Company c, Appointment appointment) {
+		appointment = AppointmentRepository.save(appointment);
+		c.getWorkingTimeCalendar().getAppointments().add(appointment);
+		CompanyRepository.save(c);
+		return appointment;
+	}
 	
+	@Transactional(readOnly = false,  propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public Integer updateAppointment(Long company_id,Long company_admin_id,Appointment appointment) {
-		//Appointment a=AppointmentRepository.getById(company_admin_id)
+		AppointmentStatus reserved = AppointmentRepository.findByDateAndTime(appointment.getDate(), appointment.getTime());
+		if(reserved!= null && reserved.equals(AppointmentStatus.RESERVED))
+		{
+			List<Reservation> stored = ReservationRepository.getByAppointmentId(appointment.getAppointment_id());
+			if(stored!=null)
+				ReservationRepository.delete(stored.get(1));
+			return 0;
+		}
+			
+
+		
 		Company c=findOne(company_id);
 		CompanyAdmin ca=CompanyAdminRepository.getWithCompany(company_admin_id);
 		appointment.setAdmin(ca);
@@ -185,7 +209,19 @@ public class CompanyService implements ICompanyService{
 	        durationTillClosing -= 60;
 	    }
 
-	    return freeSlots;
+	    List<LocalTime> retVal = new ArrayList<LocalTime>();
+	  
+		    for(LocalTime time : freeSlots)
+		    {
+		    	if(parsedDate.getYear()==LocalDate.now().getYear() && parsedDate.getMonth()==LocalDate.now().getMonth() && parsedDate.getDayOfMonth()==LocalDate.now().getDayOfMonth()  && time.isBefore(LocalTime.now()))
+		    	{
+				}
+		    	else
+		    		retVal.add(time);
+		    	
+		    }
+
+	    return retVal;
 	}
 
 
@@ -201,7 +237,13 @@ public class CompanyService implements ICompanyService{
     }
 	
 	@Override
+	@Transactional(readOnly = false)
 	public Long addExtraordinaryAppointment(Long company_id, Appointment appointment) {
+		AppointmentStatus reserved = AppointmentRepository.findByDateAndTime(appointment.getDate(), appointment.getTime());
+		if(reserved!= null && reserved.equals(AppointmentStatus.RESERVED))
+			return Long.parseLong("0");
+		
+		
 	    Company c = findOne(company_id);
 	    Iterator<CompanyAdmin> iterator = c.getAdmins().iterator();
 	    CompanyAdmin ca = new CompanyAdmin();
@@ -222,14 +264,21 @@ public class CompanyService implements ICompanyService{
 	        List<Long> overlappingEnds = AppointmentRepository.getAllOverlappingEnd(company_id, appointment.getTime(), appointment.getEnd(), appointment.getDate());
 
 	        if (overlappingStarts.isEmpty() && overlappingEnds.isEmpty()) {
-	            appointment = AppointmentRepository.save(appointment);
-	            c.getWorkingTimeCalendar().getAppointments().add(appointment);
-	            CompanyRepository.save(c);
+	        	appointment = AppointmentRepository.save(appointment);
+	    		c.getWorkingTimeCalendar().getAppointments().add(appointment);
+	    		CompanyRepository.save(c);
 	            return appointment.getAppointment_id();
 	        }
 	    }
 	    return Long.parseLong("0");
 	}
+	
+	@Cacheable("company")
+	@Override
+	public Company findOneByName(String name)
+	{
+		List<Company> stored = CompanyRepository.findByName(name);
+		return stored.isEmpty() ? null : stored.get(0);	}
 
 	
 }

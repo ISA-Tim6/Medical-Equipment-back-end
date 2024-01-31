@@ -2,6 +2,7 @@ package com.example.medicalequipment.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -96,5 +97,7 @@ public class RegistratedUserController {
 		System.out.println(oldUsername);
 		return new ResponseEntity<>(userService.update(user, oldUsername), HttpStatus.OK);
 	}
+    
+ 
    
 }

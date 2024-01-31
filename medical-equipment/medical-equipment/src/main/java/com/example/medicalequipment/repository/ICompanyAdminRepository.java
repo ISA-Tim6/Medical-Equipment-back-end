@@ -17,4 +17,7 @@ public interface ICompanyAdminRepository extends JpaRepository<CompanyAdmin, Lon
 	
 	@Query(value = "SELECT ca FROM CompanyAdmin ca join fetch ca.company where ca.id=?1")
 	CompanyAdmin getWithCompany(Long id);
+	
+	@Query(value = "SELECT ca FROM CompanyAdmin ca where ca.username=?1")
+	CompanyAdmin getByUsername(String username);
 }

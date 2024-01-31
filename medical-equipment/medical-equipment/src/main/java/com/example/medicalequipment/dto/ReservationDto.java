@@ -6,6 +6,7 @@ import java.util.Set;
 import com.example.medicalequipment.model.Appointment;
 import com.example.medicalequipment.model.Item;
 import com.example.medicalequipment.model.RegistratedUser;
+import com.example.medicalequipment.model.Reservation;
 
 public class ReservationDto {
 
@@ -14,6 +15,13 @@ public class ReservationDto {
 	private Set<ItemDto> items;
 	private AppointmentDto appointment;
 	private String reservationStatus;
+	public String getReservationStatus() {
+		return reservationStatus;
+	}
+	public void setReservationStatus(String reservationStatus) {
+		this.reservationStatus = reservationStatus;
+	}
+	public ReservationDto() {}
 	public ReservationDto(Long reservation_id, RegistratedUser user, Set<Item> items, Appointment appointment, String status) {
 		super();
 		this.reservation_id = reservation_id;
@@ -27,6 +35,19 @@ public class ReservationDto {
 		}
 		this.appointment = new AppointmentDto(appointment);
 		this.reservationStatus = status;
+	}
+	public ReservationDto(Reservation r) {
+		this.reservation_id = r.getReservation_id();
+		this.user = r.getUser();
+		this.items = new HashSet<ItemDto>();
+		if(!items.isEmpty())
+		{
+			for (Item item : r.getItems()) {
+				this.items.add(new ItemDto(item));
+			}
+		}
+		this.appointment = new AppointmentDto(r.getAppointment());
+		this.reservationStatus = r.getReservationStatus().toString();
 	}
 	public Long getReservation_id() {
 		return reservation_id;
