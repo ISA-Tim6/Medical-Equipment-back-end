@@ -124,9 +124,9 @@ public class CompanyService implements ICompanyService{
 
 			if(overLapingStarts.size()==0 && overLapingEnds.size()==0)
 				{
-					appointment = AppointmentRepository.save(appointment);
-					c.getWorkingTimeCalendar().getAppointments().add(appointment);
-					CompanyRepository.save(c);
+				appointment = AppointmentRepository.save(appointment);
+				c.getWorkingTimeCalendar().getAppointments().add(appointment);
+				CompanyRepository.save(c);
 					return 2;
 				}
 			else 
@@ -135,10 +135,16 @@ public class CompanyService implements ICompanyService{
 		}
 		else 
 			return 1;
-
-
 	}
 
+	//@Transactional(readOnly = false,  propagation = Propagation.REQUIRED)
+	public Appointment saveCompanyToRepository(Company c, Appointment appointment) {
+		appointment = AppointmentRepository.save(appointment);
+		c.getWorkingTimeCalendar().getAppointments().add(appointment);
+		CompanyRepository.save(c);
+		return appointment;
+	}
+	
 	@Transactional(readOnly = false,  propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public Integer updateAppointment(Long company_id,Long company_admin_id,Appointment appointment) {
@@ -242,9 +248,9 @@ public class CompanyService implements ICompanyService{
 	        List<Long> overlappingEnds = AppointmentRepository.getAllOverlappingEnd(company_id, appointment.getTime(), appointment.getEnd(), appointment.getDate());
 
 	        if (overlappingStarts.isEmpty() && overlappingEnds.isEmpty()) {
-	            appointment = AppointmentRepository.save(appointment);
-	            c.getWorkingTimeCalendar().getAppointments().add(appointment);
-	            CompanyRepository.save(c);
+	        	appointment = AppointmentRepository.save(appointment);
+	    		c.getWorkingTimeCalendar().getAppointments().add(appointment);
+	    		CompanyRepository.save(c);
 	            return appointment.getAppointment_id();
 	        }
 	    }
