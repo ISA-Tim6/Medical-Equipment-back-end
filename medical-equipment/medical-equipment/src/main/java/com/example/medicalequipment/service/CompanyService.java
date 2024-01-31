@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +53,7 @@ public class CompanyService implements ICompanyService{
     	this.AppointmentRepository=appointmentRepository;
     	this.ReservationRepository=reservationRepository;
     }
+    @Cacheable("company")
 	@Override
 	public Company findOne(Long id) {
 		return CompanyRepository.findById(id).orElseGet(null);
@@ -87,25 +89,27 @@ public class CompanyService implements ICompanyService{
 	public List<Company> getAll() {
 		return CompanyRepository.findAll();
 	}
-
+	@Cacheable("company")
 	@Override
 	public Company find(Long company_id) {
 		return CompanyRepository.find(company_id);
 	}
+	@Cacheable("company")
 	@Override
 	public List<Company> findByName(String name){
 		return CompanyRepository.findByNameContainingIgnoreCase(name);	
 	}
-	
+	@Cacheable("company")
 	@Override
 	public List<Company> findByAddressCity(String city) {
 		return CompanyRepository.findByAddressCityContainingIgnoreCase(city);
 	}
-	
+	@Cacheable("company")
 	@Override
 	public List<Company> findByNameAndAddressCity(String name, String city) {
 		return CompanyRepository.findByNameContainingIgnoreCaseAndAddressCityContainingIgnoreCase(name, city);
 	}
+	@Transactional(readOnly = false,  propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public Integer addAppointment(Long company_id, Long company_admin_id, Appointment appointment) {
 		Company c=findOne(company_id);
@@ -120,9 +124,9 @@ public class CompanyService implements ICompanyService{
 
 			if(overLapingStarts.size()==0 && overLapingEnds.size()==0)
 				{
-					appointment = AppointmentRepository.save(appointment);
-					c.getWorkingTimeCalendar().getAppointments().add(appointment);
-					CompanyRepository.save(c);
+				appointment = AppointmentRepository.save(appointment);
+				c.getWorkingTimeCalendar().getAppointments().add(appointment);
+				CompanyRepository.save(c);
 					return 2;
 				}
 			else 
@@ -131,10 +135,16 @@ public class CompanyService implements ICompanyService{
 		}
 		else 
 			return 1;
-
-
 	}
 
+	//@Transactional(readOnly = false,  propagation = Propagation.REQUIRED)
+	public Appointment saveCompanyToRepository(Company c, Appointment appointment) {
+		appointment = AppointmentRepository.save(appointment);
+		c.getWorkingTimeCalendar().getAppointments().add(appointment);
+		CompanyRepository.save(c);
+		return appointment;
+	}
+	
 	@Transactional(readOnly = false,  propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public Integer updateAppointment(Long company_id,Long company_admin_id,Appointment appointment) {
@@ -238,15 +248,16 @@ public class CompanyService implements ICompanyService{
 	        List<Long> overlappingEnds = AppointmentRepository.getAllOverlappingEnd(company_id, appointment.getTime(), appointment.getEnd(), appointment.getDate());
 
 	        if (overlappingStarts.isEmpty() && overlappingEnds.isEmpty()) {
-	            appointment = AppointmentRepository.save(appointment);
-	            c.getWorkingTimeCalendar().getAppointments().add(appointment);
-	            CompanyRepository.save(c);
+	        	appointment = AppointmentRepository.save(appointment);
+	    		c.getWorkingTimeCalendar().getAppointments().add(appointment);
+	    		CompanyRepository.save(c);
 	            return appointment.getAppointment_id();
 	        }
 	    }
 	    return Long.parseLong("0");
 	}
 	
+	@Cacheable("company")
 	@Override
 	public Company findOneByName(String name)
 	{

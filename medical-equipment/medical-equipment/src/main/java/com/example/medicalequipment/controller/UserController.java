@@ -134,6 +134,13 @@ public class UserController {
 		return new ResponseEntity<>(ca, HttpStatus.OK);
 	}
 	
+	@CrossOrigin(origins="http://localhost:4200")
+	@GetMapping("withReservation/{company_id}")
+	public ResponseEntity<List<User>> getUserWithReservationsAtCompany(@PathVariable Long company_id) {
+		List<User> usersWithReservations= this.userService.getRegistratedUsersThatHaveReservationsAtCompany(company_id);
+		return new ResponseEntity<>(usersWithReservations, HttpStatus.OK);
+	}
+	
    /* @CrossOrigin(origins="http://localhost:4200")
     @GetMapping(value = "/{id}")
 	public ResponseEntity<User> getUser(@PathVariable Long id) {

@@ -19,4 +19,6 @@ public interface IUserService {
 	User save(UserRequest userRequest);
 	Long findIdByUsername(String username);
 	User saveSystemAdmin(User user);
+	List<User> getRegistratedUsersThatHaveReservationsAtCompany(Long company_id);
+
 }
