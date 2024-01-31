@@ -115,6 +115,8 @@ public class ReservationService implements IReservationService {
 	//@Transactional(readOnly = false)
 	public Reservation save(Reservation reservation) throws MailException, InterruptedException, MessagingException {
 		// TODO Auto-generated method stub
+		if(!hasEnoughEquipment(reservation))
+			return null;
 		Reservation newReservation=ReservationRepository.save(reservation);
 		String qrCodeData = generateReservationDetails(newReservation);
 		String mail=generateEmailMessage(newReservation);
@@ -131,6 +133,20 @@ public class ReservationService implements IReservationService {
 		emailService.sendConfirmationEmail(newReservation,mail, qrCodeImageBytes);
 		return newReservation;
 	}
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	private boolean hasEnoughEquipment(Reservation reservation)
+	{
+		boolean hasEnough = true;
+		for(Item i: reservation.getItems()) {
+			Equipment e = EquipmentRepository.getById(i.getEquipment().getEquipment_id());
+			if(i.getQuantity() > e.getQuantity()) {
+				hasEnough = false;
+			}
+		}
+		return hasEnough;
+	}
+	
 	@Cacheable(value = "reservations")
 	@Override
 	public List<Reservation> getFullReservation(Long id) {
@@ -397,7 +413,7 @@ public class ReservationService implements IReservationService {
 		return getNewByCompanyAdmin(Id);
 	}
 
-	@Transactional(readOnly = false)
+	//@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public Integer UpdateEquipmentQuantity(Reservation reservation)
 	{
 		for(Item i:reservation.getItems())

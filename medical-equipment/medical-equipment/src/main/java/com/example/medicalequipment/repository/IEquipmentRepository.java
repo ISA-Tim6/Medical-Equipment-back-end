@@ -18,4 +18,7 @@ public interface IEquipmentRepository extends JpaRepository<Equipment, Long>{
 	
 	@Query("select e from Equipment e join fetch e.companies")
 	public List<Equipment> search();
+	
+	@Query("select e from Equipment e join fetch e.companies where e.equipment_id=:id")
+	public Equipment getById(Long id);
 }
